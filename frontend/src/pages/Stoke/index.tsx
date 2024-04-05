@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import { useDownloadExcel } from "react-export-table-to-excel";
 
 
-const PageInsumos: React.FC = () => {
+const PageStock: React.FC = () => {
 
     const [stockData, setStockData] = useState([]);
     const [quantityofMaterialsData, setQuantityofmaterialsData] = useState<any>({});
@@ -115,7 +115,7 @@ const PageInsumos: React.FC = () => {
     console.log(quantityofMaterialsData.total_envelopes)
     return (
         <>
-            <DefaultHeader sessionTheme="Insumos" />
+            <DefaultHeader sessionTheme="Estoque" />
             <div className="container-stock">
 
                 <Select info={"Selecione um tipo:"} name="activeType" onChange={handleChange}>
@@ -220,4 +220,4 @@ const PageInsumos: React.FC = () => {
 
 }
 
-export default PageInsumos;
+export default PageStock;

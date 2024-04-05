@@ -6,7 +6,11 @@ import PageCardsIssued from '../pages/CardsIssued';
 import PageUsers from '../pages/Users';
 import { Route, Routes, Outlet } from 'react-router-dom';
 import { Context } from '../AuthContext/AuthContext';
-import PageInsumos from '../pages/Insumos';
+
+import PageStock from '../pages/Stoke';
+import PageWaste from '../pages/Waste';
+import PageInactive from '../pages/Inactives';
+import PageRuptures from '../pages/Ruptures';
 
 
 
@@ -26,8 +30,11 @@ const PrivateRouter: React.FC = () => {
                     <Routes>
                         < Route path={`${process.env.PUBLIC_URL}/home`} element={< PageHome />} />
                         < Route path={`${process.env.PUBLIC_URL}/relatorio-producao`} element={< PageProductionReport />} />
-                        < Route path={`${process.env.PUBLIC_URL}/insumos`} element={< PageInsumos />} />
+                        < Route path={`${process.env.PUBLIC_URL}/estoque`} element={< PageStock />} />
                         < Route path={`${process.env.PUBLIC_URL}/cartoes-emitidos`} element={< PageCardsIssued />} />
+                        < Route path={`${process.env.PUBLIC_URL}/rejeitos`} element={< PageWaste />} />
+                        < Route path={`${process.env.PUBLIC_URL}/inativos`} element={< PageInactive />} />
+                        < Route path={`${process.env.PUBLIC_URL}/rupturas`} element={< PageRuptures />} />
                         
                         {authenticatedAdmin ?
                             <>

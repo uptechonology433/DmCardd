@@ -24,19 +24,19 @@ const NavBarClient: React.FC = () => {
                 <ul className="nav-list">
                     <li className='li-principal'><Link to={`${process.env.PUBLIC_URL}/home`}>Home</Link></li>
                     <li className='li-principal'><Link to={`${process.env.PUBLIC_URL}/relatorio-producao`}>Relatorio de Produção</Link></li>
-                    <div className="dropdown li-principal" >
+                    <li className="dropdown li-principal" >
                         <span onClick={toggleSubMenu}>Insumos</span>
                         {showSubMenu && (
                             <div className="submenu">
                                 <ul>
-                                    <li ><Link className='select' to={`${process.env.PUBLIC_URL}/estoque`}>Estoque</Link></li>
-                                    <li><Link className='select' to={`${process.env.PUBLIC_URL}/rupturas`}>Rejeitos</Link></li>
-                                    <li ><Link className='select' to={`${process.env.PUBLIC_URL}/estoque`}>Inativos</Link></li>
-                                    <li ><Link className='select' to={`${process.env.PUBLIC_URL}/rupturas`}>Rupturas</Link></li>
+                                    <li><Link className='select' to={`${process.env.PUBLIC_URL}/estoque`}>Estoques</Link></li>
+                                    <li><Link className='select' to={`${process.env.PUBLIC_URL}/rejeitos`}>Rejeitos</Link></li>
+                                    <li><Link className='select' to={`${process.env.PUBLIC_URL}/inativos`}>Inativos</Link></li>
+                                    <li><Link className='select' to={`${process.env.PUBLIC_URL}/rupturas`}>Rupturas</Link></li>
                                 </ul>
                             </div>
                         )}
-                    </div>
+                    </li>
                     <li className='li-principal'><Link to={`${process.env.PUBLIC_URL}/cartoes-emitidos`}>Cartões emitido</Link></li>
                     {authenticatedAdmin && (
                         <li className='li-principal'><Link to={`${process.env.PUBLIC_URL}/usuarios`}>Admin users</Link></li>
@@ -61,7 +61,7 @@ const NavBarClient: React.FC = () => {
                                 <div className="submenu">
                                     <ul>
                                         <li><Link to={`${process.env.PUBLIC_URL}/estoque`}>Estoque</Link></li>
-                                        <li><Link to={`${process.env.PUBLIC_URL}/rupturas`}>Rejeitos</Link></li>
+                                        <li><Link to={`${process.env.PUBLIC_URL}/rejeitos`}>Rejeitos</Link></li>
                                         <li><Link to={`${process.env.PUBLIC_URL}/estoque`}>Inativos</Link></li>
                                         <li><Link to={`${process.env.PUBLIC_URL}/rupturas`}>Rupturas</Link></li>
                                     </ul>

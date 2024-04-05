@@ -1,11 +1,12 @@
 import PageHome from '../pages/Home';
 import PageProductionReport from '../pages/ProductionReport';
 import { useContext } from "react";
-import PageStock from '../pages/Stock';
+
 import PageCardsIssued from '../pages/CardsIssued';
 import PageUsers from '../pages/Users';
 import { Route, Routes, Outlet } from 'react-router-dom';
 import { Context } from '../AuthContext/AuthContext';
+import PageInsumos from '../pages/Insumos';
 
 
 
@@ -25,7 +26,7 @@ const PrivateRouter: React.FC = () => {
                     <Routes>
                         < Route path={`${process.env.PUBLIC_URL}/home`} element={< PageHome />} />
                         < Route path={`${process.env.PUBLIC_URL}/relatorio-producao`} element={< PageProductionReport />} />
-                        < Route path={`${process.env.PUBLIC_URL}/insumos`} element={< PageStock />} />
+                        < Route path={`${process.env.PUBLIC_URL}/insumos`} element={< PageInsumos />} />
                         < Route path={`${process.env.PUBLIC_URL}/cartoes-emitidos`} element={< PageCardsIssued />} />
                         
                         {authenticatedAdmin ?

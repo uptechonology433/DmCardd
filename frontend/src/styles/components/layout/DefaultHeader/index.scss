@@ -1,10 +1,10 @@
 .container-default-header{
-    margin-bottom: 64px;
+    margin-bottom: 20px;
     .image-logo-up{
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 128px;
+        margin-top: 120px;
         
 
         img{
@@ -13,7 +13,7 @@
     }
 
     .title-session{
-        margin-top: 64px;
+        margin-top: 35px;
         h2 {
             text-align: center;
             font-size: clamp(1.25rem, 2vw, 1.5rem);

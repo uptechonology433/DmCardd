@@ -2,17 +2,17 @@ import React, { useState, useContext } from 'react';
 import Icon from '../../shared/Icon';
 import { Link } from 'react-router-dom';
 import { Context } from '../../../AuthContext/AuthContext';
-const NavBarClient: React.FC = () => {
 
+const NavBarClient: React.FC = () => {
     const [sideBar, setSideBar] = useState(false);
+    const [showSubMenu, setShowSubMenu] = useState(false);
 
     const { authenticatedAdmin }: any = useContext(Context);
+    const { handleLogout }: any = useContext(Context);
 
     const showSidebar = () => setSideBar(!sideBar);
 
-    const { handleLogout }: any = useContext(Context);
-
-    
+    const toggleSubMenu = () => setShowSubMenu(!showSubMenu);
 
     return (
         <header>
@@ -22,77 +22,61 @@ const NavBarClient: React.FC = () => {
                 </div>
                 <Icon name='menu' onClick={showSidebar} />
                 <ul className="nav-list">
-
-                    <li><Link to={`${process.env.PUBLIC_URL}/home`}>Home</Link></li>
-
-                    <li><Link to={`${process.env.PUBLIC_URL}/relatorio-producao`}>Relatorio de Produção</Link></li>
-
-                    <li><Link to={`${process.env.PUBLIC_URL}/insumos`}>Insumos</Link></li>
-                    <li><Link to={`${process.env.PUBLIC_URL}/cartoes-emitidos`}>Cartões emitido</Link></li>
-
-                    {
-                        authenticatedAdmin ?
-                            <>
-                                <li><Link to={`${process.env.PUBLIC_URL}/usuarios`}>Admin users</Link></li>
-                                {/* <li><Link to={`${process.env.PUBLIC_URL}/emitidos`}>Cartões Emitidos</Link></li> */}
-                            </>
-
-                            :
-                            <>
-
-                            </>
-                    }
-                    <div className='container-logout-icon'>
-                        <li><Icon name='logout' onClick={() => handleLogout()} /></li>
+                    <li className='li-principal'><Link to={`${process.env.PUBLIC_URL}/home`}>Home</Link></li>
+                    <li className='li-principal'><Link to={`${process.env.PUBLIC_URL}/relatorio-producao`}>Relatorio de Produção</Link></li>
+                    <div className="dropdown li-principal" >
+                        <span onClick={toggleSubMenu}>Insumos</span>
+                        {showSubMenu && (
+                            <div className="submenu">
+                                <ul>
+                                    <li ><Link className='select' to={`${process.env.PUBLIC_URL}/estoque`}>Estoque</Link></li>
+                                    <li><Link className='select' to={`${process.env.PUBLIC_URL}/rupturas`}>Rejeitos</Link></li>
+                                    <li ><Link className='select' to={`${process.env.PUBLIC_URL}/estoque`}>Inativos</Link></li>
+                                    <li ><Link className='select' to={`${process.env.PUBLIC_URL}/rupturas`}>Rupturas</Link></li>
+                                </ul>
+                            </div>
+                        )}
                     </div>
-
-
+                    <li className='li-principal'><Link to={`${process.env.PUBLIC_URL}/cartoes-emitidos`}>Cartões emitido</Link></li>
+                    {authenticatedAdmin && (
+                        <li className='li-principal'><Link to={`${process.env.PUBLIC_URL}/usuarios`}>Admin users</Link></li>
+                    )}
+                    <div className='container-logout-icon'>
+                        <li className='li-principal'><Icon name='logout' onClick={handleLogout} /></li>
+                    </div>
                 </ul>
             </nav>
 
-            {
-                sideBar ?
-                    <div className='container-sadbar'>
-
-                        <div className='container-icon-close'>
-
-                            <Icon name='close' onClick={showSidebar} />
-
-                        </div>
-
-
-
-                        <ul className="nav-list">
-
-                            <li><Link to={`${process.env.PUBLIC_URL}/home`}>Home</Link></li>
-
-                            <li><Link to={`${process.env.PUBLIC_URL}/relatorio-producao`}>Relatorio de Produção</Link></li>
-
-                            <li><Link to={`${process.env.PUBLIC_URL}/estoque`}>Estoque</Link></li>
-
-                            {
-                                authenticatedAdmin ?
-                                    <>
-                                        <li><Link to={`${process.env.PUBLIC_URL}/usuarios`}>Admin users</Link></li>
-                                        {/* <li><Link to={`${process.env.PUBLIC_URL}/emitidos`}>Cartões Emitidos</Link></li> */}
-                                    </>
-                                    :
-                                    <></>
-                            }
-
-                            <li><Icon name='logout' onClick={() => handleLogout()} /></li>
-                        </ul>
-
+            {sideBar && (
+                <div className='container-sadbar'>
+                    <div className='container-icon-close'>
+                        <Icon name='close' onClick={showSidebar} />
                     </div>
-
-                    :
-
-                    null
-            }
-
-
+                    <ul className="nav-list">
+                        <li><Link to={`${process.env.PUBLIC_URL}/home`}>Home</Link></li>
+                        <li><Link to={`${process.env.PUBLIC_URL}/relatorio-producao`}>Relatorio de Produção</Link></li>
+                        <li className="dropdown">
+                            <span onClick={toggleSubMenu}>Insumos</span>
+                            {showSubMenu && (
+                                <div className="submenu">
+                                    <ul>
+                                        <li><Link to={`${process.env.PUBLIC_URL}/estoque`}>Estoque</Link></li>
+                                        <li><Link to={`${process.env.PUBLIC_URL}/rupturas`}>Rejeitos</Link></li>
+                                        <li><Link to={`${process.env.PUBLIC_URL}/estoque`}>Inativos</Link></li>
+                                        <li><Link to={`${process.env.PUBLIC_URL}/rupturas`}>Rupturas</Link></li>
+                                    </ul>
+                                </div>
+                            )}
+                        </li>
+                        {authenticatedAdmin && (
+                            <li><Link to={`${process.env.PUBLIC_URL}/usuarios`}>Admin users</Link></li>
+                        )}
+                        <li><Icon name='logout' onClick={handleLogout} /></li>
+                    </ul>
+                </div>
+            )}
         </header>
     )
 }
 
-export default NavBarClient
+export default NavBarClient;

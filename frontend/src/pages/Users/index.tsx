@@ -156,7 +156,6 @@ const PageUsers: React.FC = () => {
                             <tr>
                                 <td>Nome</td>
                                 <td>Email</td>
-                              
                                 <td>Adm</td>
                                 <td>Deletar</td>
                                 <td>Editar</td>

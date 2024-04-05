@@ -55,8 +55,8 @@ const NavBarClient: React.FC = () => {
                     <ul className="nav-list">
                         <li><Link to={`${process.env.PUBLIC_URL}/home`}>Home</Link></li>
                         <li><Link to={`${process.env.PUBLIC_URL}/relatorio-producao`}>Relatorio de Produção</Link></li>
-                        <li className="dropdown">
-                            <span onClick={toggleSubMenu}>Insumos</span>
+                        <div className="dropdown">
+                            <span className='insumos' onClick={toggleSubMenu}>Insumos</span>
                             {showSubMenu && (
                                 <div className="submenu">
                                     <ul>
@@ -67,7 +67,7 @@ const NavBarClient: React.FC = () => {
                                     </ul>
                                 </div>
                             )}
-                        </li>
+                        </div>
                         {authenticatedAdmin && (
                             <li><Link to={`${process.env.PUBLIC_URL}/usuarios`}>Admin users</Link></li>
                         )}

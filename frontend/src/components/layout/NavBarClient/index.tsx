@@ -27,8 +27,8 @@ const NavBarClient: React.FC = () => {
 
                     <li><Link to={`${process.env.PUBLIC_URL}/relatorio-producao`}>Relatorio de Produção</Link></li>
 
-                    <li><Link to={`${process.env.PUBLIC_URL}/estoque`}>Insumos</Link></li>
-                    <li><Link to={`${process.env.PUBLIC_URL}/estoque`}>Cartões emitido</Link></li>
+                    <li><Link to={`${process.env.PUBLIC_URL}/insumos`}>Insumos</Link></li>
+                    <li><Link to={`${process.env.PUBLIC_URL}/cartoes-emitidos`}>Cartões emitido</Link></li>
 
                     {
                         authenticatedAdmin ?

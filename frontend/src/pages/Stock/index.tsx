@@ -118,10 +118,10 @@ const PageStock: React.FC = () => {
             <DefaultHeader sessionTheme="Estoque" />
             <div className="container-stock">
 
-                <Select info={"Selecione um tipo de ativo:"} name="activeType" onChange={handleChange}>
+                <Select info={"Selecione um tipo:"} name="activeType" onChange={handleChange}>
                     <option selected>Selecione um ativo...</option>
-                    <option value="Sim">Sim</option>
-                    <option value="Não">Não</option>
+                    <option value="Sim">Dm Card</option>
+                    <option value="Não">Rede Use</option>
                 </Select>
 
                 <div className="inputs-info-products">

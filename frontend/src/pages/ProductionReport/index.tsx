@@ -81,7 +81,7 @@ const PageProductionReport: React.FC = () => {
 
     const ProductionReportRequests = async () => {
 
-        if (formValues.cardType === 'ChipPl' || formValues.cardType === 'ChipElo') {
+        //if (formValues.cardType === 'ChipPl' || formValues.cardType === 'ChipElo') {
 
             if (formValues.InitialProcessingDate < formValues.FinalProcessingDate
                 || formValues.InitialShippingDate < formValues.FinalShippingDate
@@ -111,13 +111,7 @@ const PageProductionReport: React.FC = () => {
                 });
             }
 
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Selecione um tipo de cartão...',
-                text: 'Selecione tarja ou chip antes de fazer a filtragem dos dados.',
-            });
-        }
+       
 
     }
 
@@ -153,16 +147,6 @@ const PageProductionReport: React.FC = () => {
                     <div className="inputs">
 
                         <Input name="fileName" placeholder='Arquivo...' info="Arquivo:" onChange={handleChange} />
-
-                        <Select info={"Selecione o tipo de cartão:"} name="cardType" onChange={handleChange}>
-
-                            <option selected>Selecione um tipo...</option>
-
-                            <option value="ChipPl">Chip PL</option>
-
-                            <option value="ChipElo">Chip ELO</option>
-
-                        </Select>
 
                     </div>
 

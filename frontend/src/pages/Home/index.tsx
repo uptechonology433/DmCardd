@@ -221,42 +221,7 @@ const PageHome: React.FC = () => {
 
             <DefaultHeader />
 
-            <Select info={"Selecione o tipo de cartão:"} name="Type" onChange={handleChange}>
-
-                <option value="elo">Elo</option>
-                <option value="chip">Chip</option>
-
-
-
-            </Select>
-
-            <Table
-                data={Array.isArray(awaitingReleaseData) ? awaitingReleaseData : []}
-                column={columnsAwaitingRelease}
-                titleTable="Aguardando liberação"
-                typeMessage={typeMessageAwaitingRelease}
-            />
-            <Table
-                data={Array.isArray(inProductionData) ? inProductionData : []}
-                column={columnsInProduction}
-                titleTable="Em produção"
-                typeMessage={typeMessageInProduction}
-
-
-            />
-
-            <Table
-                data={Array.isArray(awaitingShipmentData) ? awaitingShipmentData : []}
-                column={columnsAwaitingShipment}
-                titleTable="Aguardando Expedição"
-                typeMessage={typeMessageAwaitingShipment} />
-
-            <Table
-                data={Array.isArray(dispatchedData) ? dispatchedData : []}
-                column={columnsDispatched}
-                titleTable="Expedidos"
-                typeMessage={typeMessageDispatched} />
-        </div >
+        </div>
     )
 }
 

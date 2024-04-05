@@ -60,10 +60,10 @@ const PageLogin: React.FC = () => {
                 <div className="container-style-client">
                     <div className="container-logos">
                         <div className="image-logo-client-red">
-                            <img src='https://www.megavalecard.com.br/wp-content/uploads/2023/02/Logo-Megavale-horizontal-colorido-texto-branco.png' alt="Logo up" />
+                            <img src='https://www.vocedm.com.br/portal/assets/logo.webp' alt="Logo up" />
                         </div>
                         <div className="image-logo-up">
-                            <img src='https://firebasestorage.googleapis.com/v0/b/project-vero-card-up.appspot.com/o/LogoUP.svg?alt=media&token=a4d9e086-9cc7-4d6d-846d-875f2858b698' alt="Logo up" />
+                            <img src='https://www.vocedm.com.br/portal/assets/logo.webp' alt="Logo up" />
                         </div>
                     </div>
                     <h1>Entrar</h1>
@@ -82,7 +82,7 @@ const PageLogin: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <footer><p className="developer">Copyright 2024 © | UP! Technology by Rebeca Lopes</p></footer>
+            <footer><p className="developer">Copyright 2024 © | UP! Technology by </p></footer>
         </div>
     )
 }

@@ -16,7 +16,7 @@
     .container-login {
         width: clamp(52.5rem, 70vw, 67.5rem);
         height: 90vh;
-        background-color: $color-dark-gray;
+        background-color: #B8D2EA;
         border-radius: 16px;
         display: flex;
 
@@ -44,7 +44,7 @@
 
                 p {
                     text-align: center;
-                    color: $color-blue;
+                    color: #2B27E7;
                     font-weight: $font-semibold;
                     font-size: 30px;
                 }
@@ -72,7 +72,7 @@
                 .image-logo-client-red {
                     display: flex;
                     justify-content: center;
-                    margin-top: 16px;
+                    margin-top: 10px;
 
                     img {
                         width: clamp(7rem, 9vw, 7.688rem);
@@ -84,7 +84,7 @@
                 .image-logo-up {
                     display: flex;
                     justify-content: center;
-                    margin-top: 16px;
+                    margin-top: 10px;
 
 
                     img {
@@ -98,7 +98,7 @@
             h1,
             p {
                 text-align: center;
-                color: $color-client;
+                color: #2B27E7;
             }
 
             h1 {
@@ -128,10 +128,11 @@
                 }
 
                 .button {
-                   
+                    background: #2B27E7;
 
                     p {
                         color: $color-white;
+                        background: #2B27E7;
                     }
                 }
             }
@@ -191,7 +192,7 @@
        
 
         .developer{
-            color: $color-client;
+            color:rgb(109, 180, 242);
         }
 
     }

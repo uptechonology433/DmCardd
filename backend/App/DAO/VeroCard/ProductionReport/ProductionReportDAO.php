@@ -88,7 +88,7 @@ class ProductionReportDAO extends Connection
          to_char(dt_processamento, 'DD/MM/YYYY') AS dt_processamento, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc
-        total_cartoes, status , rastreio from view_dmcard_reduze_producao WHERE nome_arquivo_proc = :arquivo");
+        total_cartoes, status , rastreio from view_dmcard_redeuze_producao WHERE nome_arquivo_proc = :arquivo");
 
         $statement->execute(['arquivo' => $productionReportModel->getFile()]);
 
@@ -105,7 +105,7 @@ class ProductionReportDAO extends Connection
          to_char(dt_processamento, 'DD/MM/YYYY') AS dt_processamento, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc
-        total_cartoes, status , rastreio from view_dmcard_reduze_producao  where dt_processamento BETWEEN :datainicial AND :datafinal ;");
+        total_cartoes, status , rastreio from view_dmcard_redeuze_producao  where dt_processamento BETWEEN :datainicial AND :datafinal ;");
 
         $statement->execute(['datainicial' => $productionReportModel->getInitialProcessinDate(), 'datafinal' => $productionReportModel->getFinalProcessinDate()]);
 
@@ -121,7 +121,7 @@ class ProductionReportDAO extends Connection
          to_char(dt_processamento, 'DD/MM/YYYY') AS dt_processamento, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc
-        total_cartoes, status , rastreio from view_dmcard_reduze_producao  where dt_expedicao BETWEEN :expedicaoinicial AND :expedicaofinal ;");
+        total_cartoes, status , rastreio from view_dmcard_redeuze_producao  where dt_expedicao BETWEEN :expedicaoinicial AND :expedicaofinal ;");
 
         $statement->execute(['expedicaoinicial' => $productionReportModel->getInitialShippingdate(), 'expedicaofinal' => $productionReportModel->getFinalShippingdate()]);
 
@@ -138,7 +138,7 @@ class ProductionReportDAO extends Connection
          to_char(dt_processamento, 'DD/MM/YYYY') AS dt_processamento, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc
-        total_cartoes, status , rastreio FROM view_dmcard_reduze_producao  where dt_expedicao BETWEEN :expedicaoinicial AND :expedicaofinal OR dt_processamento BETWEEN :datainicial AND :datafinal;");
+        total_cartoes, status , rastreio FROM view_dmcard_redeuze_producao  where dt_expedicao BETWEEN :expedicaoinicial AND :expedicaofinal OR dt_processamento BETWEEN :datainicial AND :datafinal;");
 
         $statement->execute(['expedicaoinicial' => $productionReportModel->getInitialShippingdate(), 'expedicaofinal' => $productionReportModel->getFinalShippingdate(), 'datainicial' => $productionReportModel->getInitialProcessinDate(), 'datafinal' => $productionReportModel->getFinalProcessinDate()]);
 

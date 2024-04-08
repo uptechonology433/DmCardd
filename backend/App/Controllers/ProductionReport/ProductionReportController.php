@@ -52,32 +52,32 @@ final class ProductionReportController
             ->setFinalShippingdate(trim($data['expedicaoFinal']));
 
 
-        if (!empty(trim($data['tipo'])) &&  $data['tipo']  === 'ChipElo') {
+        if (!empty(trim($data['tipo'])) &&  $data['tipo']  === 'DmCard') {
 
             if (!empty(trim($data['arquivo']))) {
 
-                $productionReport = $productionReportDAO->getProductionReportFilterFileTarjaDAO($productionReportModel);
+                $productionReport = $productionReportDAO->getProductionReportFilterFileDmCardDAO($productionReportModel);
 
             } else if (
                 !empty(trim($data['dataInicial'])) && !empty(trim($data['dataFinal']))
                 && empty(trim($data['expedicaoInicial'])) && empty(trim($data['expedicaoFinal']))
             ) {
 
-                $productionReport = $productionReportDAO->getProductionReportFilterDateTarjaDAO($productionReportModel);
+                $productionReport = $productionReportDAO->getProductionReportFilterDateDmCardDAO($productionReportModel);
 
             } else if (
                 !empty(trim($data['expedicaoInicial'])) && !empty(trim($data['expedicaoFinal']))
                 && empty(trim($data['dataInicial'])) && empty(trim($data['dataFinal']))
             ) {
 
-                $productionReport = $productionReportDAO->getProductionReportFilterShippingTarjaDAO($productionReportModel);
+                $productionReport = $productionReportDAO->getProductionReportFilterShippingDmCardDAO($productionReportModel);
 
             } else if (
                 !empty(trim($data['expedicaoInicial'])) && !empty(trim($data['expedicaoFinal']))
                 && !empty(trim($data['dataInicial'])) && !empty(trim($data['dataFinal']))
             ) {
 
-                $productionReport = $productionReportDAO->getProductionReportFilterDatesInGeneralTarjaDAO($productionReportModel);
+                $productionReport = $productionReportDAO->getProductionReportFilterDatesInGeneralDmCardDAO($productionReportModel);
 
             } else {
 
@@ -85,32 +85,32 @@ final class ProductionReportController
 
             }
 
-        } else if (!empty(trim($data['tipo'])) &&  $data['tipo']  === 'ChipPl') {
+        } else if (!empty(trim($data['tipo'])) &&  $data['tipo']  === 'RedeUze') {
             
             if (!empty(trim($data['arquivo']))) {
 
-                $productionReport = $productionReportDAO->getProductionReportFilterFileChipDAO($productionReportModel);
+                $productionReport = $productionReportDAO->getProductionReportFilterFileRedeUzeDAO($productionReportModel);
 
             } else if (
                 !empty(trim($data['dataInicial'])) && !empty(trim($data['dataFinal']))
                 && empty(trim($data['expedicaoInicial'])) && empty(trim($data['expedicaoFinal']))
             ) {
 
-                $productionReport = $productionReportDAO->getProductionReportFilterDateChipDAO($productionReportModel);
+                $productionReport = $productionReportDAO->getProductionReportFilterDateRedeUzeDAO($productionReportModel);
 
             } else if (
                 !empty(trim($data['expedicaoInicial'])) && !empty(trim($data['expedicaoFinal']))
                 && empty(trim($data['dataInicial'])) && empty(trim($data['dataFinal']))
             ) {
 
-                $productionReport = $productionReportDAO->getProductionReportFilterShippingChipDAO($productionReportModel);
+                $productionReport = $productionReportDAO->getProductionReportFilterShippingRedeUzeDAO($productionReportModel);
 
             } else if (
                 !empty(trim($data['expedicaoInicial'])) && !empty(trim($data['expedicaoFinal']))
                 && !empty(trim($data['dataInicial'])) && !empty(trim($data['dataFinal']))
             ) {
 
-                $productionReport = $productionReportDAO->getProductionReportFilterDatesInGeneralChipDAO($productionReportModel);
+                $productionReport = $productionReportDAO->getProductionReportFilterDatesInGeneralRedeUzeDAO($productionReportModel);
 
             } else {
 

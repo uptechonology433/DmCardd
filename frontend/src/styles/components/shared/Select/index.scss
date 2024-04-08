@@ -1,8 +1,9 @@
 .container-select {
 
     p{
-        color: #2B27E7;
-        font-weight: $font-semibold;
+        color: $color-black;
+        font-weight: $font-bold;
+
     }
     select {
         height: 54px;

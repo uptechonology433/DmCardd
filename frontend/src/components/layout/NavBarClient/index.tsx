@@ -37,7 +37,7 @@ const NavBarClient: React.FC = () => {
                             </div>
                         )}
                     </li>
-                    <li className='li-principal'><Link to={`${process.env.PUBLIC_URL}/cartoes-emitidos`}>Cartões emitido</Link></li>
+                    <li className='li-principal'><Link to={`${process.env.PUBLIC_URL}/cartoes-emitidos`}>Cartões emitidos</Link></li>
                     {authenticatedAdmin && (
                         <li className='li-principal'><Link to={`${process.env.PUBLIC_URL}/usuarios`}>Admin users</Link></li>
                     )}

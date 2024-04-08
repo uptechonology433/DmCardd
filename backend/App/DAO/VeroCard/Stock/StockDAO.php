@@ -24,7 +24,7 @@ class StockDAO extends Connection
         , desc_material 
         , to_char(dt_entrada, 'DD/MM/YYYY') AS dt_entrada
         , qtd_entrada
-        , media FROM view_megavaleelo_estoque WHERE ativo=:ativo AND desc_produto ILIKE '%" . $desc_produto . "%' AND  cod_produto = :cod_produto;");
+        , media FROM view_dmcard_estoque WHERE ativo=:ativo AND desc_produto ILIKE '%" . $desc_produto . "%' AND  cod_produto = :cod_produto;");
 
         $statement->execute(['ativo' => $stockModel->getActive(), 'cod_produto' => $stockModel->getCodProduto()]);
 
@@ -43,7 +43,7 @@ class StockDAO extends Connection
             ->prepare("SELECT 
     count( CASE  WHEN (desc_material = 'PLÁSTICO') THEN 1 END )AS total_plásticos 
     , count ( CASE WHEN (desc_material = 'ENVELOPE') THEN 1 END )AS total_envelopes , 
-    count( CASE WHEN (desc_material = 'FOLHETERIA') THEN 1 END )AS total_folheterias FROM view_megavaleelo_estoque WHERE ativo=:ativo AND desc_produto ILIKE '%" . $desc_produto . "%' AND  cod_produto = :cod_produto;");
+    count( CASE WHEN (desc_material = 'FOLHETERIA') THEN 1 END )AS total_folheterias FROM view_dmcard_estoque WHERE ativo=:ativo AND desc_produto ILIKE '%" . $desc_produto . "%' AND  cod_produto = :cod_produto;");
 
         $statementDescMaterial->execute(['ativo' => $stockModel->getActive(), 'cod_produto' => $stockModel->getCodProduto()]);
 
@@ -63,7 +63,7 @@ class StockDAO extends Connection
         , desc_material 
         , to_char(dt_entrada, 'DD/MM/YYYY') AS dt_entrada
         , qtd_entrada
-        , media FROM view_megavaleelo_estoque WHERE ativo=:ativo AND  cod_produto = :cod_produto LIMIT 10;");
+        , media FROM view_dmcard_estoque WHERE ativo=:ativo AND  cod_produto = :cod_produto LIMIT 10;");
 
         $statement->execute(['ativo' => $stockModel->getActive(), 'cod_produto' => $stockModel->getCodProduto()]);
 
@@ -79,7 +79,7 @@ class StockDAO extends Connection
             ->prepare("SELECT 
     count( CASE  WHEN (desc_material = 'PLÁSTICO') THEN 1 END )AS total_plásticos 
     , count ( CASE  WHEN (desc_material = 'ENVELOPE') THEN 1 END )AS total_envelopes , 
-    count( CASE  WHEN (desc_material = 'FOLHETERIA') THEN 1 END )AS total_folheterias FROM view_megavaleelo_estoque WHERE ativo=:ativo AND  cod_produto = :cod_produto ;");
+    count( CASE  WHEN (desc_material = 'FOLHETERIA') THEN 1 END )AS total_folheterias FROM view_dmcard_estoque WHERE ativo=:ativo AND  cod_produto = :cod_produto ;");
 
         $statementDescMaterial->execute(['ativo' => $stockModel->getActive(), 'cod_produto' => $stockModel->getCodProduto()]);
 
@@ -100,7 +100,7 @@ class StockDAO extends Connection
         , desc_material 
         , to_char(dt_entrada, 'DD/MM/YYYY') AS dt_entrada
         , qtd_entrada
-        , media FROM view_megavaleelo_estoque WHERE ativo=:ativo AND desc_produto ILIKE '%" . $desc_produto . "%'");
+        , media FROM view_dmcard_estoque WHERE ativo=:ativo AND desc_produto ILIKE '%" . $desc_produto . "%'");
 
         $statement->execute(['ativo' => $stockModel->getActive()]);
 
@@ -116,7 +116,7 @@ class StockDAO extends Connection
             ->prepare("SELECT 
     count( CASE  WHEN (desc_material = 'PLÁSTICO') THEN 1 END )AS total_plásticos 
     , count ( CASE  WHEN (desc_material = 'ENVELOPE') THEN 1 END )AS total_envelopes , 
-    count( CASE  WHEN (desc_material = 'FOLHETERIA') THEN 1 END )AS total_folheterias FROM view_megavaleelo_estoque WHERE ativo=:ativo AND desc_produto ILIKE '%" . $desc_produto . "%'");
+    count( CASE  WHEN (desc_material = 'FOLHETERIA') THEN 1 END )AS total_folheterias FROM view_dmcard_estoque WHERE ativo=:ativo AND desc_produto ILIKE '%" . $desc_produto . "%'");
 
         $statementDescMaterial->execute(['ativo' => $stockModel->getActive()]);
 
@@ -136,7 +136,7 @@ class StockDAO extends Connection
         , desc_material 
         , to_char(dt_entrada, 'DD/MM/YYYY') AS dt_entrada
         , qtd_entrada
-        , media FROM view_megavaleelo_estoque WHERE ativo=:ativo ");
+        , media FROM view_dmcard_estoque WHERE ativo=:ativo ");
 
         $statement->execute(['ativo' => $stockModel->getActive()]);
 
@@ -153,7 +153,7 @@ class StockDAO extends Connection
             ->prepare("SELECT 
         count( CASE  WHEN (desc_material = 'PLÁSTICO') THEN 1 END )AS total_plásticos 
         , count ( CASE  WHEN (desc_material = 'ENVELOPE') THEN 1 END )AS total_envelopes , 
-        count( CASE  WHEN (desc_material = 'FOLHETERIA') THEN 1 END )AS total_folheterias FROM view_megavaleelo_estoque WHERE ativo=:ativo ");
+        count( CASE  WHEN (desc_material = 'FOLHETERIA') THEN 1 END )AS total_folheterias FROM view_dmcard_estoque WHERE ativo=:ativo ");
 
         $statementDescMaterial->execute(['ativo' => $stockModel->getActive()]);
 

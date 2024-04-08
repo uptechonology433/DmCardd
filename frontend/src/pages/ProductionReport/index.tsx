@@ -10,10 +10,6 @@ import Swal from "sweetalert2";
 
 import { useNavigate } from "react-router-dom";
 
-
-
-
-
 const PageProductionReport: React.FC = () => {
 
     const [ProductionReportData, setProductionReportData] = useState([]);
@@ -34,7 +30,7 @@ const PageProductionReport: React.FC = () => {
 
         FinalShippingDate: "",
 
-        cardType: ""
+        cardType: "",
 
     });
 
@@ -78,7 +74,6 @@ const PageProductionReport: React.FC = () => {
     ];
 
 
-
     const ProductionReportRequests = async () => {
 
         if (formValues.cardType === 'RedeUze' || formValues.cardType === 'DmCard') {
@@ -96,6 +91,7 @@ const PageProductionReport: React.FC = () => {
                 }).then((data) => {
 
                     setProductionReportData(data.data)
+                    console.log("Response from API:", data);
 
                 }).catch(() => {
 
@@ -110,6 +106,12 @@ const PageProductionReport: React.FC = () => {
                     text: 'A data inicial não pode ser maior que a final.',
                 });
             }
+        }else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Selecione um tipo de cartão...',
+                text: 'Selecione DmCard ou Rede Uze antes de fazer a filtragem dos dados.',
+            });
         }    
        
 
@@ -124,16 +126,12 @@ const PageProductionReport: React.FC = () => {
         sheet: "Relatório de produção"
     })
 
-
     const csvData = [
         ["firstname", "lastname", "email"],
         ["Ahmed", "Tomi", "ah@smthing.co.com"],
         ["Raed", "Labes", "rl@smthing.co.com"],
         ["Yezzi", "Min l3b", "ymin@cocococo.com"]
     ];
-
-
-
 
     return (
         <>
@@ -145,7 +143,7 @@ const PageProductionReport: React.FC = () => {
                 <div className="container-inputs">
                     <div className="inputs">
                         <Input name="fileName" placeholder='Arquivo...' info="Arquivo:" onChange={handleChange} />
-                        <Select info={"Selecione um Tipo:"} name="activeType" onChange>
+                        <Select info={"Selecione um Tipo:"} name="activeType" onChange={handleChange}>
                             <option selected>Selecione um Tipo...</option>
                             <option value="DmCard">Dm Card</option>
                             <option value="RedeUze">Rede Uze</option>

@@ -8,6 +8,7 @@ use App\Controllers\Production\ProductionController;
 use App\Controllers\AwaitingRelease\AwaitingReleaseController;
 use App\Controllers\AwaitingShipment\AwaitingShipmentController;
 use App\Controllers\Dispatched\DispatchedController;
+use App\Controllers\Inactive\InactiveProductsController;
 use App\Controllers\ProductionReport\ProductionReportController;
 use App\Controllers\Stock\StockController;
 use App\Middlewares\adminConference;
@@ -62,6 +63,13 @@ $app -> get('/dispatched' , DispatchedController::class . ':Dispatched')
 -> add(new jwtDateTime())
 -> add(jwtAuth());
 // ==================================================
+
+// ================== Produtos Inativos =============
+$app->post('/inactive-products', InactiveProductsController::class . ':getInactiveProducts')
+    ->add(new jwtDateTime())
+    ->add(jwtAuth());
+// ==================================================
+
 
 // ================== Production Report =============
 

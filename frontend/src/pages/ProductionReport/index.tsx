@@ -138,30 +138,27 @@ const PageProductionReport: React.FC = () => {
     return (
         <>
 
-            <DefaultHeader sessionTheme="Relatorio de produção" />
+            <DefaultHeader sessionTheme="Relatório de produção" />
 
             <div className="container-production-report">
 
                 <div className="container-inputs">
-
                     <div className="inputs">
-
                         <Input name="fileName" placeholder='Arquivo...' info="Arquivo:" onChange={handleChange} />
-
+                        <Select info={"Selecione um Tipo:"} name="activeType" onChange>
+                            <option selected>Selecione um Tipo...</option>
+                            <option value="Sim">Dm Card</option>
+                            <option value="Não">Rede Use</option>
+                        </Select>
                     </div>
 
                     <div className="inputs">
-
                         <Input type="date" name="InitialProcessingDate" info="Data de processamento inicial:" onChange={handleChange} />
-
                         <Input type="date" name="FinalProcessingDate" info="Data de processamento final:" onChange={handleChange} />
-
                     </div>
 
                     <div className="inputs">
-
                         <Input type="date" name="InitialShippingDate" info="Data de expedição inicial:" onChange={handleChange} />
-
                         <Input type="date" name="FinalShippingDate" info="Data de expedição final:" onChange={handleChange} />
                     </div>
 

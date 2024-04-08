@@ -40,8 +40,6 @@ const PageHome: React.FC = () => {
         {
             name: 'Desc do Produto',
             selector: (row: any) => row.desc_produto,
-
-
         },
         {
             name: 'Data Pros',
@@ -59,8 +57,6 @@ const PageHome: React.FC = () => {
             sortable: true
         },
     ];
-
-
 
 
     const columnsAwaitingRelease: Array<Object> = [
@@ -207,21 +203,27 @@ const PageHome: React.FC = () => {
 
     }, [formValues]);
 
-
-
-
-
-
-
-
-
-
     return (
         <div className="container-page-home">
 
-            <DefaultHeader />
+            <DefaultHeader sessionTheme="Dashboards" />
+
+            <div className="container-inputs">
+                    <div className="inputs">
+                        <Select info={"Selecione um Tipo:"} name="activeType" onChange>
+                            <option selected>Selecione um Tipo...</option>
+                            <option value="Sim">Em Produção</option>
+                            <option value="Não">Aguardando Liberação</option>
+                            <option value="Sim">Em expedição</option>
+                            <option value="Não">Plásticos em Ruptura</option>
+                        </Select>
+                        
+                    </div>
 
         </div>
+        
+      </div>
+
     )
 }
 

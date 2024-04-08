@@ -139,7 +139,7 @@ const PageUsers: React.FC = () => {
 
             <div className="container-input-search">
 
-                <Input validate={() => ValidateEmailInput()} clickIcon={() => searchUser()} info="Pesquisar por email:" icon="search" onChange={(value: any) => setSearchUserText(value.target.value)} />
+                <Input validate={() => ValidateEmailInput()} clickIcon={() => searchUser()} info="Pesquisar E-mail:" placeholder="Pesquisar E-mail..." icon="search" onChange={(value: any) => setSearchUserText(value.target.value)} />
                 
                 {!emailVerification ? <p>O e-mail inserido não é valido.</p> : null}
                 

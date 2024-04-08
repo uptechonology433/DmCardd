@@ -10,8 +10,8 @@ const PageCardsIssued: React.FC = () => {
       <DefaultHeader sessionTheme="Cartões emitidos" />
 
       <div className="container-production-report">
-        <Select info={"Selecione um tipo:"} name="activeType" onChange>
-          <option selected>Selecione um ativo...</option>
+        <Select info={"Selecione um Tipo:"} name="activeType" onChange>
+          <option selected>Selecione um Tipo...</option>
           <option value="Sim">Dm Card</option>
           <option value="Não">Rede Use</option>
         </Select>
@@ -20,25 +20,27 @@ const PageCardsIssued: React.FC = () => {
           <div className="inputs">
             <Input
               name="fileName"
-              placeholder="Arquivo..."
-              info="Arquivo:"
-             
+              placeholder="Titular..."
+              info="Titular:"
+              
+              />
+            <Input
+              name="codigoConta"
+              placeholder="Código Conta..."
+              info="Código Conta"
             />
           </div>
 
           <div className="inputs">
             <Input
-              type="date"
-              name="InitialProcessingDate"
-              info="Data de processamento inicial:"
-             
+              name="descriçãoStatus"
+              placeholder="Status Descrição..."
+              info="Status Descrição:"
             />
-
             <Input
-              type="date"
-              name="FinalProcessingDate"
-              info="Data de processamento final:"
-             
+              name="tipoEnvio"
+              placeholder="Tipo Envio..."
+              info="Tipo Envio:"
             />
           </div>
 
@@ -46,17 +48,39 @@ const PageCardsIssued: React.FC = () => {
             <Input
               type="date"
               name="InitialShippingDate"
-              info="Data de expedição inicial:"
-              
+              info="Data de Expedição Inicial:"
             />
-
             <Input
               type="date"
               name="FinalShippingDate"
-              info="Data de expedição final:"
-             
+              info="Data de Expedição Final:"
+            />
+            </div>
+
+          <div className="inputs">
+            <Input
+              type="date"
+              name="InitialProcessingDate"
+              info="Data de Processamento Inicial:"
+            />
+            <Input
+              type="date"
+              name="FinalProcessingDate"
+              placeholder="Data processamento final.."
+              info="Data de Processmento Final:"
             />
           </div>
+
+          <div className="inputs">
+            <Input
+              name="Código Cartão:"
+              placeholder="Código Cartão..."
+              info="Código Cartão:"
+            />
+          </div>
+
+          <DownloadFacilitators textButton="Pesquisar" />
+
         </div>
       </div>
     </>

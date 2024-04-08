@@ -81,7 +81,7 @@ const PageProductionReport: React.FC = () => {
 
     const ProductionReportRequests = async () => {
 
-        //if (formValues.cardType === 'ChipPl' || formValues.cardType === 'ChipElo') {
+        if (formValues.cardType === 'RedeUze' || formValues.cardType === 'DmCard') {
 
             if (formValues.InitialProcessingDate < formValues.FinalProcessingDate
                 || formValues.InitialShippingDate < formValues.FinalShippingDate
@@ -110,7 +110,7 @@ const PageProductionReport: React.FC = () => {
                     text: 'A data inicial não pode ser maior que a final.',
                 });
             }
-
+        }    
        
 
     }
@@ -147,8 +147,8 @@ const PageProductionReport: React.FC = () => {
                         <Input name="fileName" placeholder='Arquivo...' info="Arquivo:" onChange={handleChange} />
                         <Select info={"Selecione um Tipo:"} name="activeType" onChange>
                             <option selected>Selecione um Tipo...</option>
-                            <option value="Sim">Dm Card</option>
-                            <option value="Não">Rede Use</option>
+                            <option value="DmCard">Dm Card</option>
+                            <option value="RedeUze">Rede Uze</option>
                         </Select>
                     </div>
 

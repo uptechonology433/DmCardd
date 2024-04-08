@@ -66,6 +66,10 @@ const PageStock: React.FC = () => {
 
     const columnsStock: Array<Object> = [
         {
+            name: 'Ativo',
+            selector: (row: any) => row.ativo
+        },
+        {
             name: 'Descrição do produto',
             selector: (row: any) => row.desc_produto,
             sortable: true
@@ -74,10 +78,7 @@ const PageStock: React.FC = () => {
             name: 'Saldo atual',
             selector: (row: any) => row.saldo_atual
         },
-        {
-            name: 'Ativo',
-            selector: (row: any) => row.ativo
-        },
+     
         {
             name: 'Código do produto',
             selector: (row: any) => row.cod_produto
@@ -118,10 +119,10 @@ const PageStock: React.FC = () => {
             <DefaultHeader sessionTheme="Estoque" />
             <div className="container-stock">
 
-                <Select info={"Selecione um tipo:"} name="activeType" onChange={handleChange}>
-                    <option selected>Selecione um ativo...</option>
-                    <option value="Sim">Dm Card</option>
-                    <option value="Não">Rede Use</option>
+                <Select info={"Selecione um um ativo:"} name="activeType" onChange={handleChange}>
+                    <option selected>Ativo...</option>
+                    <option value="Sim">Sim</option>
+                    <option value="Não">Não</option>
                 </Select>
 
                 <div className="inputs-info-products">

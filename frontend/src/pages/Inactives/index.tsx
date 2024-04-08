@@ -1,157 +1,71 @@
-import React, { useEffect, useState, useRef } from "react";
-import NavBarClient from "../../components/layout/NavBarClient";
+import React, { useEffect, useState } from "react";
 import DefaultHeader from "../../components/layout/DefaultHeader";
 import Input from "../../components/shared/Input";
 import Table from "../../components/shared/Table";
 import DownloadFacilitators from "../../components/layout/DownloadFacilitators";
-import Icon from "../../components/shared/Icon";
 import api from "../../connectionAPI";
-import ModalUsers from "../../components/layout/ModalUsers";
-import Swal from "sweetalert2";
-import { useDownloadExcel } from "react-export-table-to-excel";
-import { isValidEmail } from "../../utils/Validation";
-
 
 const PageInactive: React.FC = () => {
+    const [inactiveData, setInactiveData] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
-    const [users, setUsers] = useState([]);
-
-    const [searchUserText, setSearchUserText] = useState('');
-
-    const [editDataUser, setEditdatauser] = useState([]);
-
-    const [emailVerification, setEmailVerification] = useState(true);
-
-    const [modal, setModal] = useState(false);
+    const columnsInactives: Array<Object> = [
+        {
+            name: 'Codigo do produto',
+            selector: (row: any) => row.cod_produto,
+            sortable: true
+        },
+        {
+            name: 'Descrição do produto',
+            selector: (row: any) => row.desc_produto,
+            sortable: true
+        }
+    ];
 
     useEffect(() => {
-
-        const UsersPageRequests = async () => {
-
-            await api.post('/searchUser', {
-                email: ""
-            })
-                .then((data) => {
-                    setUsers(data.data);
-                }).catch((error) => {
-                    console.log(error)
-                });
-        }
-
-        UsersPageRequests()
-
+        fetchInactiveProducts();
     }, []);
 
-    const handleModal = () => setModal(!modal)
-
-    const DeleteUser = async (id: any) => {
-
-        Swal.fire({
-            title: 'Deseja deletar esse usuário?',
-            text: "Essa ação é inreversível!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sim, deletar!'
-
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                Swal.fire(
-                    'Deletado!',
-                    'O usuario foi deletado com sucesso.',
-                    'success'
-                )
-                setTimeout(() => {
-                    api.delete(`/users/${id}`)
-                        .then(() => {
-                            window.location.reload();
-                        }).catch(() => {
-
-                        });
-                }, 1000);
-
-            }
-        })
-
-
-    }
-
-    const EditUser = (user: any) => {
-        setEditdatauser(user)
-        handleModal()
-
-    }
-
-    const AddUser = () => {
-        setEditdatauser([])
-        handleModal()
-    }
-
-    const ValidateEmailInput = () => {
-
-        if (!isValidEmail(searchUserText)) {
-
-            setEmailVerification(false);
-
-            return false
+    const fetchInactiveProducts = async () => {
+        try {
+            const response = await api.post("/inactive-products", { searchTerm });
+            setInactiveData(response.data);
+        } catch (error) {
+            console.log(error);
+            // Trate o erro adequadamente, por exemplo, exibindo uma mensagem de erro para o usuário
         }
+    };
 
-        setEmailVerification(true);
+    const handleSearch = () => {
+        fetchInactiveProducts();
+    };
 
-        return true;
-    }
-
-    const searchUser = async () => {
-
-        if (searchUserText && emailVerification) {
-            await api.post('/searchUser', {
-                email: searchUserText
-            })
-                .then((data) => {
-                    setUsers([])
-                    setUsers(data.data);
-                }).catch((error) => {
-                    console.log(error)
-                });
-        } else {
-            return
-        }
-
-    }
-
-    const tableRef: any = useRef();
-
-    const { onDownload } = useDownloadExcel({
-        currentTableRef: tableRef.current,
-        filename: "Usuarios VeroCard",
-        sheet: "Usuarios VeroCard"
-    })
-
-
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+    };
 
     return (
-
         <>
-
             <DefaultHeader sessionTheme="Inativos" />
             <div className="container-inactives">
                 <div className="inputs-info-products">
-                    <Input name="product" info="Descrição do produto:" placeholder="Produto..." />
-
+                    <Input
+                        name="searchTerm"
+                        info="Código ou Descrição do Produto:"
+                        placeholder="Produto..."
+                        value={searchTerm}
+                        onChange={handleChange}
+                    />
                 </div>
-                <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} />
-
+                <DownloadFacilitators excelClick={() => {}} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={handleSearch} />
             </div>
-
-
-           
-
+            <Table
+                data={inactiveData}
+                column={columnsInactives}
+                titleTable="Inativos"
+            />
         </>
+    );
+};
 
-    )
-    
-}
-
-export default PageInactive
+export default PageInactive;

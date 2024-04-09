@@ -10,6 +10,7 @@ import ModalUsers from "../../components/layout/ModalUsers";
 import Swal from "sweetalert2";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import { isValidEmail } from "../../utils/Validation";
+import Select from "../../components/shared/Select";
 
 
 const PageRuptures: React.FC = () => {
@@ -138,8 +139,18 @@ const PageRuptures: React.FC = () => {
             <DefaultHeader sessionTheme="Rupturas" />
             <div className="container-ruptures">
                 <div className="inputs-info-products">
-                    <Input name="product" info="Descrição do produto:" placeholder="Produto..." />
-
+                <Select info={"Selecione um Tipo:"} name="cardType" onChange={""}>
+                            <option selected>Selecione um Tipo...</option>
+                            <option value="DmCard">Dm Card</option>
+                            <option value="RedeUze">Rede Uze</option>
+                        </Select>
+                    <Input
+                        name="searchTerm"
+                        info="Código ou Descrição do Produto:"
+                        placeholder="Produto..."
+                        value={""}
+                      
+                    />
                 </div>
                 <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} />
 

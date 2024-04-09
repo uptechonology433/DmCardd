@@ -6,6 +6,7 @@ import Select from "../../components/shared/Select";
 
 
 
+
 const PageHome: React.FC = () => {
     const [inProductionData, setInProductionData] = useState([]);
     const [awaitingReleaseData, setAwaitingRelease] = useState([]);
@@ -210,18 +211,15 @@ const PageHome: React.FC = () => {
 
             <div className="container-inputs">
                     <div className="inputs">
-                        <Select info={"Selecione um Tipo:"} name="activeType" onChange>
+                        <Select info={"Selecione um Tipo:"} name="cardType" onChange={handleChange}>
                             <option selected>Selecione um Tipo...</option>
-                            <option value="Sim">Em Produção</option>
-                            <option value="Não">Aguardando Liberação</option>
-                            <option value="Sim">Em expedição</option>
-                            <option value="Não">Plásticos em Ruptura</option>
+                            <option value="DmCard">Dm Card</option>
+                            <option value="RedeUze">Rede Uze</option>
                         </Select>
-                        
                     </div>
 
         </div>
-        
+           
       </div>
 
     )

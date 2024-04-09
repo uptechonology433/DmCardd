@@ -74,7 +74,7 @@ const PageProductionReport: React.FC = () => {
     ];
 
     const ProductionReportRequests = async () => {
-        if (formValues.cardType === 'RedeUze' || formValues.cardType === 'DmCard') {
+        if (formValues.cardType === 'DmCard' || formValues.cardType === 'RedeUze') {
             if (formValues.InitialProcessingDate < formValues.FinalProcessingDate
                 || formValues.InitialShippingDate < formValues.FinalShippingDate
                 || formValues.fileName) {

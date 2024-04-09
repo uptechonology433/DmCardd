@@ -51,7 +51,7 @@ final class ProductionReportController
             ->setInitialShippingdate(trim($data['expedicaoInicial']))
             ->setFinalShippingdate(trim($data['expedicaoFinal']));
 
-
+            $productionReport = null;
         if (!empty(trim($data['tipo'])) &&  $data['tipo']  === 'DmCard') {
 
             if (!empty(trim($data['arquivo']))) {

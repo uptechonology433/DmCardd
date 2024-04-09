@@ -19,10 +19,6 @@ const Select: React.FC<ISelectProps> = (props) => {
 
         </div>
 
-
-
-
-
     )
 }
 

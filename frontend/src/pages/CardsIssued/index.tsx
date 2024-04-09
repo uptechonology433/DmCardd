@@ -10,10 +10,10 @@ const PageCardsIssued: React.FC = () => {
       <DefaultHeader sessionTheme="Cartões emitidos" />
 
       <div className="container-production-report">
-        <Select info={"Selecione um Tipo:"} name="activeType" onChange>
+        <Select info={"Selecione um Tipo:"} name="cardType" onChange>
           <option selected>Selecione um Tipo...</option>
-          <option value="Sim">Dm Card</option>
-          <option value="Não">Rede Use</option>
+          <option value="DmCard">Dm Card</option>
+          <option value="RedeUze">Rede Uze</option>
         </Select>
 
         <div className="container-inputs">
@@ -86,5 +86,4 @@ const PageCardsIssued: React.FC = () => {
     </>
   );
 };
-
 export default PageCardsIssued;

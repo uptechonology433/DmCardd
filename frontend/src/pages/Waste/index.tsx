@@ -85,11 +85,6 @@ const PageWaste: React.FC = () => {
             <DefaultHeader sessionTheme="Rejeitos" />
             <div className="container-weste">
                 <div className="inputs-info-products">
-                <Select info={"Selecione um Tipo:"} name="cardType" onChange={""}>
-                            <option selected>Selecione um Tipo...</option>
-                            <option value="DmCard">Dm Card</option>
-                            <option value="RedeUze">Rede Uze</option>
-                        </Select>
                     <Input
                         name="searchTerm"
                         info="Código ou Descrição do Produto:"

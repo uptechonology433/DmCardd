@@ -10,8 +10,10 @@ use App\Controllers\AwaitingShipment\AwaitingShipmentController;
 use App\Controllers\Dispatched\DispatchedController;
 use App\Controllers\Inactive\InactiveProductsController;
 use App\Controllers\ProductionReport\ProductionReportController;
+
 use App\Controllers\Stock\StockController;
 use App\Controllers\Waste\WasteProductsController;
+use App\Controllers\Ruptures\RupturesProductsController;
 use App\Middlewares\adminConference;
 use App\Middlewares\jwtDateTime;
 
@@ -69,13 +71,18 @@ $app -> get('/dispatched' , DispatchedController::class . ':Dispatched')
 $app->post('/inactive-products', InactiveProductsController::class . ':getInactiveProducts')
     ->add(new jwtDateTime())
     ->add(jwtAuth());
-// ==================================================
+// =================================================
 
 // ================== Produtos Rejeitados =============
 $app->post('/waste-products', WasteProductsController::class . ':getWasteProducts')
     ->add(new jwtDateTime())
     ->add(jwtAuth());
 // ==================================================
+
+$app->post('/ruptures-products', RupturesProductsController::class . ':handleProductionReport')
+    ->add(new jwtDateTime())
+    ->add(jwtAuth());
+
 
 
 // ================== Production Report =============

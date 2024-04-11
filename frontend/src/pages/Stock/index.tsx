@@ -120,19 +120,13 @@ const PageStock: React.FC = () => {
 
             <div className="container-stock">
 
-                <div className="inputs-info-products">
-                    
-                    <Select info={"Selecione um Tipo:"} name="cardType" onChange={handleChange}>
-                        <option selected>Selecione um tipo...</option>
-                        <option value="DmCard">Dm Card</option>
-                        <option value="RedeUze">Rede Uze</option>
-                    </Select>
+                 
                     <Select info={"Selecione um um ativo:"} name="activeType" onChange={handleChange}>
                     <option selected>Selecione um ativo...</option>
                     <option value="Sim">Sim</option>
                     <option value="Não">Não</option>
                 </Select>
-                </div>
+            
              
                
                 

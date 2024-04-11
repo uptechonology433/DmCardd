@@ -15,120 +15,51 @@ import Select from "../../components/shared/Select";
 
 const PageRuptures: React.FC = () => {
 
-    const [users, setUsers] = useState([]);
+    const [rupturesData, setRupturesData] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
-    const [searchUserText, setSearchUserText] = useState('');
-
-    const [editDataUser, setEditdatauser] = useState([]);
-
-    const [emailVerification, setEmailVerification] = useState(true);
-
-    const [modal, setModal] = useState(false);
-
-    useEffect(() => {
-
-        const UsersPageRequests = async () => {
-
-            await api.post('/searchUser', {
-                email: ""
-            })
-                .then((data) => {
-                    setUsers(data.data);
-                }).catch((error) => {
-                    console.log(error)
-                });
+    const columnsRuptures: Array<Object> = [
+        {
+            name: 'Codigo do produto',
+            selector: (row: any) => row.cod_produto,
+            sortable: true
+        },
+        {
+            name: 'Descrição do produto',
+            selector: (row: any) => row.desc_produto,
+            sortable: true
         }
+    ];
 
-        UsersPageRequests()
+    // useEffect(() => {
+    //     fetchRupturesProducts();
+    // }, []);
 
-    }, []);
+    // const fetchRupturesProducts = async () => {
+    //     try {
+    //         const response = await api.post("/ruptures-products", { searchTerm });
+    //         setRupturesData(response.data);
+    //     } catch (error) {
+    //         console.log(error);
+          
+    //     }
+    // };
 
-    const handleModal = () => setModal(!modal)
+    // const handleSearch = () => {
+    //     fetchRupturesProducts();
+    // };
 
-    const DeleteUser = async (id: any) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+    };
 
-        Swal.fire({
-            title: 'Deseja deletar esse usuário?',
-            text: "Essa ação é inreversível!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sim, deletar!'
+    // const tableRef: any = useRef();
 
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                Swal.fire(
-                    'Deletado!',
-                    'O usuario foi deletado com sucesso.',
-                    'success'
-                )
-                setTimeout(() => {
-                    api.delete(`/users/${id}`)
-                        .then(() => {
-                            window.location.reload();
-                        }).catch(() => {
-
-                        });
-                }, 1000);
-
-            }
-        })
-
-
-    }
-
-    const EditUser = (user: any) => {
-        setEditdatauser(user)
-        handleModal()
-
-    }
-
-    const AddUser = () => {
-        setEditdatauser([])
-        handleModal()
-    }
-
-    const ValidateEmailInput = () => {
-
-        if (!isValidEmail(searchUserText)) {
-
-            setEmailVerification(false);
-
-            return false
-        }
-
-        setEmailVerification(true);
-
-        return true;
-    }
-
-    const searchUser = async () => {
-
-        if (searchUserText && emailVerification) {
-            await api.post('/searchUser', {
-                email: searchUserText
-            })
-                .then((data) => {
-                    setUsers([])
-                    setUsers(data.data);
-                }).catch((error) => {
-                    console.log(error)
-                });
-        } else {
-            return
-        }
-
-    }
-
-    const tableRef: any = useRef();
-
-    const { onDownload } = useDownloadExcel({
-        currentTableRef: tableRef.current,
-        filename: "Usuarios VeroCard",
-        sheet: "Usuarios VeroCard"
-    })
+    // const { onDownload } = useDownloadExcel({
+    //     currentTableRef: tableRef.current,
+    //     filename: "Usuarios VeroCard",
+    //     sheet: "Usuarios VeroCard"
+    // })
 
 
 
@@ -139,11 +70,6 @@ const PageRuptures: React.FC = () => {
             <DefaultHeader sessionTheme="Rupturas" />
             <div className="container-ruptures">
                 <div className="inputs-info-products">
-                <Select info={"Selecione um Tipo:"} name="cardType" onChange={""}>
-                            <option selected>Selecione um Tipo...</option>
-                            <option value="DmCard">Dm Card</option>
-                            <option value="RedeUze">Rede Uze</option>
-                        </Select>
                     <Input
                         name="searchTerm"
                         info="Código ou Descrição do Produto:"
@@ -152,9 +78,14 @@ const PageRuptures: React.FC = () => {
                       
                     />
                 </div>
-                <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} />
+                <DownloadFacilitators excelClick={() => {}} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={""} />
 
             </div>
+            <Table
+                data={rupturesData}
+                column={columnsRuptures}
+                titleTable="Rupturas"
+            />
 
 
            

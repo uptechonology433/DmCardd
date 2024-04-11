@@ -11,10 +11,23 @@ class AwaitingReleaseDAO extends Connection{
         parent::__construct();
     }
 
-    public function getAllAwaitingReleaseChip() : array {
+    public function getAllAwaitingReleaseDmCard() : array {
 
         $productsAwaitingRelease = $this -> pdo
-            ->query("SELECT  * FROM view_megavale_awaitingrelease_chip") 
+            ->query("SELECT  * FROM view_dmcard_awaitingrelease") 
+            ->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach ($productsAwaitingRelease as &$product) {
+                $product['dt_processamento'] = date('d/m/Y', strtotime($product['dt_processamento']));
+              
+            }
+        }    
+
+
+    public function getAllAwaitingReleaseRedeUze() : array {
+        
+        $productsAwaitingRelease = $this -> pdo
+            ->query("SELECT  * FROM view_dmcard_awaitingrelease_redeuze") 
             ->fetchAll(\PDO::FETCH_ASSOC);
 
             foreach ($productsAwaitingRelease as &$product) {
@@ -24,22 +37,6 @@ class AwaitingReleaseDAO extends Connection{
 
             return $productsAwaitingRelease;
 
-    }
-
-    public function getAllAwaitingReleaseElo() : array {
-
-        $productsAwaitingRelease = $this -> pdo
-            ->query("SELECT * from view_megavale_awaitingrelease_elo;") 
-            ->fetchAll(\PDO::FETCH_ASSOC);
-
-            foreach ($productsAwaitingRelease as &$product) {
-                $product['dt_processamento'] = date('d/m/Y', strtotime($product['dt_processamento']));
-              
-            }
-
-            return $productsAwaitingRelease;
-
-    }
-
-
+        }
+    
 }

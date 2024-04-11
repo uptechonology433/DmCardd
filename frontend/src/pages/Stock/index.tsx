@@ -78,7 +78,7 @@ const PageStock: React.FC = () => {
             name: 'Saldo atual',
             selector: (row: any) => row.saldo_atual
         },
-     
+
         {
             name: 'Código do produto',
             selector: (row: any) => row.cod_produto
@@ -102,7 +102,7 @@ const PageStock: React.FC = () => {
     ];
 
 
-   
+
 
     const refExcel: any = useRef();
 
@@ -117,21 +117,33 @@ const PageStock: React.FC = () => {
     return (
         <>
             <DefaultHeader sessionTheme="Estoque" />
+
             <div className="container-stock">
 
-                <Select info={"Selecione um um ativo:"} name="activeType" onChange={handleChange}>
-                    <option selected>Ativo...</option>
+                <div className="inputs-info-products">
+                    
+                    <Select info={"Selecione um Tipo:"} name="cardType" onChange={handleChange}>
+                        <option selected>Selecione um tipo...</option>
+                        <option value="DmCard">Dm Card</option>
+                        <option value="RedeUze">Rede Uze</option>
+                    </Select>
+                    <Select info={"Selecione um um ativo:"} name="activeType" onChange={handleChange}>
+                    <option selected>Selecione um ativo...</option>
                     <option value="Sim">Sim</option>
                     <option value="Não">Não</option>
                 </Select>
+                </div>
+             
+               
+                
 
                 <div className="inputs-info-products">
-                    <Input name="product" info="Descrição do produto:" placeholder="Produto..." onChange={handleChange} />
+                    <Input name="product" info="Descrição do produto:" placeholder="Descrição produto..." onChange={handleChange} />
                     <Input name="productCode" info="Código do produto:" placeholder="Código produto..." onChange={handleChange} />
                 </div>
 
                 {
-                     quantityofMaterialsData.length >= 1 &&
+                    quantityofMaterialsData.length >= 1 &&
 
                     <div className="container-quantity-of-materials">
                         <p>Total de materiais por pesquisa:</p>

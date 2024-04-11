@@ -4,6 +4,7 @@ import Input from "../../components/shared/Input";
 import Table from "../../components/shared/Table";
 import DownloadFacilitators from "../../components/layout/DownloadFacilitators";
 import api from "../../connectionAPI";
+import Select from "../../components/shared/Select";
 
 const PageInactive: React.FC = () => {
     const [inactiveData, setInactiveData] = useState([]);
@@ -32,7 +33,7 @@ const PageInactive: React.FC = () => {
             setInactiveData(response.data);
         } catch (error) {
             console.log(error);
-            // Trate o erro adequadamente, por exemplo, exibindo uma mensagem de erro para o usuário
+          
         }
     };
 
@@ -49,6 +50,11 @@ const PageInactive: React.FC = () => {
             <DefaultHeader sessionTheme="Inativos" />
             <div className="container-inactives">
                 <div className="inputs-info-products">
+                <Select info={"Selecione um Tipo:"} name="cardType" onChange={""}>
+                            <option selected>Selecione um Tipo...</option>
+                            <option value="DmCard">Dm Card</option>
+                            <option value="RedeUze">Rede Uze</option>
+                        </Select>
                     <Input
                         name="searchTerm"
                         info="Código ou Descrição do Produto:"
@@ -56,6 +62,7 @@ const PageInactive: React.FC = () => {
                         value={searchTerm}
                         onChange={handleChange}
                     />
+
                 </div>
                 <DownloadFacilitators excelClick={() => {}} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={handleSearch} />
             </div>

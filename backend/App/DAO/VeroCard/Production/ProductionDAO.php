@@ -16,7 +16,7 @@ class ProductionDAO extends Connection
     public function getAllProductsInProductionChip(): array
     {
         $products = $this->pdo
-            ->query("SELECT * from view_megavale_production_chip;")->fetchAll(\PDO::FETCH_ASSOC);
+            ->query("SELECT * from view_dmcard_producaoo;")->fetchAll(\PDO::FETCH_ASSOC);
 
         foreach ($products as &$product) {
             $product['dt_processamento'] = date('d/m/Y', strtotime($product['dt_processamento']));
@@ -28,7 +28,7 @@ class ProductionDAO extends Connection
     public function getAllProductsInProductionElo(): array
     {
         $products = $this->pdo
-            ->query("SELECT * FROM view_megavale_production_elo;")->fetchAll(\PDO::FETCH_ASSOC);
+            ->query("SELECT * FROM view_dmcard_producaoo;")->fetchAll(\PDO::FETCH_ASSOC);
 
         foreach ($products as &$product) {
             $product['dt_processamento'] = date('d/m/Y', strtotime($product['dt_processamento']));

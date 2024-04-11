@@ -10,8 +10,9 @@ const PageCardsIssued: React.FC = () => {
       <DefaultHeader sessionTheme="Cartões emitidos" />
 
       <div className="container-production-report">
-        
-        <Select info={"Selecione um Tipo:"} name="cardType" onChange>
+      <div className="container-inputs">
+      
+        <Select info={"Selecione um Tipo:"} name="cardType" onChange={() => { }}>
           <option selected>Selecione um Tipo...</option>
           <option value="DmCard">Dm Card</option>
           <option value="RedeUze">Rede Uze</option>
@@ -33,12 +34,12 @@ const PageCardsIssued: React.FC = () => {
           </div>
 
           <div className="inputs">
-            <Select info={"Descrição Status:"} name="cardType" onChange>
+            <Select info={"Descrição Status:"} name="Descrição" onChange={() => { }}>
               <option selected>Descrição Status...</option>
               <option value="EmProdução">Em Produção</option>
               <option value="Expedido">Expedido</option>
             </Select>
-            <Select info={"Tipo de Envio:"} name="cardType" onChange>
+            <Select info={"Tipo de Envio:"} name="Tipo" onChange={() => { }}>
               <option selected>Tipo de Envio...</option>
               <option value="AdmTotal">Administradora-Total</option>
               <option value="AdmCS">Administradora-Carta Simples</option>
@@ -87,6 +88,8 @@ const PageCardsIssued: React.FC = () => {
 
         </div>
       </div>
+    </div>
+    
     </>
   );
 };

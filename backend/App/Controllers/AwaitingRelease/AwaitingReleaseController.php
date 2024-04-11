@@ -16,8 +16,8 @@ final class AwaitingReleaseController
         
         $production = [
 
-            $productionDAO -> getAllAwaitingReleaseChip(),
-            $productionDAO -> getAllAwaitingReleaseElo()
+            $productionDAO -> getAllAwaitingReleaseDmCard(),
+            $productionDAO -> getAllAwaitingReleaseRedeUze()
 
         ];
 
@@ -27,4 +27,5 @@ final class AwaitingReleaseController
         return $response;
     
     }
+
 }

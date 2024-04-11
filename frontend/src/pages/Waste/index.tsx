@@ -94,7 +94,7 @@ const PageWaste: React.FC = () => {
                      
                     />
                 </div>
-                <DownloadFacilitators excelClick={() => {}} printClick={() => window.print()} textButton={'Pesquisar'}  onClickButton={handleChange}/>
+                <DownloadFacilitators excelClick={() => {}} printClick={() => window.print()} textButton={'Pesquisar'}  onClickButton={handleSearch}/>
 
             </div>
             <Table

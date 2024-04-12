@@ -16,8 +16,9 @@ class CardsIssuedReportDAO extends Connection
     public function getCardsIssuedReportFilterFileDmCardDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
     {
 
-        $statement = $this->pdo->prepare("SELECT total_rastreio,
-         to_char(dt_processamento, 'DD/MM/YYYY') AS dt_processamento, 
+        $statement = $this->pdo->prepare("SELECT titular, nr_cartao,rastreio,
+        codigo_conta,desc_status,
+         to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
         total_cartoes, status from view_dmcard_relatorio_cartoes WHERE nome_arquivo_proc = :arquivo");
@@ -32,11 +33,12 @@ class CardsIssuedReportDAO extends Connection
     public function getCardsIssuedReportFilterDateDmCardDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
     {
 
-        $statement = $this->pdo->prepare("SELECT total_rastreio,
-         to_char(dt_processamento, 'DD/MM/YYYY') AS dt_processamento, 
+        $statement = $this->pdo->prepare("SELECT  titular, nr_cartao,rastreio,
+        codigo_conta,desc_status,
+         to_char(dt_op, 'DD/MM/YYYY') AS dt_op,
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
-        total_cartoes, status from view_dmcard_relatorio_cartoes where dt_processamento BETWEEN :datainicial AND :datafinal ;");
+        total_cartoes, status from view_dmcard_relatorio_cartoes where dt_op BETWEEN :datainicial AND :datafinal ;");
 
         $statement->execute(['datainicial' => $CardsIssuedReportModel->getInitialProcessinDate(), 'datafinal' => $CardsIssuedReportModel->getFinalProcessinDate()]);
 
@@ -47,9 +49,9 @@ class CardsIssuedReportDAO extends Connection
 
     public function getCardsIssuedReportFilterShippingDmCardDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
     {
-        $statement = $this->pdo->prepare("SELECT 
-        total_rastreio,
-         to_char(dt_processamento, 'DD/MM/YYYY') AS dt_processamento, 
+        $statement = $this->pdo->prepare("SELECT titular, nr_cartao,rastreio,
+        codigo_conta,desc_status,
+         to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
         total_cartoes, status from view_dmcard_relatorio_cartoes where dt_expedicao BETWEEN :expedicaoinicial AND :expedicaofinal ;");
@@ -65,11 +67,12 @@ class CardsIssuedReportDAO extends Connection
     public function getCardsIssuedReportFilterDatesInGeneralDmCardDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
     {
         $statement = $this->pdo->prepare("SELECT 
-        total_rastreio,
-         to_char(dt_processamento, 'DD/MM/YYYY') AS dt_processamento, 
+         titular, nr_cartao,rastreio,
+        codigo_conta,desc_status,
+         to_char(dt_op, 'DD/MM/YYYY') AS dt_op,
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
-        total_cartoes, status from view_dmcard_relatorio_cartoes where dt_expedicao BETWEEN :expedicaoinicial AND :expedicaofinal OR dt_processamento BETWEEN :datainicial AND :datafinal;");
+        total_cartoes, status from view_dmcard_relatorio_cartoes where dt_expedicao BETWEEN :expedicaoinicial AND :expedicaofinal OR dt_op BETWEEN :datainicial AND :datafinal;");
 
         $statement->execute(['expedicaoinicial' => $CardsIssuedReportModel->getInitialShippingdate(), 'expedicaofinal' => $CardsIssuedReportModel->getFinalShippingdate(), 'datainicial' => $CardsIssuedReportModel->getInitialProcessinDate(), 'datafinal' => $CardsIssuedReportModel->getFinalProcessinDate()]);
 
@@ -81,8 +84,9 @@ class CardsIssuedReportDAO extends Connection
     public function getCardsIssuedReportFilterFileRedeUzeDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
     {
 
-        $statement = $this->pdo->prepare("SELECT total_rastreio,
-         to_char(dt_processamento, 'DD/MM/YYYY') AS dt_processamento, 
+        $statement = $this->pdo->prepare("SELECT  titular, nr_cartao,rastreio,
+        codigo_conta,desc_status,
+         to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
         total_cartoes, status from view_redeuze_relatorio_cartoes WHERE nome_arquivo_proc = :arquivo");
@@ -97,11 +101,12 @@ class CardsIssuedReportDAO extends Connection
     public function getCardsIssuedReportFilterDateRedeUzeDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
     {
 
-        $statement = $this->pdo->prepare("SELECT total_rastreio,
-         to_char(dt_processamento, 'DD/MM/YYYY') AS dt_processamento, 
+        $statement = $this->pdo->prepare("SELECT  titular, nr_cartao,rastreio,
+        codigo_conta,desc_status,
+         to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
-        total_cartoes, status  from view_redeuze_relatorio_cartoes  where dt_processamento BETWEEN :datainicial AND :datafinal ;");
+        total_cartoes, status  from view_redeuze_relatorio_cartoes  where dt_op BETWEEN :datainicial AND :datafinal ;");
 
         $statement->execute(['datainicial' => $CardsIssuedReportModel->getInitialProcessinDate(), 'datafinal' => $CardsIssuedReportModel->getFinalProcessinDate()]);
 
@@ -112,8 +117,9 @@ class CardsIssuedReportDAO extends Connection
 
     public function getCardsIssuedReportFilterShippingRedeUzeDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
     {
-        $statement = $this->pdo->prepare("SELECT total_rastreio,
-         to_char(dt_processamento, 'DD/MM/YYYY') AS dt_processamento, 
+        $statement = $this->pdo->prepare("SELECT  titular, nr_cartao,rastreio,
+        codigo_conta,desc_status,
+         to_char(dt_op, 'DD/MM/YYYY') AS dt_op,  
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
         total_cartoes, status from view_redeuze_relatorio_cartoes  where dt_expedicao BETWEEN :expedicaoinicial AND :expedicaofinal ;");
@@ -128,11 +134,12 @@ class CardsIssuedReportDAO extends Connection
 
     public function getCardsIssuedReportFilterDatesInGeneralRedeUzeDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
     {
-        $statement = $this->pdo->prepare("SELECT total_rastreio,
-         to_char(dt_processamento, 'DD/MM/YYYY') AS dt_processamento, 
+        $statement = $this->pdo->prepare("SELECT titular, nr_cartao,rastreio,
+        codigo_conta,desc_status,
+         to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
-        total_cartoes, status FROM view_redeuze_relatorio_cartoes  where dt_expedicao BETWEEN :expedicaoinicial AND :expedicaofinal OR dt_processamento BETWEEN :datainicial AND :datafinal;");
+        total_cartoes, status FROM view_redeuze_relatorio_cartoes  where dt_expedicao BETWEEN :expedicaoinicial AND :expedicaofinal OR dt_op BETWEEN :datainicial AND :datafinal;");
 
         $statement->execute(['expedicaoinicial' => $CardsIssuedReportModel->getInitialShippingdate(), 'expedicaofinal' => $CardsIssuedReportModel->getFinalShippingdate(), 'datainicial' => $CardsIssuedReportModel->getInitialProcessinDate(), 'datafinal' => $CardsIssuedReportModel->getFinalProcessinDate()]);
 

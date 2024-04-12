@@ -7,6 +7,7 @@ use App\Controllers\Auth\AuthController;
 use App\Controllers\Production\ProductionController;
 use App\Controllers\AwaitingRelease\AwaitingReleaseController;
 use App\Controllers\AwaitingShipment\AwaitingShipmentController;
+use App\Controllers\CardsIssuedReport\CardsIssuedReportController;
 use App\Controllers\Dispatched\DispatchedController;
 use App\Controllers\Inactive\InactiveProductsController;
 use App\Controllers\ProductionReport\ProductionReportController;
@@ -14,6 +15,7 @@ use App\Controllers\ProductionReport\ProductionReportController;
 use App\Controllers\Stock\StockController;
 use App\Controllers\Waste\WasteProductsController;
 use App\Controllers\Ruptures\RupturesProductsController;
+use App\DAO\VeroCard\CardsIssuedReport\CardsIssuedReportDAO;
 use App\Middlewares\adminConference;
 use App\Middlewares\jwtDateTime;
 
@@ -91,6 +93,11 @@ $app->post('/ruptures-products', RupturesProductsController::class . ':getRuptur
 $app -> post('/production-report' , ProductionReportController::class . ':ProductionReport')
 -> add(new jwtDateTime())
 -> add(jwtAuth());
+
+$app -> post('/cardsissued-report' , CardsIssuedReportController::class . ':CardsIssuedReport')
+-> add(new jwtDateTime())
+-> add(jwtAuth());
+
 
 // ==================================================
 

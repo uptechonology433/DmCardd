@@ -1,10 +1,122 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import DefaultHeader from "../../components/layout/DefaultHeader";
 import DownloadFacilitators from "../../components/layout/DownloadFacilitators";
 import Input from "../../components/shared/Input";
 import Select from "../../components/shared/Select";
+import { useNavigate } from "react-router-dom";
+import { useDownloadExcel } from "react-export-table-to-excel";
+import Swal from "sweetalert2";
+import api from "../../connectionAPI";
 
 const PageCardsIssued: React.FC = () => {
+
+  const [cardsIssuedReportData, setCardsIssuedReportData] = useState([]);
+
+  const [cardsIssuedReportMessage, setCardsIssuedReportMessage] = useState(false);
+
+  const navigate = useNavigate();
+
+  const [formValues, setFormValues] = useState({
+
+      fileName: "",
+
+      InitialProcessingDate: "",
+
+      FinalProcessingDate: "",
+
+      InitialShippingDate: "",
+
+      FinalShippingDate: "",
+
+      cardType: ""
+
+});
+
+const handleChange = (e: any) => {
+  setFormValues({
+      ...formValues,
+      [e.target.name]: e.target.value
+  })
+}
+
+const columnsCardsIssuedReport: Array<Object> = [
+  {
+      name: 'Nome do arquivo',
+      selector: (row: any) => row.nome_arquivo_proc
+  },
+  {
+      name: 'Data de processamento',
+      selector: (row: any) => row.dt_processamento
+  },
+  {
+      name: 'Data de expedição',
+      selector: (row: any) => row.dt_expedicao
+  },
+  {
+      name: 'Qtd Cartões',
+      selector: (row: any) => row.total_cartoes
+  },
+ 
+  {
+      name: 'Status',
+      selector: (row: any) => row.dt_expedicao ? 'Expedido' : row.status
+  },
+  {
+      name: 'Qtd Rastreio',
+      selector: (row: any) => row.total_rastreio
+  },
+];
+
+const ProductionReportRequests = async () => {
+  if (formValues.cardType === 'DmCard' || formValues.cardType === 'RedeUze') {
+      if (formValues.InitialProcessingDate < formValues.FinalProcessingDate
+          || formValues.InitialShippingDate < formValues.FinalShippingDate
+          || formValues.fileName) {
+          await api.post('/cardsissued-report', {
+              arquivo: formValues.fileName,
+              tipo: formValues.cardType,
+              dataInicial: formValues.InitialProcessingDate,
+              dataFinal: formValues.FinalProcessingDate,
+              expedicaoInicial: formValues.InitialShippingDate,
+              expedicaoFinal: formValues.FinalShippingDate
+          }).then((data) => {
+              setCardsIssuedReportData(data.data)
+              console.log("Response from API:", data);
+
+          }).catch(() => {
+              setCardsIssuedReportMessage(true)
+          });
+
+      } else {
+          Swal.fire({
+              icon: 'error',
+              title: 'Datas incorretas...',
+              text: 'A data inicial não pode ser maior que a final.',
+          });
+      }
+  }else {
+      Swal.fire({
+          icon: 'error',
+          title: 'Selecione um tipo de cartão...',
+          text: 'Selecione DmCard ou Rede Uze antes de fazer a filtragem dos dados.',
+      });
+  }    
+}
+
+const refExcel: any = useRef();
+const { onDownload } = useDownloadExcel({
+  currentTableRef: refExcel.current,
+  filename: "Cartões Emitidos",
+  sheet: "Cartões Emitidos"
+})
+const csvData = [
+  ["firstname", "lastname", "email"],
+  ["Ahmed", "Tomi", "ah@smthing.co.com"],
+  ["Raed", "Labes", "rl@smthing.co.com"],
+  ["Yezzi", "Min l3b", "ymin@cocococo.com"]
+];
+
+
   return (
     <>
       <DefaultHeader sessionTheme="Cartões emitidos" />

@@ -43,13 +43,8 @@ const PageProductionReport: React.FC = () => {
 
     const columnsProductionReport: Array<Object> = [
         {
-            name: 'Código do produto',
-            selector: (row: any) => row.cod_produto,
-            sortable: true
-        },
-        {
-            name: 'Descrição do produto',
-            selector: (row: any) => row.desc_produto
+            name: 'Nome do arquivo',
+            selector: (row: any) => row.nome_arquivo_proc
         },
         {
             name: 'Data de processamento',
@@ -60,16 +55,17 @@ const PageProductionReport: React.FC = () => {
             selector: (row: any) => row.dt_expedicao
         },
         {
-            name: 'Nome do arquivo',
+            name: 'Qtd Cartões',
             selector: (row: any) => row.total_cartoes
         },
+       
         {
             name: 'Status',
             selector: (row: any) => row.dt_expedicao ? 'Expedido' : row.status
         },
         {
-            name: 'Rastreio',
-            selector: (row: any) => row.rastreio
+            name: 'Qtd Rastreio',
+            selector: (row: any) => row.total_rastreio
         },
     ];
 

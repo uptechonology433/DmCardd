@@ -4,7 +4,7 @@ import Input from "../../components/shared/Input";
 import Table from "../../components/shared/Table";
 import DownloadFacilitators from "../../components/layout/DownloadFacilitators";
 import api from "../../connectionAPI";
-import Select from "../../components/shared/Select";
+
 
 const PageInactive: React.FC = () => {
     const [inactiveData, setInactiveData] = useState([]);

@@ -79,9 +79,10 @@ $app->post('/waste-products', WasteProductsController::class . ':getWasteProduct
     ->add(jwtAuth());
 // ==================================================
 
-$app->post('/ruptures-products', RupturesProductsController::class . ':handleProductionReport')
+$app->post('/ruptures-products', RupturesProductsController::class . ':getRupturesProducts')
     ->add(new jwtDateTime())
     ->add(jwtAuth());
+// =================
 
 
 

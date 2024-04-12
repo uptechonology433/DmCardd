@@ -21,33 +21,58 @@ const PageRuptures: React.FC = () => {
     const columnsRuptures: Array<Object> = [
         {
             name: 'Codigo do produto',
-            selector: (row: any) => row.cod_produto,
+            selector: (row: any) => row["COD PROD"],
             sortable: true
         },
         {
-            name: 'Descrição do produto',
-            selector: (row: any) => row.desc_produto,
+            name: 'Produto',
+            selector: (row: any) => row.PRODUTO,
+            sortable: true
+        },
+        {
+            name: 'Data',
+            selector: (row: any) => row.dt_op,
+            sortable: true
+        },
+        {
+            name: 'Qtd Estoque',
+            selector: (row: any) => row["QTD ESTQ"],
+            sortable: true
+        },
+        {
+            name: 'Qtd Cartões',
+            selector: (row: any) => row["QTD ARQ"],
+            sortable: true
+        },
+        {
+            name: 'Diferença',
+            selector: (row: any) => row.DIFERENÇA,
+            sortable: true
+        },
+        {
+            name: 'Descrição',
+            selector: (row: any) => row.observacao,
             sortable: true
         }
     ];
 
-    // useEffect(() => {
-    //     fetchRupturesProducts();
-    // }, []);
+    useEffect(() => {
+        fetchRupturesProducts();
+    }, []);
 
-    // const fetchRupturesProducts = async () => {
-    //     try {
-    //         const response = await api.post("/ruptures-products", { searchTerm });
-    //         setRupturesData(response.data);
-    //     } catch (error) {
-    //         console.log(error);
+    const fetchRupturesProducts = async () => {
+        try {
+            const response = await api.post("/ruptures-products", { searchTerm });
+            setRupturesData(response.data);
+        } catch (error) {
+            console.log(error);
           
-    //     }
-    // };
+        }
+    };
 
-    // const handleSearch = () => {
-    //     fetchRupturesProducts();
-    // };
+    const handleSearch = () => {
+        fetchRupturesProducts();
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
@@ -72,13 +97,14 @@ const PageRuptures: React.FC = () => {
                 <div className="inputs-info-products">
                     <Input
                         name="searchTerm"
-                        info="Código ou Descrição do Produto:"
+                        info="Código ou Nome do Produto:"
                         placeholder="Produto..."
-                        value={""}
+                        value={searchTerm}
+                        onChange={handleChange}
                       
                     />
                 </div>
-                <DownloadFacilitators excelClick={() => {}} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={""} />
+                <DownloadFacilitators excelClick={() => {}} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={handleSearch} />
 
             </div>
             <Table

@@ -8,30 +8,20 @@ use Slim\Http\Response as Response;
 
 final class RupturesProductsController
 {
-    private $rupturesProductsDAO;
 
-    public function __construct(RupturesProductsDAO $rupturesProductsDAO)
+    public function getRupturesProducts(Request $request, Response $response, array $args): Response
     {
-        $this->rupturesProductsDAO = $rupturesProductsDAO;
-    }
+        $searchTerm = $request->getParsedBody()['searchTerm'] ?? '';
 
-    public function handleProductionReport(Request $request, Response $response, array $args): Response
-    {
-        $reportType = $request->getQueryParams()['reportType'] ?? '';
+        $rupturesProductsDAO = new RupturesProductsDAO();
 
-        switch ($reportType) {
-            case 'dmcard':
-            case 'redeuze':
-                $searchTerm = $request->getQueryParams()['searchTerm'] ?? '';
-                $rupturesProducts = $this->rupturesProductsDAO->searchRupturesProducts($reportType, $searchTerm);
-                break;
-            default:
-                // Handle unknown report type
-                $response->getBody()->write("Unknown report type");
-                return $response->withStatus(400);
+        if (!empty($searchTerm)) {
+            $rupturesProducts = $rupturesProductsDAO->searchRuptureProducts($searchTerm);
+        } else {
+            $rupturesProducts = $rupturesProductsDAO->getAllRupturesProducts();
         }
 
-        // Return the response with JSON data
-        return $response->withJson($rupturesProducts);
+        $response = $response->withJson($rupturesProducts);
+        return $response;
     }
 }

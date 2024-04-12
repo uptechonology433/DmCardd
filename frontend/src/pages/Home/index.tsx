@@ -4,9 +4,6 @@ import Table from "../../components/shared/Table";
 import DefaultHeader from "../../components/layout/DefaultHeader";
 import Select from "../../components/shared/Select";
 
-
-
-
 const PageHome: React.FC = () => {
     const [inProductionData, setInProductionData] = useState([]);
     const [awaitingReleaseData, setAwaitingRelease] = useState([]);
@@ -16,14 +13,12 @@ const PageHome: React.FC = () => {
     const [typeMessageAwaitingRelease, setTypeMessageAwaitingRelease] = useState(false);
     const [formValues, setFormValues] = useState({ Type: "DmCard" });
 
-
     const handleChange = (e: any) => {
         setFormValues({
             ...formValues,
             [e.target.name]: e.target.value
         })
     }
-
 
     const columnsAwaitingRelease: Array<Object> = [
         {
@@ -188,7 +183,6 @@ const PageHome: React.FC = () => {
                     setTypeMessageAwaitingShipment(true);
                 });
 
-                
         }
 
         HomePageRequests()
@@ -238,9 +232,6 @@ const PageHome: React.FC = () => {
     </div>
 
 </div>
-           
-      
-
     )
 }
 

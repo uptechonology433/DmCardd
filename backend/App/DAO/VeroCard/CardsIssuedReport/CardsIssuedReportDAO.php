@@ -17,7 +17,7 @@ class CardsIssuedReportDAO extends Connection
     {
 
         $statement = $this->pdo->prepare("SELECT titular, nr_cartao,rastreio,
-        codigo_conta,desc_status,tipo_envio,codigo_cartao,
+        codigo_conta,desc_status,codigo_cartao,
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
@@ -34,7 +34,7 @@ class CardsIssuedReportDAO extends Connection
     {
 
         $statement = $this->pdo->prepare("SELECT  titular, nr_cartao,rastreio,
-        codigo_conta,desc_status,tipo_envio,codigo_cartao,
+        codigo_conta,desc_status,codigo_cartao,
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op,
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
@@ -50,7 +50,7 @@ class CardsIssuedReportDAO extends Connection
     public function getCardsIssuedReportFilterShippingDmCardDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
     {
         $statement = $this->pdo->prepare("SELECT titular, nr_cartao,rastreio,
-        codigo_conta,desc_status,tipo_envio,codigo_cartao,
+        codigo_conta,desc_status,codigo_cartao,
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
@@ -68,7 +68,7 @@ class CardsIssuedReportDAO extends Connection
     {
         $statement = $this->pdo->prepare("SELECT 
          titular, nr_cartao,rastreio, codigo_cartao,
-        codigo_conta,desc_status,tipo_envio,
+        codigo_conta,desc_status,
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op,
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
@@ -85,7 +85,7 @@ class CardsIssuedReportDAO extends Connection
     {
 
         $statement = $this->pdo->prepare("SELECT  titular, nr_cartao,rastreio,
-        codigo_conta,desc_status,tipo_envio,codigo_cartao,
+        codigo_conta,desc_status,codigo_cartao,
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
@@ -102,7 +102,7 @@ class CardsIssuedReportDAO extends Connection
     {
 
         $statement = $this->pdo->prepare("SELECT  titular, nr_cartao,rastreio,
-        codigo_conta,desc_status,tipo_envio,codigo_cartao,
+        codigo_conta,desc_status,codigo_cartao,
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
@@ -118,7 +118,7 @@ class CardsIssuedReportDAO extends Connection
     public function getCardsIssuedReportFilterShippingRedeUzeDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
     {
         $statement = $this->pdo->prepare("SELECT  titular, nr_cartao,rastreio,
-        codigo_conta,desc_status,tipo_envio,codigo_cartao,
+        codigo_conta,desc_status,codigo_cartao,
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op,  
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
@@ -135,7 +135,7 @@ class CardsIssuedReportDAO extends Connection
     public function getCardsIssuedReportFilterDatesInGeneralRedeUzeDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
     {
         $statement = $this->pdo->prepare("SELECT titular, nr_cartao,rastreio,
-        codigo_conta,desc_status,tipo_envio,codigo_cartao,
+        codigo_conta,desc_status,codigo_cartao,
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,

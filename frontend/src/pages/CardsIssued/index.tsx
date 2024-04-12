@@ -66,10 +66,6 @@ const PageCardsIssued: React.FC = () => {
       selector: (row: any) => row.desc_status
     },
     {
-      name: 'Tipo Envio',
-      selector: (row: any) => row.tipo_envio
-    },
-    {
       name: 'Data Pross',
       selector: (row: any) => row.dt_op
     },

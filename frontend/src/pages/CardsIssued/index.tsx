@@ -39,12 +39,7 @@ const PageCardsIssued: React.FC = () => {
               <option value="Expedido">Expedido</option>
             </Select>
             <Select info={"Tipo de Envio:"} name="cardType" onChange>
-              <option selected>Tipo de Envio...</option>
-              <option value="AdmTotal">Administradora-Total</option>
-              <option value="AdmCS">Administradora-Carta Simples</option>
-              <option value="CFC">Cliente-Flash Courier</option>
-              <option value="CCR">Cliente-Carta Registrada</option>
-              <option value="CCS">Cliente-Carta Simples</option>
+              <option value="CFC" selected>Cliente-Flash Courier</option>
             </Select>
           </div>
 

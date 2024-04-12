@@ -59,7 +59,7 @@ const PageCardsIssued: React.FC = () => {
     },
     {
       name: 'Cod Conta',
-      selector: (row: any) => row.total_cartoes
+      selector: (row: any) => row.codigo_conta
     },
     {
       name: 'Status',
@@ -78,12 +78,12 @@ const PageCardsIssued: React.FC = () => {
       selector: (row: any) => row.dt_expedicao
     },
     {
-      name: 'Qtd Rastreio',
-      selector: (row: any) => row.total_rastreio
+      name: 'Rastreio',
+      selector: (row: any) => row.rastreio
     },
   ];
 
-  const ProductionReportRequests = async () => {
+  const CardsIssuedReportRequests = async () => {
     if (formValues.cardType === 'DmCard' || formValues.cardType === 'RedeUze') {
       if (formValues.InitialProcessingDate < formValues.FinalProcessingDate
         || formValues.InitialShippingDate < formValues.FinalShippingDate
@@ -244,7 +244,7 @@ const PageCardsIssued: React.FC = () => {
                 </div>
                 
 
-        <DownloadFacilitators textButton="Pesquisar" />
+                <DownloadFacilitators excelClick={() => onDownload()} textButton="Pesquisar" onClickButton={() => CardsIssuedReportRequests()} csvData={cardsIssuedReportData} />
       </div>
     </>
   );

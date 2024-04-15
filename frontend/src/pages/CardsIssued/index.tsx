@@ -38,7 +38,7 @@ const PageCardsIssued: React.FC = () => {
 
   });
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues({
       ...formValues,
       [e.target.name]: e.target.value
@@ -172,9 +172,9 @@ const PageCardsIssued: React.FC = () => {
           </div>
 
           <div className="inputs">
-            <Select info={"Status:"} name="cardType" onChange>
+            <Select info={"Status:"} name="status" onChange={handleChange}>
               <option selected>Status...</option>
-              <option value="EmProdução">Em Produção</option>
+              <option value="EmProducao">Em Produção</option>
               <option value="Expedido">Expedido</option>
             </Select>
             <Input

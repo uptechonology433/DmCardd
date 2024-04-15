@@ -129,16 +129,32 @@ class CardsIssuedReportDAO extends Connection
         return $response;
     }
 
-    public function getCardsIssuedReportFilterStatusDmCardDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
+    public function getCardsIssuedReportFilterStatusInProductionDmCardDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
     {
         $statement = $this->pdo->prepare("SELECT titular, nr_cartao,rastreio,
         codigo_conta,desc_status,codigo_cartao,
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
-         desc_status FROM view_dmcard_relatorio_cartoess  WHERE desc_status LIKE :desc_status");
+         desc_status FROM view_dmcard_relatorio_cartoess  WHERE desc_status LIKE 'EM PRODUÇÃO'");
 
-        $statement->execute(['desc_status' => '%' . $CardsIssuedReportModel->getStatus() . '%']);
+        $statement->execute();
+
+        $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $response;
+    }
+
+    public function getCardsIssuedReportFilterStatusDispatichedDmCardDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
+    {
+        $statement = $this->pdo->prepare("SELECT titular, nr_cartao,rastreio,
+        codigo_conta,desc_status,codigo_cartao,
+         to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
+         to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
+         nome_arquivo_proc,
+         desc_status FROM view_dmcard_relatorio_cartoess  WHERE desc_status LIKE 'EXPEDIDO'");
+
+        $statement->execute();
 
         $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -261,16 +277,34 @@ class CardsIssuedReportDAO extends Connection
         return $response;
     }
 
-    public function getCardsIssuedReportFilterStatusRedeUzeDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
+  
+    
+    public function getCardsIssuedReportFilterStatusInProductionRedeUzeDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
     {
         $statement = $this->pdo->prepare("SELECT titular, nr_cartao,rastreio,
         codigo_conta,desc_status,codigo_cartao,
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
-         desc_status FROM view_redeuze_relatorio_cartoes  WHERE desc_status LIKE :desc_status");
+         desc_status FROM view_redeuze_relatorio_cartoes  WHERE desc_status LIKE 'EM PRODUÇÃO'");
 
-        $statement->execute(['desc_status' => '%' . $CardsIssuedReportModel->getStatus() . '%']);
+        $statement->execute();
+
+        $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $response;
+    }
+
+    public function getCardsIssuedReportFilterStatusDispatichedRedeUzeDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
+    {
+        $statement = $this->pdo->prepare("SELECT titular, nr_cartao,rastreio,
+        codigo_conta,desc_status,codigo_cartao,
+         to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
+         to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
+         nome_arquivo_proc,
+         desc_status FROM view_redeuze_relatorio_cartoes  WHERE desc_status LIKE 'EXPEDIDO'");
+
+        $statement->execute();
 
         $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
 

@@ -26,7 +26,12 @@ final class CardsIssuedReportModel
       /**
     * @var string
     */
-    private $status;
+    private $statusInProduction;
+
+       /**
+    * @var string
+    */
+    private $statusDispatched;
 
    
 
@@ -105,15 +110,28 @@ final class CardsIssuedReportModel
     
     }
 
-    public function getStatus(): string
+    public function getStatusInProduction(): string
     {
-        return $this -> status;
+        return $this -> statusInProduction;
     }
     
-    public function setStatus(string $status): CardsIssuedReportModel
+    public function setStatusInProduction(string $statusInProduction): CardsIssuedReportModel
     {
 
-        $this->status = $status; 
+        $this->statusInProduction = $statusInProduction; 
+        return $this;
+    
+    }
+
+    public function getStatusDispatched(): string
+    {
+        return $this -> statusDispatched;
+    }
+    
+    public function setStatusDispatched(string $statusDispatched): CardsIssuedReportModel
+    {
+
+        $this->statusDispatched = $statusDispatched; 
         return $this;
     
     }

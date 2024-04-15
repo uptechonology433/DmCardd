@@ -33,6 +33,7 @@ const PageCardsIssued: React.FC = () => {
 
     holder: "",
     accontCode: "",
+    cardCode: ""
 
   });
 
@@ -86,7 +87,7 @@ const PageCardsIssued: React.FC = () => {
     if (formValues.cardType === 'DmCard' || formValues.cardType === 'RedeUze') {
       if (formValues.InitialProcessingDate < formValues.FinalProcessingDate
         || formValues.InitialShippingDate < formValues.FinalShippingDate
-        || formValues.fileName || formValues.holder || formValues.accontCode) {
+        || formValues.fileName || formValues.holder || formValues.accontCode || formValues.cardCode) {
         await api.post('/cardsissued-report', {
           arquivo: formValues.fileName,
           tipo: formValues.cardType,
@@ -95,7 +96,8 @@ const PageCardsIssued: React.FC = () => {
           expedicaoInicial: formValues.InitialShippingDate,
           expedicaoFinal: formValues.FinalShippingDate,
           titular: formValues.holder,
-          codigo_conta: formValues.accontCode
+          codigo_conta: formValues.accontCode,
+          codigo_cartao: formValues.cardCode
 
         }).then((data) => {
           setCardsIssuedReportData(data.data)
@@ -174,9 +176,10 @@ const PageCardsIssued: React.FC = () => {
               <option value="Expedido">Expedido</option>
             </Select>
             <Input
-              name="Código Cartão:"
-              placeholder="N° Cartão..."
-              info="N° Cartão:"
+              name="cardCode"
+              placeholder="Código Cartão..."
+              info="Código Cartão:"
+              onChange={handleChange}
             />
           </div>
 

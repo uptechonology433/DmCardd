@@ -21,7 +21,7 @@ class CardsIssuedReportDAO extends Connection
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
-        desc_status from view_dmcard_relatorio_cartoes WHERE nome_arquivo_proc = :arquivo");
+        desc_status from view_dmcard_relatorio_cartoess WHERE nome_arquivo_proc = :arquivo");
 
         $statement->execute(['arquivo' => $CardsIssuedReportModel->getFile()]);
 
@@ -38,7 +38,7 @@ class CardsIssuedReportDAO extends Connection
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
-         desc_status  from view_dmcard_relatorio_cartoes  where dt_op BETWEEN :datainicial AND :datafinal");
+         desc_status  from view_dmcard_relatorio_cartoess  where dt_op BETWEEN :datainicial AND :datafinal");
 
         $statement->execute(['datainicial' => $CardsIssuedReportModel->getInitialProcessinDate(), 'datafinal' => $CardsIssuedReportModel->getFinalProcessinDate()]);
 
@@ -54,7 +54,7 @@ class CardsIssuedReportDAO extends Connection
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
-         desc_status from view_dmcard_relatorio_cartoes where dt_expedicao BETWEEN :expedicaoinicial AND :expedicaofinal");
+         desc_status from view_dmcard_relatorio_cartoess where dt_expedicao BETWEEN :expedicaoinicial AND :expedicaofinal");
 
         $statement->execute(['expedicaoinicial' => $CardsIssuedReportModel->getInitialShippingdate(), 'expedicaofinal' => $CardsIssuedReportModel->getFinalShippingdate()]);
 
@@ -72,7 +72,7 @@ class CardsIssuedReportDAO extends Connection
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op,
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
-         desc_status from view_dmcard_relatorio_cartoes where dt_expedicao BETWEEN :expedicaoinicial AND :expedicaofinal OR dt_op BETWEEN :datainicial AND :datafinal");
+         desc_status from view_dmcard_relatorio_cartoess where dt_expedicao BETWEEN :expedicaoinicial AND :expedicaofinal OR dt_op BETWEEN :datainicial AND :datafinal");
 
         $statement->execute(['expedicaoinicial' => $CardsIssuedReportModel->getInitialShippingdate(), 'expedicaofinal' => $CardsIssuedReportModel->getFinalShippingdate(), 'datainicial' => $CardsIssuedReportModel->getInitialProcessinDate(), 'datafinal' => $CardsIssuedReportModel->getFinalProcessinDate()]);
 
@@ -87,7 +87,7 @@ class CardsIssuedReportDAO extends Connection
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
-         desc_status FROM view_dmcard_relatorio_cartoes  WHERE titular LIKE :titular");
+         desc_status FROM view_dmcard_relatorio_cartoess  WHERE titular LIKE :titular");
 
         $statement->execute(['titular' => '%' . $CardsIssuedReportModel->getHolder() . '%']);
 
@@ -103,7 +103,7 @@ class CardsIssuedReportDAO extends Connection
          to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
          to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
          nome_arquivo_proc,
-         desc_status FROM view_dmcard_relatorio_cartoes  WHERE codigo_conta LIKE :codigo_conta");
+         desc_status FROM view_dmcard_relatorio_cartoess  WHERE codigo_conta LIKE :codigo_conta");
 
         $statement->execute(['codigo_conta' => '%' . $CardsIssuedReportModel->getAccountCode() . '%']);
 
@@ -116,16 +116,16 @@ class CardsIssuedReportDAO extends Connection
     public function getCardsIssuedReportFilterCardCodeDmCardDAO(CardsIssuedReportModel $CardsIssuedReportModel): array
     {
         $statement = $this->pdo->prepare("SELECT titular, nr_cartao,rastreio,
-        codigo_conta,desc_status,codigo_cartao,
-         to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
-         to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
-         nome_arquivo_proc,
-         desc_status FROM view_dmcard_relatorio_cartoes  WHERE codigo_cartao =:codigo_cartao");
-
+            codigo_conta,desc_status,codigo_cartao,
+            to_char(dt_op, 'DD/MM/YYYY') AS dt_op, 
+            to_char(dt_expedicao, 'DD/MM/YYYY') AS dt_expedicao,
+            nome_arquivo_proc,
+            desc_status FROM view_dmcard_relatorio_cartoess WHERE codigo_cartao LIKE :codigo_cartao");
+    
         $statement->execute(['codigo_cartao' => '%' . $CardsIssuedReportModel->getCardCode() . '%']);
-
+    
         $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
-
+    
         return $response;
     }
 

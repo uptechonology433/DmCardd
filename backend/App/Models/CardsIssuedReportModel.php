@@ -23,6 +23,13 @@ final class CardsIssuedReportModel
     */
    private $cardCode;
 
+      /**
+    * @var string
+    */
+    private $status;
+
+   
+
      /**
      * @var string
      */
@@ -94,6 +101,19 @@ final class CardsIssuedReportModel
     {
 
         $this->cardCode = $cardCode; 
+        return $this;
+    
+    }
+
+    public function getStatus(): string
+    {
+        return $this -> status;
+    }
+    
+    public function setStatus(string $status): CardsIssuedReportModel
+    {
+
+        $this->status = $status; 
         return $this;
     
     }

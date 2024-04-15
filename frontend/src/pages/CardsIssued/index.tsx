@@ -33,7 +33,8 @@ const PageCardsIssued: React.FC = () => {
 
     holder: "",
     accontCode: "",
-    cardCode: ""
+    cardCode: "",
+    status: ""
 
   });
 
@@ -87,7 +88,7 @@ const PageCardsIssued: React.FC = () => {
     if (formValues.cardType === 'DmCard' || formValues.cardType === 'RedeUze') {
       if (formValues.InitialProcessingDate < formValues.FinalProcessingDate
         || formValues.InitialShippingDate < formValues.FinalShippingDate
-        || formValues.fileName || formValues.holder || formValues.accontCode || formValues.cardCode) {
+        || formValues.fileName || formValues.holder || formValues.accontCode || formValues.cardCode || formValues.status) {
         await api.post('/cardsissued-report', {
           arquivo: formValues.fileName,
           tipo: formValues.cardType,
@@ -97,7 +98,8 @@ const PageCardsIssued: React.FC = () => {
           expedicaoFinal: formValues.FinalShippingDate,
           titular: formValues.holder,
           codigo_conta: formValues.accontCode,
-          codigo_cartao: formValues.cardCode
+          codigo_cartao: formValues.cardCode,
+          desc_status: formValues.status
 
         }).then((data) => {
           setCardsIssuedReportData(data.data)

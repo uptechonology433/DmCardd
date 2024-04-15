@@ -8,6 +8,20 @@ final class CardsIssuedReportModel
      * @var string
      */
     private $file;
+     /**
+     * @var string
+     */
+    private $holder;
+
+      /**
+     * @var string
+     */
+    private $accountCode;
+
+    /**
+    * @var string
+    */
+   private $cardCode;
 
      /**
      * @var string
@@ -43,6 +57,45 @@ final class CardsIssuedReportModel
         $this -> file = $file;
 
         return $this;
+    }
+    
+    public function getHolder(): string
+    {
+        return $this -> holder;
+    }
+    
+    public function setHolder(string $holder): CardsIssuedReportModel
+    {
+
+        $this->holder = $holder; 
+        return $this;
+    
+    }
+
+    public function getAccountCode(): string
+    {
+        return $this -> accountCode;
+    }
+    
+    public function setAccountCode(string $accountCode): CardsIssuedReportModel
+    {
+
+        $this->accountCode = $accountCode; 
+        return $this;
+    
+    }
+
+    public function getCardCode(): string
+    {
+        return $this -> cardCode;
+    }
+    
+    public function setCardCode(string $cardCode): CardsIssuedReportModel
+    {
+
+        $this->cardCode = $cardCode; 
+        return $this;
+    
     }
 
     public function getCardType(): string

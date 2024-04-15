@@ -29,7 +29,10 @@ const PageCardsIssued: React.FC = () => {
 
     FinalShippingDate: "",
 
-    cardType: ""
+    cardType: "",
+
+    holder: "",
+    accontCode: "",
 
   });
 
@@ -83,14 +86,17 @@ const PageCardsIssued: React.FC = () => {
     if (formValues.cardType === 'DmCard' || formValues.cardType === 'RedeUze') {
       if (formValues.InitialProcessingDate < formValues.FinalProcessingDate
         || formValues.InitialShippingDate < formValues.FinalShippingDate
-        || formValues.fileName) {
+        || formValues.fileName || formValues.holder || formValues.accontCode) {
         await api.post('/cardsissued-report', {
           arquivo: formValues.fileName,
           tipo: formValues.cardType,
           dataInicial: formValues.InitialProcessingDate,
           dataFinal: formValues.FinalProcessingDate,
           expedicaoInicial: formValues.InitialShippingDate,
-          expedicaoFinal: formValues.FinalShippingDate
+          expedicaoFinal: formValues.FinalShippingDate,
+          titular: formValues.holder,
+          codigo_conta: formValues.accontCode
+
         }).then((data) => {
           setCardsIssuedReportData(data.data)
           console.log("Response from API:", data);
@@ -147,27 +153,31 @@ const PageCardsIssued: React.FC = () => {
 
           <div className="inputs">
             <Input
-              name="fileName"
+              name="holder"
               placeholder="Titular..."
               info="Titular:"
+              onChange={handleChange}
 
             />
             <Input
-              name="codigoConta"
-              placeholder="Código Conta..."
-              info="Código Conta"
+              name="accontCode"
+              placeholder="Nº Conta..."
+              info="N° Conta"
+              onChange={handleChange}
             />
           </div>
 
           <div className="inputs">
-            <Select info={"Descrição Status:"} name="cardType" onChange>
-              <option selected>Descrição Status...</option>
+            <Select info={"Status:"} name="cardType" onChange>
+              <option selected>Status...</option>
               <option value="EmProdução">Em Produção</option>
               <option value="Expedido">Expedido</option>
             </Select>
-            <Select info={"Tipo de Envio:"} name="cardType" onChange>
-              <option value="CFC" selected>Cliente-Flash Courier</option>
-            </Select>
+            <Input
+              name="Código Cartão:"
+              placeholder="N° Cartão..."
+              info="N° Cartão:"
+            />
           </div>
 
           <div className="inputs">
@@ -180,67 +190,66 @@ const PageCardsIssued: React.FC = () => {
           </div>
 
           <div className="inputs">
-            <Input
-              name="Código Cartão:"
-              placeholder="Código Cartão..."
-              info="Código Cartão:"
-            />
+            <Select info={"Tipo de Envio:"} name="cardType" onChange>
+              <option value="CFC" selected>Cliente-Flash Courier</option>
+            </Select>
+
           </div>
         </div>
 
         {
-                    Array.isArray(cardsIssuedReportData) && cardsIssuedReportData.length >= 1 &&
+          Array.isArray(cardsIssuedReportData) && cardsIssuedReportData.length >= 1 &&
 
-                    < Table
-                        column={columnsCardsIssuedReport}
-                        data={cardsIssuedReportData}
-                        typeMessage={cardsIssuedReportMessage}
-                        refExcel={refExcel}
-                    />
+          < Table
+            column={columnsCardsIssuedReport}
+            data={cardsIssuedReportData}
+            typeMessage={cardsIssuedReportMessage}
+            refExcel={refExcel}
+          />
 
-                }
+        }
 
-                <div className="table-container-dowload">
+        <div className="table-container-dowload">
 
-                    <div className="scroll-table-dowload">
-                        <table ref={refExcel}>
+          <div className="scroll-table-dowload">
+            <table ref={refExcel}>
 
-                            <tbody>
+              <tbody>
 
-                                <tr>
-                                    <td>Código do produto</td>
-                                    <td>Descrição do produto</td>
-                                    <td>Data de processamento</td>
-                                    <td>Data de expedição</td>
-                                    <td>Total de cartões</td>
-                                    <td>Status</td>
-                                    <td>Rastreio</td>
-                                </tr>
+                <tr>
+                  <td>Código do produto</td>
+                  <td>Descrição do produto</td>
+                  <td>Data de processamento</td>
+                  <td>Data de expedição</td>
+                  <td>Total de cartões</td>
+                  <td>Status</td>
+                  <td>Rastreio</td>
+                </tr>
 
-                            </tbody>
-                            {
-                                    cardsIssuedReportData.map((data: any) =>
-                                        <tr key={data.id}>
-                                            <td>{data.cod_produto}</td>
-                                            <td>{data.desc_produto}</td>
-                                            <td>{data.dt_processamento}</td>
-                                            <td>{data.dt_expedicao}</td>
-                                            <td>{data.total_cartoes}</td>
-                                            <td>{data.status}</td>
-                                            <td>{data.rastreio}</td>
-                                        </tr>
-                                        
-                                    )
-                                }
+              </tbody>
+              {
+                cardsIssuedReportData.map((data: any) =>
+                  <tr key={data.id}>
+                    <td>{data.cod_produto}</td>
+                    <td>{data.desc_produto}</td>
+                    <td>{data.dt_processamento}</td>
+                    <td>{data.dt_expedicao}</td>
+                    <td>{data.total_cartoes}</td>
+                    <td>{data.status}</td>
+                    <td>{data.rastreio}</td>
+                  </tr>
 
-                        </table>
+                )
+              }
 
-                    </div>
+            </table>
 
-                </div>
-                
+          </div>
 
-                <DownloadFacilitators excelClick={() => onDownload()} textButton="Pesquisar" onClickButton={() => CardsIssuedReportRequests()} csvData={cardsIssuedReportData} />
+        </div>
+
+
+        <DownloadFacilitators excelClick={() => onDownload()} textButton="Pesquisar" onClickButton={() => CardsIssuedReportRequests()} csvData={cardsIssuedReportData} />
       </div>
     </>
   );

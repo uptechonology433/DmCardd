@@ -17,6 +17,9 @@ final class CardsIssuedReportController
 
         if (
             empty(trim($data['arquivo'])) &&
+            empty(trim($data['titular'])) &&
+            empty(trim($data['codigo_conta'])) &&
+            empty(trim($data['codigo_cartao'])) &&
             empty(trim($data['tipo'])) &&
             empty(trim($data['dataInicial'])) &&
             empty(trim($data['dataFinal'])) &&
@@ -45,85 +48,92 @@ final class CardsIssuedReportController
 
         $CardsIssuedReportModel
             ->setFile(trim($data['arquivo']))
+            ->setHolder(trim($data['titular']))
+            ->setAccountCode(trim($data['codigo_conta']))
+            ->setCardCode(trim($data['codigo_cartao']))
             ->setCardType(trim($data['tipo']))
             ->setInitialProcessinDate(trim($data['dataInicial']))
             ->setFinalProcessinDate(trim($data['dataFinal']))
             ->setInitialShippingdate(trim($data['expedicaoInicial']))
             ->setFinalShippingdate(trim($data['expedicaoFinal']));
 
-            $CardsIssuedReport = null;
+
+        $CardsIssuedReport = null;
         if (!empty(trim($data['tipo'])) &&  $data['tipo']  === 'DmCard') {
 
             if (!empty(trim($data['arquivo']))) {
 
                 $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterFileDmCardDAO($CardsIssuedReportModel);
-
+            } else if (!empty(trim($data['codigo_conta']))) {
+                $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterAccountCodeDmCardDAO($CardsIssuedReportModel);
+            } else if (!empty(trim($data['titular']))) {
+                $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterHolderDmCardDAO($CardsIssuedReportModel);
+            } else if (!empty(trim($data['codigo_cartao']))) {
+                $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterCardCodeDmCardDAO($CardsIssuedReportModel);
             } else if (
                 !empty(trim($data['dataInicial'])) && !empty(trim($data['dataFinal']))
                 && empty(trim($data['expedicaoInicial'])) && empty(trim($data['expedicaoFinal']))
             ) {
 
                 $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterDateDmCardDAO($CardsIssuedReportModel);
-
             } else if (
                 !empty(trim($data['expedicaoInicial'])) && !empty(trim($data['expedicaoFinal']))
                 && empty(trim($data['dataInicial'])) && empty(trim($data['dataFinal']))
             ) {
 
                 $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterShippingDmCardDAO($CardsIssuedReportModel);
-
             } else if (
                 !empty(trim($data['expedicaoInicial'])) && !empty(trim($data['expedicaoFinal']))
                 && !empty(trim($data['dataInicial'])) && !empty(trim($data['dataFinal']))
             ) {
 
                 $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterDatesInGeneralDmCardDAO($CardsIssuedReportModel);
-
             } else {
 
                 $CardsIssuedReport = "Preencha os campos corretamente!";
-
             }
-
         } else if (!empty(trim($data['tipo'])) &&  $data['tipo']  === 'RedeUze') {
-            
+
             if (!empty(trim($data['arquivo']))) {
 
                 $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterFileRedeUzeDAO($CardsIssuedReportModel);
+            } else if (!empty(trim($data['titular']))) {
 
+                $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterHolderRedeUzeDAO($CardsIssuedReportModel);
+            } else if (!empty(trim($data['codigo_conta']))) {
+
+                $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterAccountCodeRedeUzeDAO($CardsIssuedReportModel);
+            } else if (!empty(trim($data['codigo_cartao']))) {
+                
+                $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterCardCodeRedeUzeDAO($CardsIssuedReportModel);
             } else if (
                 !empty(trim($data['dataInicial'])) && !empty(trim($data['dataFinal']))
                 && empty(trim($data['expedicaoInicial'])) && empty(trim($data['expedicaoFinal']))
             ) {
 
                 $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterDateRedeUzeDAO($CardsIssuedReportModel);
-
             } else if (
                 !empty(trim($data['expedicaoInicial'])) && !empty(trim($data['expedicaoFinal']))
                 && empty(trim($data['dataInicial'])) && empty(trim($data['dataFinal']))
             ) {
 
                 $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterShippingRedeUzeDAO($CardsIssuedReportModel);
-
             } else if (
                 !empty(trim($data['expedicaoInicial'])) && !empty(trim($data['expedicaoFinal']))
                 && !empty(trim($data['dataInicial'])) && !empty(trim($data['dataFinal']))
             ) {
 
                 $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterDatesInGeneralRedeUzeDAO($CardsIssuedReportModel);
-
             } else {
 
                 $CardsIssuedReport = "Preencha os campos corretamente!";
-
             }
         }
 
         $response = $response->withJson($CardsIssuedReport);
 
-        
+
 
         return $response;
     }
-
 }

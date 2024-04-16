@@ -26,7 +26,7 @@ const PageHome: React.FC = () => {
         try {
             const response = await api.post<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>("/waste-products", { searchTerm });
             setWasteData(response.data);
-    
+
             // Processar os dados para contar a quantidade de cada tipo de perda
             const lossQuantities: Record<string, number> = {};
             response.data.forEach((item) => {
@@ -36,11 +36,11 @@ const PageHome: React.FC = () => {
                     lossQuantities[item.desc_perda] = item.qtd;
                 }
             });
-    
+
             // Criar os dados necessários para o gráfico de pizza
             const labels = Object.keys(lossQuantities);
             const data = Object.values(lossQuantities);
-    
+
 
             // Criar o gráfico de pizza usando Chart.js
 
@@ -70,11 +70,11 @@ const PageHome: React.FC = () => {
                         responsive: true,
                         maintainAspectRatio: false, // Isso permite que você defina largura e altura
                         // Defina a largura e altura desejadas aqui
-                        plugins:{
-                            title:{
-                                display:true,
-                                text:'Rejeitos',
-                                font:{
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Rejeitos',
+                                font: {
                                     size: 18
                                 }
                             },
@@ -84,7 +84,7 @@ const PageHome: React.FC = () => {
                                         size: 12 // Tamanho da fonte dos rótulos
                                     }
                                 }
-                            }
+                            },
                         }
                     }
                 });
@@ -321,7 +321,7 @@ const PageHome: React.FC = () => {
                 typeMessage={typeMessageAwaitingRelease}
             />
 
-           
+
             <Table
                 data={Array.isArray(inProductionData) ? inProductionData : []}
                 column={columnsInProduction}

@@ -55,7 +55,7 @@ const PageHome: React.FC = () => {
                             data: data,
                             backgroundColor: [
                                 'rgba(245, 99, 255, 0.5)',
-                                'rgba(110, 149, 175, 0.5)',
+                                'rgba(134, 207, 216, 0.5)',
                                 'rgba(255, 206, 86, 0.5)',
                                 'rgba(75, 192, 192, 0.5)',
                                 'rgba(153, 102, 255, 0.5)',
@@ -67,7 +67,24 @@ const PageHome: React.FC = () => {
                     },
                     options: {
                         responsive: true,
-                        maintainAspectRatio: false
+                        maintainAspectRatio: false, // Isso permite que você defina largura e altura
+                        // Defina a largura e altura desejadas aqui
+                        plugins:{
+                            title:{
+                                display:true,
+                                text:'Rejeitos',
+                                font:{
+                                    size: 18
+                                }
+                            },
+                            legend: {
+                                labels: {
+                                    font: {
+                                        size: 14 // Tamanho da fonte dos rótulos
+                                    }
+                                }
+                            }
+                        }
                     }
                 });
                 setPieChart(chart);
@@ -292,12 +309,18 @@ const PageHome: React.FC = () => {
 
             </Select>
 
+            <div className="chart-container">
+                <canvas id="wasteChart" width="600" height="400"></canvas>
+            </div>
+
             <Table
                 data={Array.isArray(awaitingReleaseData) ? awaitingReleaseData : []}
                 column={columnsAwaitingRelease}
                 titleTable="Aguardando liberação"
                 typeMessage={typeMessageAwaitingRelease}
             />
+
+           
             <Table
                 data={Array.isArray(inProductionData) ? inProductionData : []}
                 column={columnsInProduction}
@@ -320,9 +343,7 @@ const PageHome: React.FC = () => {
                 typeMessage={typeMessageDispatched} />
 
 
-            <div className="chart-container">
-                <canvas id="wasteChart"></canvas>
-            </div>
+
         </div >
     )
 }

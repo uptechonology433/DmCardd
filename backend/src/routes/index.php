@@ -9,6 +9,7 @@ use App\Controllers\AwaitingRelease\AwaitingReleaseController;
 use App\Controllers\AwaitingShipment\AwaitingShipmentController;
 use App\Controllers\CardsIssuedReport\CardsIssuedReportController;
 use App\Controllers\Dispatched\DispatchedController;
+use App\Controllers\Graph\GraphController;
 use App\Controllers\Inactive\InactiveProductsController;
 use App\Controllers\ProductionReport\ProductionReportController;
 
@@ -68,6 +69,8 @@ $app -> get('/dispatched' , DispatchedController::class . ':Dispatched')
 -> add(new jwtDateTime())
 -> add(jwtAuth());
 // ==================================================
+
+
 
 // ================== Produtos Inativos =============
 $app->post('/inactive-products', InactiveProductsController::class . ':getInactiveProducts')

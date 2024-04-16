@@ -3,7 +3,7 @@ import api from "../../connectionAPI";
 import Table from "../../components/shared/Table";
 import DefaultHeader from "../../components/layout/DefaultHeader";
 import Select from "../../components/shared/Select";
-
+import Chart from "chart.js/auto";
 
 
 
@@ -16,8 +16,70 @@ const PageHome: React.FC = () => {
     const [typeMessageAwaitingRelease, setTypeMessageAwaitingRelease] = useState(false);
     const [typeMessageAwaitingShipment, setTypeMessageAwaitingShipment] = useState(false);
     const [typeMessageDispatched, setTypeMessageDispatched] = useState(false);
-    const [formValues, setFormValues] = useState({ Type: "elo" });
+    const [formValues, setFormValues] = useState({ Type: "dmcard" });
+    const [searchTerm, setSearchTerm] = useState("");
 
+    const [wasteData, setWasteData] = useState<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>([]);
+    const [pieChart, setPieChart] = useState<Chart<'pie', number[], string> | null>(null);
+
+    const fetchWasteProducts = async () => {
+        try {
+            const response = await api.post<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>("/waste-products", { searchTerm });
+            setWasteData(response.data);
+
+            // Processar os dados para contar a quantidade de cada tipo de perda
+            const lossCounts: Record<string, number> = {};
+            response.data.forEach((item) => {
+                if (lossCounts[item.desc_perda]) {
+                    lossCounts[item.desc_perda]++;
+                } else {
+                    lossCounts[item.desc_perda] = 1;
+                }
+            });
+
+            // Criar os dados necessários para o gráfico de pizza
+            const labels = Object.keys(lossCounts);
+            const data = Object.values(lossCounts);
+
+            // Criar o gráfico de pizza usando Chart.js
+
+            const ctx = document.getElementById("wasteChart") as HTMLCanvasElement;
+
+            if (ctx) {
+                const chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Quantidade de Perdas',
+                            data: data,
+                            backgroundColor: [
+                                'rgba(245, 99, 255, 0.5)',
+                                'rgba(110, 149, 175, 0.5)',
+                                'rgba(255, 206, 86, 0.5)',
+                                'rgba(75, 192, 192, 0.5)',
+                                'rgba(153, 102, 255, 0.5)',
+                                'rgba(255, 159, 64, 0.5)'
+                                // Adicione mais cores se houver mais tipos de perda
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+                setPieChart(chart);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchWasteProducts();
+    }, [searchTerm]);
 
     const handleChange = (e: any) => {
         setFormValues({
@@ -41,6 +103,8 @@ const PageHome: React.FC = () => {
         {
             name: 'Desc do Produto',
             selector: (row: any) => row.desc_produto,
+
+
         },
         {
             name: 'Data Pros',
@@ -51,13 +115,15 @@ const PageHome: React.FC = () => {
             name: 'Quantidade de cartões',
             selector: (row: any) => row.total_cartoes,
             sortable: true
-        }, 
+        },
         {
             name: 'Etapa',
             selector: (row: any) => row.status,
             sortable: true
         },
     ];
+
+
 
 
     const columnsAwaitingRelease: Array<Object> = [
@@ -154,10 +220,10 @@ const PageHome: React.FC = () => {
 
         const HomePageRequests = async () => {
 
-           
+
             await api.get('/awaiting-release')
                 .then((data) => {
-                    if (formValues.Type === "elo") {
+                    if (formValues.Type === "redeuze") {
                         setAwaitingRelease(data.data[1]);
                     } else {
                         setAwaitingRelease(data.data[0]);
@@ -167,7 +233,7 @@ const PageHome: React.FC = () => {
                     setTypeMessageAwaitingRelease(true);
                 });
 
-                await api.post('/production', { tipo: formValues.Type })
+            await api.post('/production', { tipo: formValues.Type })
                 .then((data) => {
                     setInProductionData(data.data)
                 }).catch(() => {
@@ -177,7 +243,7 @@ const PageHome: React.FC = () => {
             await api.get('/awaiting-shipment')
                 .then((data) => {
 
-                    if (formValues.Type === "elo") {
+                    if (formValues.Type === "redeuze") {
                         setAwaitingShipment(data.data[1]);
                     } else {
                         setAwaitingShipment(data.data[0]);
@@ -189,7 +255,7 @@ const PageHome: React.FC = () => {
 
             await api.get('/dispatched')
                 .then((data) => {
-                    if (formValues.Type === "elo") {
+                    if (formValues.Type === "redeuze") {
                         setDispatched(data.data[1]);
                     } else {
                         setDispatched(data.data[0]);
@@ -204,24 +270,60 @@ const PageHome: React.FC = () => {
 
     }, [formValues]);
 
+
+
+
+
+
+
+
+
+
     return (
         <div className="container-page-home">
 
-            <DefaultHeader sessionTheme="Dashboards" />
+            <DefaultHeader />
 
-            <div className="container-inputs">
-                    <div className="inputs">
-                        <Select info={"Selecione um Tipo:"} name="cardType" onChange={handleChange}>
-                            <option selected>Selecione um Tipo...</option>
-                            <option value="DmCard">Dm Card</option>
-                            <option value="RedeUze">Rede Uze</option>
-                        </Select>
-                    </div>
+            <Select info={"Selecione o tipo de cartão:"} name="Type" onChange={handleChange}>
+                <option value="dmcard">Dm Card</option>
+                <option value="redeuze">Rede Uze</option>
 
-        </div>
-           
-      </div>
 
+
+            </Select>
+
+            <Table
+                data={Array.isArray(awaitingReleaseData) ? awaitingReleaseData : []}
+                column={columnsAwaitingRelease}
+                titleTable="Aguardando liberação"
+                typeMessage={typeMessageAwaitingRelease}
+            />
+            <Table
+                data={Array.isArray(inProductionData) ? inProductionData : []}
+                column={columnsInProduction}
+                titleTable="Em produção"
+                typeMessage={typeMessageInProduction}
+
+
+            />
+
+            <Table
+                data={Array.isArray(awaitingShipmentData) ? awaitingShipmentData : []}
+                column={columnsAwaitingShipment}
+                titleTable="Aguardando Expedição"
+                typeMessage={typeMessageAwaitingShipment} />
+
+            <Table
+                data={Array.isArray(dispatchedData) ? dispatchedData : []}
+                column={columnsDispatched}
+                titleTable="Expedidos"
+                typeMessage={typeMessageDispatched} />
+
+
+            <div className="chart-container">
+                <canvas id="wasteChart"></canvas>
+            </div>
+        </div >
     )
 }
 

@@ -14,7 +14,7 @@ class TokensDAO extends Connection{
     public function createToken(TokenModel $token) : void {
 
         $statement = $this -> pdo
-            -> prepare("INSERT INTO tokens_mega_vale(usuarios_id , token , refresh_token , expired_at) 
+            -> prepare("INSERT INTO tokens_dm_card(usuarios_id , token , refresh_token , expired_at) 
             VALUES (:usuarios_id, :token , :refresh_token , :expired_at );
             ");
 
@@ -32,7 +32,7 @@ class TokensDAO extends Connection{
         $statement = $this->pdo
             ->prepare("SELECT
                     id
-                FROM tokens_mega_vale
+                FROM tokens_dm_card
                 WHERE refresh_token = :refresh_token;
             ");
 
@@ -47,7 +47,7 @@ class TokensDAO extends Connection{
     public function DeleteTokens(string $refreshToken) : void {
         
         $statement = $this->pdo
-            ->prepare("DELETE FROM tokens_mega_vale WHERE refresh_token = :refresh_token;");
+            ->prepare("DELETE FROM tokens_dm_card WHERE refresh_token = :refresh_token;");
 
         $statement->bindParam('refresh_token', $refreshToken);
         $statement->execute();

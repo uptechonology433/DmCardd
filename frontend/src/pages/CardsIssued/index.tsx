@@ -148,7 +148,7 @@ const PageCardsIssued: React.FC = () => {
           <div className="inputs">
             <Input name="fileName" placeholder='Arquivo...' info="Arquivo:" onChange={handleChange} />
             <Select info={"Selecione um Tipo:"} name="cardType" onChange={handleChange}>
-              <option selected>Selecione um Tipo...</option>
+              <option selected value="">Selecione um Tipo...</option>
               <option value="DmCard">Dm Card</option>
               <option value="RedeUze">Rede Uze</option>
             </Select>

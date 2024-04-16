@@ -17,13 +17,13 @@ final class ProductionController
         $productionDAO = new ProductionDAO();
         
 
-        if($data['tipo'] == 'chip'){
+        if($data['tipo'] == 'dmcard'){
             
-            $production = $productionDAO -> getAllProductsInProductionChip($data['tipo']);
+            $production = $productionDAO -> getAllProductsInProductionDmCard($data['tipo']);
 
-        }elseif ($data['tipo'] == 'elo'){
+        }elseif ($data['tipo'] == 'redeuze'){
 
-            $production = $productionDAO -> getAllProductsInProductionElo($data['tipo']);
+            $production = $productionDAO -> getAllProductsInProductionRedeUze($data['tipo']);
     }
 
        

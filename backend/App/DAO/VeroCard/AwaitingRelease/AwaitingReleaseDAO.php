@@ -11,10 +11,10 @@ class AwaitingReleaseDAO extends Connection{
         parent::__construct();
     }
 
-    public function getAllAwaitingReleaseChip() : array {
+    public function getAllAwaitingReleaseDmCard() : array {
 
         $productsAwaitingRelease = $this -> pdo
-            ->query("SELECT  * FROM view_megavale_awaitingrelease_chip") 
+            ->query("SELECT  * FROM view_dmcard_awaitingrelease") 
             ->fetchAll(\PDO::FETCH_ASSOC);
 
             foreach ($productsAwaitingRelease as &$product) {
@@ -26,10 +26,10 @@ class AwaitingReleaseDAO extends Connection{
 
     }
 
-    public function getAllAwaitingReleaseElo() : array {
+    public function getAllAwaitingReleaseRedeUze() : array {
 
         $productsAwaitingRelease = $this -> pdo
-            ->query("SELECT * from view_megavale_awaitingrelease_elo;") 
+            ->query("SELECT * from view_redeuze_awaitingrelease;") 
             ->fetchAll(\PDO::FETCH_ASSOC);
 
             foreach ($productsAwaitingRelease as &$product) {

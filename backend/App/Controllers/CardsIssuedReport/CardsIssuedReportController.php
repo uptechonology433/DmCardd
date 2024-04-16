@@ -77,7 +77,7 @@ final class CardsIssuedReportController
             } else if (!empty(trim($data['desc_status'])) && $data['desc_status'] === 'EmProducao') {
                 $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterStatusInProductionDmCardDAO($CardsIssuedReportModel);
 
-            }else if(!empty(trim($data['desc_status'])) && $data['desc_status'] === 'Expedido'){
+            } else if(!empty(trim($data['desc_status'])) && $data['desc_status'] === 'Expedido'){
                 $CardsIssuedReport = $CardsIssuedReportDAO->getCardsIssuedReportFilterStatusDispatichedDmCardDAO($CardsIssuedReportModel);
             } else if (
                 !empty(trim($data['dataInicial'])) && !empty(trim($data['dataFinal']))

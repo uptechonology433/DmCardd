@@ -50,14 +50,14 @@ const PageHome: React.FC = () => {
                 const chart = new Chart(ctx, {
                     type: 'pie',
                     data: {
-                        labels: labels,
+                        labels: labels.map((label, index) => `${label}: ${data[index]}`), // Adiciona a quantidade aos rótulos
                         datasets: [{
                             label: 'Quantidade de Perdas',
                             data: data,
                             backgroundColor: [
-                                'rgba(245, 99, 255, 0.5)',
-                                'rgba(134, 207, 216, 0.5)',
-                                'rgba(255, 206, 86, 0.5)',
+                                'rgba(255, 99, 200, 0.5)',
+                                'rgba(72, 83, 240, 0.5)',
+                                'rgba(241, 135, 29, 0.5)',
                                 'rgba(75, 192, 192, 0.5)',
                                 'rgba(153, 102, 255, 0.5)',
                                 'rgba(255, 159, 64, 0.5)'
@@ -68,8 +68,7 @@ const PageHome: React.FC = () => {
                     },
                     options: {
                         responsive: true,
-                        maintainAspectRatio: false, // Isso permite que você defina largura e altura
-                        // Defina a largura e altura desejadas aqui
+                        maintainAspectRatio: false,
                         plugins: {
                             title: {
                                 display: true,
@@ -81,10 +80,11 @@ const PageHome: React.FC = () => {
                             legend: {
                                 labels: {
                                     font: {
-                                        size: 12 // Tamanho da fonte dos rótulos
+                                        size: 12
                                     }
                                 }
                             },
+                          
                         }
                     }
                 });

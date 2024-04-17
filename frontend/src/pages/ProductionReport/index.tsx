@@ -31,7 +31,7 @@ const PageProductionReport: React.FC = () => {
             [e.target.name]: e.target.value
         })
     }
-    
+
 
     const columnsProductionReport: Array<Object> = [
         {
@@ -50,7 +50,7 @@ const PageProductionReport: React.FC = () => {
             name: 'Qtd Cartões',
             selector: (row: any) => row.total_cartoes
         },
-       
+
         {
             name: 'Status',
             selector: (row: any) => row.dt_expedicao ? 'Expedido' : row.status
@@ -88,16 +88,16 @@ const PageProductionReport: React.FC = () => {
                     text: 'A data inicial não pode ser maior que a final.',
                 });
             }
-        }else {
+        } else {
             Swal.fire({
                 icon: 'error',
                 title: 'Selecione um tipo de cartão...',
                 text: 'Selecione DmCard ou Rede Uze antes de fazer a filtragem dos dados.',
             });
-        }    
+        }
     }
 
-    
+
 
     const refExcel: any = useRef();
     const { onDownload } = useDownloadExcel({
@@ -155,37 +155,35 @@ const PageProductionReport: React.FC = () => {
                             <tbody>
 
                                 <tr>
-                                    <td>Código do produto</td>
-                                    <td>Descrição do produto</td>
+                                    <td>Nome do Arquivo</td>
                                     <td>Data de processamento</td>
                                     <td>Data de expedição</td>
-                                    <td>Total de cartões</td>
+                                    <td>Qtd Cartões</td>
                                     <td>Status</td>
-                                    <td>Rastreio</td>
+                                    <td>Qtd Rastreio</td>
                                 </tr>
 
                             </tbody>
                             {
-                                    ProductionReportData.map((data: any) =>
-                                        <tr key={data.id}>
-                                            <td>{data.cod_produto}</td>
-                                            <td>{data.desc_produto}</td>
-                                            <td>{data.dt_processamento}</td>
-                                            <td>{data.dt_expedicao}</td>
-                                            <td>{data.total_cartoes}</td>
-                                            <td>{data.status}</td>
-                                            <td>{data.rastreio}</td>
-                                        </tr>
-                                        
-                                    )
-                                }
+                                ProductionReportData.map((data: any) =>
+                                    <tr key={data.id}>
+                                        <td>{data.nome_arquivo_proc}</td>
+                                        <td>{data.dt_processamento}</td>
+                                        <td>{data.dt_expedicao}</td>
+                                        <td>{data.total_cartoes}</td>
+                                        <td>{data.status}</td>
+                                        <td>{data.total_rastreio}</td>
+                                    </tr>
+
+                                )
+                            }
 
                         </table>
 
                     </div>
 
                 </div>
-                
+
 
                 <DownloadFacilitators excelClick={() => onDownload()} textButton="Pesquisar" onClickButton={() => ProductionReportRequests()} csvData={ProductionReportData} />
 

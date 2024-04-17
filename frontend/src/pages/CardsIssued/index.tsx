@@ -222,12 +222,14 @@ const PageCardsIssued: React.FC = () => {
               <tbody>
 
                 <tr>
-                  <td>Código do produto</td>
-                  <td>Descrição do produto</td>
-                  <td>Data de processamento</td>
-                  <td>Data de expedição</td>
-                  <td>Total de cartões</td>
+                  <td>Nome do aqrquivo</td>
+                  <td>Titular</td>
+                  <td>N° Cartão</td>
+                  <td>Cod Cartão</td>
+                  <td>Cod Conta</td>
                   <td>Status</td>
+                  <td>Data Pross</td>
+                  <td>Data Expedido</td>
                   <td>Rastreio</td>
                 </tr>
 
@@ -235,12 +237,14 @@ const PageCardsIssued: React.FC = () => {
               {
                 cardsIssuedReportData.map((data: any) =>
                   <tr key={data.id}>
-                    <td>{data.cod_produto}</td>
-                    <td>{data.desc_produto}</td>
-                    <td>{data.dt_processamento}</td>
+                    <td>{data.nome_arquivo_proc}</td>
+                    <td>{data.titular}</td>
+                    <td>{data.nr_cartao}</td>
+                    <td>{data.codigo_cartao}</td>
+                    <td>{data.codigo_conta}</td>
+                    <td>{data.desc_status}</td>
+                    <td>{data.dt_op}</td>
                     <td>{data.dt_expedicao}</td>
-                    <td>{data.total_cartoes}</td>
-                    <td>{data.status}</td>
                     <td>{data.rastreio}</td>
                   </tr>
 

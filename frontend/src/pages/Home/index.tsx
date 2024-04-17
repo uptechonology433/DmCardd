@@ -29,7 +29,7 @@ const PageHome: React.FC = () => {
             const response = await api.post<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>("/waste-products", { searchTerm });
             setWasteData(response.data);
             setLoading(false);
-
+    
             // Processar os dados para contar a quantidade de cada tipo de perda
             const lossQuantities: Record<string, number> = {};
             response.data.forEach((item) => {

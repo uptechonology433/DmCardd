@@ -17,6 +17,8 @@ const PageRuptures: React.FC = () => {
 
     const [rupturesData, setRupturesData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [ProductionReportMessage, setProductionReportMessage] = useState(false);
+
 
     const columnsRuptures: Array<Object> = [
         {
@@ -35,7 +37,7 @@ const PageRuptures: React.FC = () => {
             sortable: true
         },
         {
-            name: 'Qtd Estoque',
+            name: 'Estoque',
             selector: (row: any) => row["QTD ESTQ"],
             sortable: true
         },
@@ -66,7 +68,7 @@ const PageRuptures: React.FC = () => {
             setRupturesData(response.data);
         } catch (error) {
             console.log(error);
-          
+
         }
     };
 
@@ -78,13 +80,14 @@ const PageRuptures: React.FC = () => {
         setSearchTerm(e.target.value);
     };
 
-    // const tableRef: any = useRef();
+    const refExcel: any = useRef();
 
-    // const { onDownload } = useDownloadExcel({
-    //     currentTableRef: tableRef.current,
-    //     filename: "Usuarios VeroCard",
-    //     sheet: "Usuarios VeroCard"
-    // })
+    const { onDownload } = useDownloadExcel({
+        currentTableRef: refExcel.current,
+        filename: "Rupturas",
+        sheet: "Rupturas"
+    })
+
 
 
 
@@ -101,25 +104,71 @@ const PageRuptures: React.FC = () => {
                         placeholder="Produto..."
                         value={searchTerm}
                         onChange={handleChange}
-                      
+
                     />
+                    <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={handleSearch} />
                 </div>
-                <DownloadFacilitators excelClick={() => {}} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={handleSearch} />
+
+                <Table
+                    data={rupturesData}
+                    column={columnsRuptures}
+                    typeMessage={ProductionReportMessage}
+                    refExcel={refExcel}
+                />
+
+                <div className="table-container-dowload">
+
+                    <div className="scroll-table-dowload">
+                        <table ref={refExcel}>
+
+                            <tbody>
+
+                                <tr>
+                                    <td>Cod Produto</td>
+                                    <td>Produto</td>
+                                    <td>Data</td>
+                                    <td>Estoque</td>
+                                    <td>Qtd Cartões</td>
+                                    <td>Diferença</td>
+                                    <td>Descrição</td>
+                                </tr>
+
+
+                                {
+                                    rupturesData.map((data: any) =>
+                                        <tr key={data.id}>
+                                            <td>{data['COD PRODUTO']}</td>
+                                            <td>{data.PRODUTO}</td>
+                                            <td>{data.dt_op}</td>
+                                            <td>{data['QTD ESTQ']}</td>
+                                            <td>{data['QTD ARQ']}</td>
+                                            <td>{data.DIFERENÇA}</td>
+                                            <td>{data.observacao}</td>
+
+                                        </tr>
+                                    )
+                                }
+
+
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
 
             </div>
-            <Table
-                data={rupturesData}
-                column={columnsRuptures}
-                titleTable="Rupturas"
-            />
 
 
-           
+
+
 
         </>
 
     )
-    
+
 }
 
 export default PageRuptures

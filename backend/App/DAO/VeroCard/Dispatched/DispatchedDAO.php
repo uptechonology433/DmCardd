@@ -17,7 +17,10 @@ class DispatchedDAO extends Connection{
             ->query("SELECT  * FROM view_dmcard_dispatched;") 
             ->fetchAll(\PDO::FETCH_ASSOC);
 
-          
+            foreach ($productsDispatched as &$product) {
+                $product['dt_processamento'] = date('d/m/Y', strtotime($product['dt_processamento']));
+                $product['dt_expedicao'] = date('d/m/Y', strtotime($product['dt_expedicao']));
+            }
 
             return $productsDispatched ;
 
@@ -28,7 +31,10 @@ class DispatchedDAO extends Connection{
         $productsDispatched  = $this -> pdo
             ->query("SELECT * from view_redeuze_dispatched;") 
             ->fetchAll(\PDO::FETCH_ASSOC);
-
+            foreach ($productsDispatched as &$product) {
+                $product['dt_processamento'] = date('d/m/Y', strtotime($product['dt_processamento']));
+                $product['dt_expedicao'] = date('d/m/Y', strtotime($product['dt_expedicao']));
+            }
            
 
             return $productsDispatched ;

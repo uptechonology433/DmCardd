@@ -13,26 +13,17 @@ import { useNavigate } from "react-router-dom";
 const PageProductionReport: React.FC = () => {
 
     const [ProductionReportData, setProductionReportData] = useState([]);
-
     const [ProductionReportMessage, setProductionReportMessage] = useState(false);
-
     const navigate = useNavigate();
 
     const [formValues, setFormValues] = useState({
-
         fileName: "",
-
         InitialProcessingDate: "",
-
         FinalProcessingDate: "",
-
         InitialShippingDate: "",
-
         FinalShippingDate: "",
-
         cardType: ""
-
-});
+    });
 
     const handleChange = (e: any) => {
         setFormValues({
@@ -40,6 +31,7 @@ const PageProductionReport: React.FC = () => {
             [e.target.name]: e.target.value
         })
     }
+    
 
     const columnsProductionReport: Array<Object> = [
         {
@@ -104,6 +96,8 @@ const PageProductionReport: React.FC = () => {
             });
         }    
     }
+
+    
 
     const refExcel: any = useRef();
     const { onDownload } = useDownloadExcel({

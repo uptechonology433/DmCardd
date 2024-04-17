@@ -125,8 +125,8 @@ const PageUsers: React.FC = () => {
 
     const { onDownload } = useDownloadExcel({
         currentTableRef: tableRef.current,
-        filename: "Usuarios VeroCard",
-        sheet: "Usuarios VeroCard"
+        filename: "Usuarios DmCard",
+        sheet: "Usuarios DmCard"
     })
 
 

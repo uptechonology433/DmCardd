@@ -17,15 +17,16 @@ const PageWaste: React.FC = () => {
 
     const [wasteData, setWasteData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [ProductionReportMessage, setProductionReportMessage] = useState(false);
 
     const columnsWaste: Array<Object> = [
         {
-            name: 'Codigo do produto',
+            name: 'Cod Produto',
             selector: (row: any) => row.cod_produto,
             sortable: true
         },
         {
-            name: 'Descrição do produto',
+            name: 'Desc Produto',
             selector: (row: any) => row.desc_produto,
             sortable: true
         },
@@ -35,12 +36,12 @@ const PageWaste: React.FC = () => {
             sortable: true
         },
         {
-            name: 'Data da perda',
+            name: 'Data Perda',
             selector: (row: any) => row.dt_perda,
             sortable: true
         },
         {
-            name: 'Descrição da Perda',
+            name: 'Desc Perda',
             selector: (row: any) => row.desc_perda,
             sortable: true
         }
@@ -56,7 +57,7 @@ const PageWaste: React.FC = () => {
             setWasteData(response.data);
         } catch (error) {
             console.log(error);
-           
+
         }
     };
 
@@ -68,13 +69,13 @@ const PageWaste: React.FC = () => {
         setSearchTerm(e.target.value);
     };
 
-    // const tableRef: any = useRef();
+    const refExcel: any = useRef();
 
-    // const { onDownload } = useDownloadExcel({
-    //     currentTableRef: tableRef.current,
-    //     filename: "Usuarios VeroCard",
-    //     sheet: "Usuarios VeroCard"
-    // })
+    const { onDownload } = useDownloadExcel({
+        currentTableRef: refExcel.current,
+        filename: "Rejeitos",
+        sheet: "Rejeitos"
+    })
 
 
 
@@ -91,19 +92,67 @@ const PageWaste: React.FC = () => {
                         placeholder="Produto..."
                         value={searchTerm}
                         onChange={handleChange}
-                     
+
                     />
+
+
                 </div>
-                <DownloadFacilitators excelClick={() => {}} printClick={() => window.print()} textButton={'Pesquisar'}  onClickButton={handleSearch}/>
+                <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={handleSearch} />
+
+                <Table
+                    data={wasteData}
+                    column={columnsWaste}
+                    typeMessage={ProductionReportMessage}
+                    refExcel={refExcel}
+
+                />
+
+                <div className="table-container-dowload">
+
+                    <div className="scroll-table-dowload">
+                        <table ref={refExcel}>
+
+                            <tbody>
+
+                                <tr>
+                                    <td>Cod Produto</td>
+                                    <td>Desc Produto</td>
+                                    <td>Qtd</td>
+                                    <td>Data Perda</td>
+                                    <td>Desc Perda</td>
+                                </tr>
+
+
+                                {
+                                    wasteData.map((data: any) =>
+                                        <tr key={data.id}>
+                                            <td>{data.cod_produto}</td>
+                                            <td>{data.desc_produto}</td>
+                                            <td>{data.qtd}</td>
+                                            <td>{data.dt_perda}</td>
+                                            <td>{data.desc_perda}</td>
+
+                                        </tr>
+                                    )
+                                }
+
+
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+
 
             </div>
-            <Table
-                data={wasteData}
-                column={columnsWaste}
-                titleTable="Rejeitos"
-            />
 
-           
+
+
         </>
 
     )

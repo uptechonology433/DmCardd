@@ -20,12 +20,15 @@ const PageHome: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
     const [wasteData, setWasteData] = useState<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>([]);
+    const [loading, setLoading] = useState(true); // Estado de carregamento
     const [pieChart, setPieChart] = useState<Chart<'pie', number[], string> | null>(null);
+
 
     const fetchWasteProducts = async () => {
         try {
             const response = await api.post<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>("/waste-products", { searchTerm });
             setWasteData(response.data);
+            setLoading(false);
 
             // Processar os dados para contar a quantidade de cada tipo de perda
             const lossQuantities: Record<string, number> = {};
@@ -106,6 +109,32 @@ const PageHome: React.FC = () => {
         })
     }
 
+    const columnsAwaitingRelease: Array<Object> = [
+        {
+            name: 'Codigo do produto',
+            selector: (row: any) => row.cod_produto,
+            sortable: true
+        },
+        {
+            name: 'Nome do arquivo',
+            selector: (row: any) => row.nome_arquivo_proc
+
+        },
+        {
+            name: 'Desc do Produto',
+            selector: (row: any) => row.desc_produto
+
+        },
+        {
+            name: 'Data de entrada',
+            selector: (row: any) => row.dt_processamento
+        },
+        {
+            name: 'Qtd cartões',
+            selector: (row: any) => row.total_cartoes
+        }
+    ];
+
 
     const columnsInProduction: Array<Object> = [
         {
@@ -139,36 +168,17 @@ const PageHome: React.FC = () => {
             selector: (row: any) => row.status,
             sortable: true
         },
-    ];
-
-
-
-
-    const columnsAwaitingRelease: Array<Object> = [
         {
-            name: 'Codigo do produto',
-            selector: (row: any) => row.cod_produto,
+            name: 'Rastreio',
+            selector: (row: any) => row.rastreio,
             sortable: true
         },
-        {
-            name: 'Nome do arquivo',
-            selector: (row: any) => row.nome_arquivo_proc
-
-        },
-        {
-            name: 'Desc do Produto',
-            selector: (row: any) => row.desc_produto
-
-        },
-        {
-            name: 'Data de entrada',
-            selector: (row: any) => row.dt_processamento
-        },
-        {
-            name: 'Qtd cartões',
-            selector: (row: any) => row.total_cartoes
-        }
     ];
+
+
+
+
+  
 
     const columnsAwaitingShipment: Array<Object> = [
         {

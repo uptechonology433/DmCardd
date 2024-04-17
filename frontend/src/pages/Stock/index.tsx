@@ -113,6 +113,7 @@ const PageStock: React.FC = () => {
     })
 
 
+
     console.log(quantityofMaterialsData.total_envelopes)
     return (
         <>
@@ -218,7 +219,7 @@ const PageStock: React.FC = () => {
 
                 </div>
 
-                <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={() => ProductionReportRequests()} csvData={stockData} />
+                <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={() => ProductionReportRequests()}  />
 
             </div>
 

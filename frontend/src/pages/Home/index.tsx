@@ -50,15 +50,17 @@ const PageHome: React.FC = () => {
                 const chart = new Chart(ctx, {
                     type: 'pie',
                     data: {
-                        labels: labels.map((label, index) => `${label}: ${data[index]} (${wasteData[index].desc_produto})`), 
+                        labels: labels.map((label, index) => `${label}: ${data[index]}`), // Adiciona a quantidade aos rótulos
                         datasets: [{
                             label: 'Quantidade de Perdas',
                             data: data,
                             backgroundColor: [
                                 'rgba(255, 99, 200, 0.5)',
                                 'rgba(72, 83, 240, 0.5)',
-                                'rgba(241, 135, 29, 0.5)'
-                               
+                                'rgba(241, 135, 29, 0.5)',
+                                'rgba(75, 192, 192, 0.5)',
+                                'rgba(153, 102, 255, 0.5)',
+                                'rgba(255, 159, 64, 0.5)'
                                 // Adicione mais cores se houver mais tipos de perda
                             ],
                             borderWidth: 1
@@ -82,7 +84,7 @@ const PageHome: React.FC = () => {
                                     }
                                 }
                             },
-                          
+
                         }
                     }
                 });
@@ -308,9 +310,6 @@ const PageHome: React.FC = () => {
 
             </Select>
 
-            <div className="chart-container">
-                <canvas id="wasteChart" width="600" height="400"></canvas>
-            </div>
 
             <Table
                 data={Array.isArray(awaitingReleaseData) ? awaitingReleaseData : []}
@@ -341,6 +340,10 @@ const PageHome: React.FC = () => {
                 titleTable="Expedidos"
                 typeMessage={typeMessageDispatched} />
 
+
+            <div className="chart-container">
+                <canvas id="wasteChart" width="600" height="400"></canvas>
+            </div>
 
 
         </div >

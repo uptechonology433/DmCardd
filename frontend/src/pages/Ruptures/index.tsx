@@ -137,7 +137,7 @@ const PageRuptures: React.FC = () => {
                                 {
                                     rupturesData.map((data: any) =>
                                         <tr key={data.id}>
-                                            <td>{data['COD PRODUTO']}</td>
+                                            <td>{data['COD PROD']}</td>
                                             <td>{data.PRODUTO}</td>
                                             <td>{data.dt_op}</td>
                                             <td>{data['QTD ESTQ']}</td>

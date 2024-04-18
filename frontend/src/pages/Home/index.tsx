@@ -110,19 +110,10 @@ const PageHome: React.FC = () => {
     }
 
     const columnsAwaitingRelease: Array<Object> = [
-        {
-            name: 'Codigo do produto',
-            selector: (row: any) => row.cod_produto,
-            sortable: true
-        },
+ 
         {
             name: 'Nome do arquivo',
             selector: (row: any) => row.nome_arquivo_proc
-
-        },
-        {
-            name: 'Desc do Produto',
-            selector: (row: any) => row.desc_produto
 
         },
         {
@@ -137,22 +128,13 @@ const PageHome: React.FC = () => {
 
 
     const columnsInProduction: Array<Object> = [
-        {
-            name: 'Codigo do produto',
-            selector: (row: any) => row.cod_produto,
-            sortable: true
-        },
+    
         {
             name: 'Nome do arquivo',
             selector: (row: any) => row.nome_arquivo_proc,
 
         },
-        {
-            name: 'Desc do Produto',
-            selector: (row: any) => row.desc_produto,
-
-
-        },
+ 
         {
             name: 'Data Pros',
             selector: (row: any) => row.dt_processamento
@@ -168,11 +150,7 @@ const PageHome: React.FC = () => {
             selector: (row: any) => row.status,
             sortable: true
         },
-        {
-            name: 'Rastreio',
-            selector: (row: any) => row.rastreio,
-            sortable: true
-        },
+      
     ];
 
 
@@ -181,21 +159,13 @@ const PageHome: React.FC = () => {
   
 
     const columnsAwaitingShipment: Array<Object> = [
-        {
-            name: 'Codigo do produto',
-            selector: (row: any) => row.cod_produto,
-            sortable: true
-        },
+
         {
             name: 'Nome do arquivo',
             selector: (row: any) => row.nome_arquivo_proc
 
         },
-        {
-            name: 'Desc do Produto',
-            selector: (row: any) => row.desc_produto
-
-        },
+ 
         {
             name: 'Data de entrada',
             selector: (row: any) => row.dt_processamento
@@ -204,27 +174,14 @@ const PageHome: React.FC = () => {
             name: 'Qtd cartões',
             selector: (row: any) => row.total_cartoes
         },
-        {
-            name: 'Rastreio',
-            selector: (row: any) => row.rastreio
-        }
+  
     ];
 
     const columnsDispatched: Array<Object> = [
-        {
-            name: 'Codigo do produto',
-            selector: (row: any) => row.cod_produto,
-            sortable: true
-        },
+   
         {
             name: 'Nome do arquivo',
             selector: (row: any) => row.nome_arquivo_proc
-
-        },
-        {
-            name: 'Desc do Produto',
-            selector: (row: any) => row.desc_produto
-
         },
         {
             name: 'Data de entrada',
@@ -238,10 +195,7 @@ const PageHome: React.FC = () => {
             name: 'Qtd cartões',
             selector: (row: any) => row.total_cartoes
         },
-        {
-            name: 'Rastreio',
-            selector: (row: any) => row.rastreio
-        }
+      
     ];
 
     useEffect(() => {

@@ -63,7 +63,7 @@
         }
 
         .container-style-client {
-            width: clamp(32rem, 33vw, 33.75rem);
+            width: clamp(22rem, 23vw, 23.75rem);
             height: 672px;
             margin: 16px;
 
@@ -73,9 +73,11 @@
                     display: flex;
                     justify-content: center;
                     margin-top: 10px;
+                    height: 70px;
 
                     img {
-                        width: clamp(7rem, 9vw, 7.688rem);
+                        width: clamp(6rem, 7vw, 6.688rem);
+                       
                     }
 
 

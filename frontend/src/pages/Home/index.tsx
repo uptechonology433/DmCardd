@@ -23,13 +23,24 @@ const PageHome: React.FC = () => {
     const [loading, setLoading] = useState(true); // Estado de carregamento
     const [pieChart, setPieChart] = useState<Chart<'pie', number[], string> | null>(null);
 
+    const [producedTotal, setProducedTotal] = useState<number>(0);
+    const fetchProducedTotal = async () => {
+        try {
+            const response = await api.post("/graph");
+            console.log("Resposta da API /graph:", response.data); // Adicionando o console.log aqui
+            const total = response.data[0].qtd_objs; // Ajustando o acesso aos dados
+            setProducedTotal(total);
+        } catch (error) {
+            console.log("Erro ao chamar a API /graph:", error); // Adicionando o console.log aqui
+        }
+    };
 
     const fetchWasteProducts = async () => {
         try {
             const response = await api.post<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>("/waste-products", { searchTerm });
             setWasteData(response.data);
             setLoading(false);
-    
+
             // Processar os dados para contar a quantidade de cada tipo de perda
             const lossQuantities: Record<string, number> = {};
             response.data.forEach((item) => {
@@ -40,20 +51,25 @@ const PageHome: React.FC = () => {
                 }
             });
 
+            // Incluir o total produzido nos dados do gráfico
+            lossQuantities['Total Produzido'] = producedTotal;
+
             // Criar os dados necessários para o gráfico de pizza
             const labels = Object.keys(lossQuantities);
             const data = Object.values(lossQuantities);
 
+            if (pieChart) {
+                pieChart.destroy();
+            }
 
             // Criar o gráfico de pizza usando Chart.js
-
             const ctx = document.getElementById("wasteChart") as HTMLCanvasElement;
 
             if (ctx) {
                 const chart = new Chart(ctx, {
                     type: 'pie',
                     data: {
-                        labels: labels.map((label, index) => `${label}: ${data[index]}`), // Adiciona a quantidade aos rótulos
+                        labels: labels.map((label, index) => `${label}: ${data[index]}`),
                         datasets: [{
                             label: 'Quantidade de Perdas',
                             data: data,
@@ -62,9 +78,9 @@ const PageHome: React.FC = () => {
                                 'rgba(72, 83, 240, 0.5)',
                                 'rgba(241, 135, 29, 0.5)',
                                 'rgba(75, 192, 192, 0.5)',
-                                'rgba(153, 102, 255, 0.5)',
-                                'rgba(255, 159, 64, 0.5)'
-                                // Adicione mais cores se houver mais tipos de perda
+                                'rgba(28, 149, 52, 0.5)',
+                                'rgba(255, 159, 64, 0.5)',
+                                'rgba(54, 162, 235, 0.5)' // Cor para o total produzido
                             ],
                             borderWidth: 1
                         }]
@@ -75,7 +91,7 @@ const PageHome: React.FC = () => {
                         plugins: {
                             title: {
                                 display: true,
-                                text: 'Rejeitos',
+                                text: 'Rejeitos vs Total Produzido',
                                 font: {
                                     size: 18
                                 }
@@ -87,7 +103,6 @@ const PageHome: React.FC = () => {
                                     }
                                 }
                             },
-
                         }
                     }
                 });
@@ -100,7 +115,9 @@ const PageHome: React.FC = () => {
 
     useEffect(() => {
         fetchWasteProducts();
+        fetchProducedTotal();
     }, [searchTerm]);
+
 
     const handleChange = (e: any) => {
         setFormValues({
@@ -110,7 +127,7 @@ const PageHome: React.FC = () => {
     }
 
     const columnsAwaitingRelease: Array<Object> = [
- 
+
         {
             name: 'Nome do arquivo',
             selector: (row: any) => row.nome_arquivo_proc
@@ -128,13 +145,13 @@ const PageHome: React.FC = () => {
 
 
     const columnsInProduction: Array<Object> = [
-    
+
         {
             name: 'Nome do arquivo',
             selector: (row: any) => row.nome_arquivo_proc,
 
         },
- 
+
         {
             name: 'Data Pros',
             selector: (row: any) => row.dt_processamento
@@ -150,13 +167,13 @@ const PageHome: React.FC = () => {
             selector: (row: any) => row.status,
             sortable: true
         },
-      
+
     ];
 
 
 
 
-  
+
 
     const columnsAwaitingShipment: Array<Object> = [
 
@@ -165,7 +182,7 @@ const PageHome: React.FC = () => {
             selector: (row: any) => row.nome_arquivo_proc
 
         },
- 
+
         {
             name: 'Data de entrada',
             selector: (row: any) => row.dt_processamento
@@ -174,11 +191,11 @@ const PageHome: React.FC = () => {
             name: 'Qtd cartões',
             selector: (row: any) => row.total_cartoes
         },
-  
+
     ];
 
     const columnsDispatched: Array<Object> = [
-   
+
         {
             name: 'Nome do arquivo',
             selector: (row: any) => row.nome_arquivo_proc
@@ -195,7 +212,7 @@ const PageHome: React.FC = () => {
             name: 'Qtd cartões',
             selector: (row: any) => row.total_cartoes
         },
-      
+
     ];
 
     useEffect(() => {

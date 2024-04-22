@@ -24,26 +24,22 @@ const PageHome: React.FC = () => {
     const [pieChart, setPieChart] = useState<Chart<'pie', number[], string> | null>(null);
 
     const [producedTotal, setProducedTotal] = useState<number>(0);
-    const fetchProducedTotal = async () => {
-        try {
-            const response = await api.post("/graph");
-            console.log("Resposta da API /graph:", response.data); // Adicionando o console.log aqui
-            const total = response.data[0].qtd_objs; // Ajustando o acesso aos dados
-            setProducedTotal(total);
-        } catch (error) {
-            console.log("Erro ao chamar a API /graph:", error); // Adicionando o console.log aqui
-        }
-    };
+ 
 
     const fetchWasteProducts = async () => {
         try {
-            const response = await api.post<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>("/waste-products", { searchTerm });
-            setWasteData(response.data);
+            // Buscar o total produzido primeiro
+            const totalResponse = await api.post("/graph");
+            const totalProduced = totalResponse.data[0].qtd_objs;
+    
+            // Em seguida, buscar os dados de perda
+            const wasteResponse = await api.post<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>("/waste-products", { searchTerm });
+            setWasteData(wasteResponse.data);
             setLoading(false);
-
+    
             // Processar os dados para contar a quantidade de cada tipo de perda
             const lossQuantities: Record<string, number> = {};
-            response.data.forEach((item) => {
+            wasteResponse.data.forEach((item) => {
                 if (lossQuantities[item.desc_perda]) {
                     lossQuantities[item.desc_perda] += item.qtd;
                 } else {
@@ -52,7 +48,8 @@ const PageHome: React.FC = () => {
             });
 
             // Incluir o total produzido nos dados do gráfico
-            lossQuantities['Total Produzido'] = producedTotal;
+            lossQuantities['Total Produzido'] = totalProduced;
+
 
             // Criar os dados necessários para o gráfico de pizza
             const labels = Object.keys(lossQuantities);
@@ -112,12 +109,9 @@ const PageHome: React.FC = () => {
             console.log(error);
         }
     };
-
     useEffect(() => {
         fetchWasteProducts();
-        fetchProducedTotal();
     }, [searchTerm]);
-
 
     const handleChange = (e: any) => {
         setFormValues({

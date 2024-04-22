@@ -21,63 +21,43 @@ const PageHome: React.FC = () => {
 
     const [wasteData, setWasteData] = useState<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>([]);
     const [loading, setLoading] = useState(true); // Estado de carregamento
-    const [pieChart, setPieChart] = useState<Chart<'pie', number[], string> | null>(null);
+
 
     const [producedTotal, setProducedTotal] = useState<number>(0);
- 
+
+    const [pieChart, setPieChart] = useState<Chart<'pie' | 'doughnut', any[], string> | null>(null);
+
+    useEffect(() => {
+        fetchWasteProducts();
+    }, []);
+
 
     const fetchWasteProducts = async () => {
         try {
-            // Buscar o total produzido primeiro
-            const totalResponse = await api.post("/graph");
-            const totalProduced = totalResponse.data[0].qtd_objs;
+            const response = await api.post("/graph");
+            const data = response.data[0];
+            const { diferenca_produzir, qtd_rejeitos, total_cartoes } = data;
     
-            // Em seguida, buscar os dados de perda
-            const wasteResponse = await api.post<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>("/waste-products", { searchTerm });
-            setWasteData(wasteResponse.data);
-            setLoading(false);
-    
-            // Processar os dados para contar a quantidade de cada tipo de perda
-            const lossQuantities: Record<string, number> = {};
-            wasteResponse.data.forEach((item) => {
-                if (lossQuantities[item.desc_perda]) {
-                    lossQuantities[item.desc_perda] += item.qtd;
-                } else {
-                    lossQuantities[item.desc_perda] = item.qtd;
-                }
-            });
-
-            // Incluir o total produzido nos dados do gráfico
-            lossQuantities['Total Produzido'] = totalProduced;
-
-
-            // Criar os dados necessários para o gráfico de pizza
-            const labels = Object.keys(lossQuantities);
-            const data = Object.values(lossQuantities);
-
-            if (pieChart) {
-                pieChart.destroy();
-            }
-
-            // Criar o gráfico de pizza usando Chart.js
             const ctx = document.getElementById("wasteChart") as HTMLCanvasElement;
-
+    
             if (ctx) {
+                if (pieChart) {
+                    pieChart.destroy();
+                }
+    
                 const chart = new Chart(ctx, {
-                    type: 'pie',
+                    type: 'doughnut',
                     data: {
-                        labels: labels.map((label, index) => `${label}: ${data[index]}`),
+                        labels: ['Total Produzidos' ,'Quantidade de Rejeitos','Quantidade á produzir', ],
                         datasets: [{
-                            label: 'Quantidade de Perdas',
-                            data: data,
+                            label: 'Quantidade',
+                            data: [total_cartoes,qtd_rejeitos, diferenca_produzir],
                             backgroundColor: [
-                                'rgba(255, 99, 200, 0.5)',
-                                'rgba(72, 83, 240, 0.5)',
-                                'rgba(241, 135, 29, 0.5)',
-                                'rgba(75, 192, 192, 0.5)',
-                                'rgba(28, 149, 52, 0.5)',
-                                'rgba(255, 159, 64, 0.5)',
-                                'rgba(54, 162, 235, 0.5)' // Cor para o total produzido
+                                
+                                'rgba(255, 99, 200, 0.5)', // Cor para "Total Produzido"
+                                'rgba(70, 72, 45, 0.5)', 
+                                'rgba(72, 83, 240, 0.5)', // Cor para "Quantidade de Rejeitos"
+                                
                             ],
                             borderWidth: 1
                         }]
@@ -88,7 +68,7 @@ const PageHome: React.FC = () => {
                         plugins: {
                             title: {
                                 display: true,
-                                text: 'Rejeitos vs Total Produzido',
+                                text: 'Rejeitos',
                                 font: {
                                     size: 18
                                 }
@@ -109,9 +89,7 @@ const PageHome: React.FC = () => {
             console.log(error);
         }
     };
-    useEffect(() => {
-        fetchWasteProducts();
-    }, [searchTerm]);
+
 
     const handleChange = (e: any) => {
         setFormValues({
@@ -315,9 +293,11 @@ const PageHome: React.FC = () => {
                 titleTable="Expedidos"
                 typeMessage={typeMessageDispatched} />
 
-
-            <div className="chart-container">
-                <canvas id="wasteChart" width="600" height="400"></canvas>
+            <div>
+             
+                <div className="chart-container">
+                    <canvas id="wasteChart" width="600" height="400"></canvas>
+                </div>
             </div>
 
 

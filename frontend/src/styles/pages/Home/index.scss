@@ -25,4 +25,18 @@
         margin-top: 20px;
     }
 
+    .graph{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 470px;
+  
+
+        .chart-container{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    }
+
 }

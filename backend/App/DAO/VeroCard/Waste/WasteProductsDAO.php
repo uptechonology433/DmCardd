@@ -14,7 +14,7 @@ class WasteProductsDAO extends Connection
     public function getAllWasteProducts(): array
     {
         $wasteProducts = $this->pdo
-            ->query("SELECT * FROM view_dmcard_relatorio_rejeitos;")
+            ->query("SELECT * FROM view_dmcard_relatorio_rejeitoss;")
             ->fetchAll(\PDO::FETCH_ASSOC);
 
             foreach($wasteProducts as &$product){
@@ -29,7 +29,7 @@ class WasteProductsDAO extends Connection
     {
         $searchTerm = '%' . $searchTerm . '%';
 
-        $query = "SELECT * FROM view_dmcard_relatorio_rejeitos 
+        $query = "SELECT * FROM view_dmcard_relatorio_rejeitoss 
                   WHERE cod_produto LIKE :searchTerm 
                   OR desc_produto LIKE :searchTerm";
 

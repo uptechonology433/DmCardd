@@ -4,6 +4,7 @@ import Table from "../../components/shared/Table";
 import DefaultHeader from "../../components/layout/DefaultHeader";
 import Select from "../../components/shared/Select";
 import Chart from "chart.js/auto";
+import PercentageTable from "../../components/layout/PercentageTable";
 
 
 
@@ -18,53 +19,48 @@ const PageHome: React.FC = () => {
     const [typeMessageDispatched, setTypeMessageDispatched] = useState(false);
     const [formValues, setFormValues] = useState({ Type: "dmcard" });
     const [searchTerm, setSearchTerm] = useState("");
-
+    const [totalProduced, setTotalProduced] = useState<number>(0);
+    const [totalWaste, setTotalWaste] = useState<number>(0);
+    const [restantes, setRestantes] = useState<number>(0);
     const [wasteData, setWasteData] = useState<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>([]);
-    const [loading, setLoading] = useState(true); // Estado de carregamento
-    const [pieChart, setPieChart] = useState<Chart<'pie', number[], string> | null>(null);
+
+
+    const [producedTotal, setProducedTotal] = useState<number>(0);
+
+    const [pieChart, setPieChart] = useState<Chart<'pie' | 'doughnut', any[], string> | null>(null);
+
+    useEffect(() => {
+        fetchWasteProducts();
+    }, []);
 
 
     const fetchWasteProducts = async () => {
         try {
-            const response = await api.post<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>("/waste-products", { searchTerm });
-            setWasteData(response.data);
-            setLoading(false);
-    
-            // Processar os dados para contar a quantidade de cada tipo de perda
-            const lossQuantities: Record<string, number> = {};
-            response.data.forEach((item) => {
-                if (lossQuantities[item.desc_perda]) {
-                    lossQuantities[item.desc_perda] += item.qtd;
-                } else {
-                    lossQuantities[item.desc_perda] = item.qtd;
-                }
-            });
+            const response = await api.post("/graph");
+            const data = response.data[0];
+            const { restantes, qtd_rejeitos, total_cartoes } = data;
 
-            // Criar os dados necessários para o gráfico de pizza
-            const labels = Object.keys(lossQuantities);
-            const data = Object.values(lossQuantities);
-
-
-            // Criar o gráfico de pizza usando Chart.js
 
             const ctx = document.getElementById("wasteChart") as HTMLCanvasElement;
 
             if (ctx) {
+                if (pieChart) {
+                    pieChart.destroy();
+                }
+
                 const chart = new Chart(ctx, {
-                    type: 'pie',
+                    type: 'doughnut',
                     data: {
-                        labels: labels.map((label, index) => `${label}: ${data[index]}`), // Adiciona a quantidade aos rótulos
+                        labels: ['Total Produzidos', 'Quantidade de Rejeitos', 'Em Produção',],
                         datasets: [{
-                            label: 'Quantidade de Perdas',
-                            data: data,
+                            label: 'Quantidade',
+                            data: [total_cartoes, qtd_rejeitos, restantes],
                             backgroundColor: [
-                                'rgba(255, 99, 200, 0.5)',
-                                'rgba(72, 83, 240, 0.5)',
-                                'rgba(241, 135, 29, 0.5)',
-                                'rgba(75, 192, 192, 0.5)',
-                                'rgba(153, 102, 255, 0.5)',
-                                'rgba(255, 159, 64, 0.5)'
-                                // Adicione mais cores se houver mais tipos de perda
+
+                                'rgba(233, 101, 206, 0.5)', // Cor para "Total Produzido"
+                                'rgba(70, 72, 45, 0.5)',
+                                'rgba(72, 83, 240, 0.5)', // Cor para "Quantidade de Rejeitos"
+
                             ],
                             borderWidth: 1
                         }]
@@ -87,7 +83,6 @@ const PageHome: React.FC = () => {
                                     }
                                 }
                             },
-
                         }
                     }
                 });
@@ -98,9 +93,6 @@ const PageHome: React.FC = () => {
         }
     };
 
-    useEffect(() => {
-        fetchWasteProducts();
-    }, [searchTerm]);
 
     const handleChange = (e: any) => {
         setFormValues({
@@ -109,8 +101,10 @@ const PageHome: React.FC = () => {
         })
     }
 
+
+
     const columnsAwaitingRelease: Array<Object> = [
- 
+
         {
             name: 'Nome do arquivo',
             selector: (row: any) => row.nome_arquivo_proc
@@ -128,13 +122,13 @@ const PageHome: React.FC = () => {
 
 
     const columnsInProduction: Array<Object> = [
-    
+
         {
             name: 'Nome do arquivo',
             selector: (row: any) => row.nome_arquivo_proc,
 
         },
- 
+
         {
             name: 'Data Pros',
             selector: (row: any) => row.dt_processamento
@@ -150,13 +144,13 @@ const PageHome: React.FC = () => {
             selector: (row: any) => row.status,
             sortable: true
         },
-      
+
     ];
 
 
 
 
-  
+
 
     const columnsAwaitingShipment: Array<Object> = [
 
@@ -165,7 +159,7 @@ const PageHome: React.FC = () => {
             selector: (row: any) => row.nome_arquivo_proc
 
         },
- 
+
         {
             name: 'Data de entrada',
             selector: (row: any) => row.dt_processamento
@@ -174,11 +168,11 @@ const PageHome: React.FC = () => {
             name: 'Qtd cartões',
             selector: (row: any) => row.total_cartoes
         },
-  
+
     ];
 
     const columnsDispatched: Array<Object> = [
-   
+
         {
             name: 'Nome do arquivo',
             selector: (row: any) => row.nome_arquivo_proc
@@ -195,7 +189,7 @@ const PageHome: React.FC = () => {
             name: 'Qtd cartões',
             selector: (row: any) => row.total_cartoes
         },
-      
+
     ];
 
     useEffect(() => {
@@ -261,6 +255,7 @@ const PageHome: React.FC = () => {
 
 
 
+
     return (
         <div className="container-page-home">
 
@@ -304,9 +299,12 @@ const PageHome: React.FC = () => {
                 titleTable="Expedidos"
                 typeMessage={typeMessageDispatched} />
 
+            <div className="graph">
+                <PercentageTable />
+                <div className="chart-container">
+                    <canvas id="wasteChart" width="600" height="400"></canvas>
+                </div>
 
-            <div className="chart-container">
-                <canvas id="wasteChart" width="600" height="400"></canvas>
             </div>
 
 

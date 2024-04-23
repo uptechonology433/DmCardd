@@ -4,6 +4,7 @@ import Table from "../../components/shared/Table";
 import DefaultHeader from "../../components/layout/DefaultHeader";
 import Select from "../../components/shared/Select";
 import Chart from "chart.js/auto";
+import PercentageTable from "../../components/layout/PercentageTable";
 
 
 
@@ -18,9 +19,10 @@ const PageHome: React.FC = () => {
     const [typeMessageDispatched, setTypeMessageDispatched] = useState(false);
     const [formValues, setFormValues] = useState({ Type: "dmcard" });
     const [searchTerm, setSearchTerm] = useState("");
-
+    const [totalProduced, setTotalProduced] = useState<number>(0);
+    const [totalWaste, setTotalWaste] = useState<number>(0);
+    const [restantes, setRestantes] = useState<number>(0);
     const [wasteData, setWasteData] = useState<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>([]);
-    const [loading, setLoading] = useState(true); // Estado de carregamento
 
 
     const [producedTotal, setProducedTotal] = useState<number>(0);
@@ -36,28 +38,29 @@ const PageHome: React.FC = () => {
         try {
             const response = await api.post("/graph");
             const data = response.data[0];
-            const { diferenca_produzir, qtd_rejeitos, total_cartoes } = data;
-    
+            const { restantes, qtd_rejeitos, total_cartoes } = data;
+
+
             const ctx = document.getElementById("wasteChart") as HTMLCanvasElement;
-    
+
             if (ctx) {
                 if (pieChart) {
                     pieChart.destroy();
                 }
-    
+
                 const chart = new Chart(ctx, {
                     type: 'doughnut',
                     data: {
-                        labels: ['Total Produzidos' ,'Quantidade de Rejeitos','Quantidade á produzir', ],
+                        labels: ['Total Produzidos', 'Quantidade de Rejeitos', 'Em Produção',],
                         datasets: [{
                             label: 'Quantidade',
-                            data: [total_cartoes,qtd_rejeitos, diferenca_produzir],
+                            data: [total_cartoes, qtd_rejeitos, restantes],
                             backgroundColor: [
-                                
-                                'rgba(255, 99, 200, 0.5)', // Cor para "Total Produzido"
-                                'rgba(70, 72, 45, 0.5)', 
+
+                                'rgba(233, 101, 206, 0.5)', // Cor para "Total Produzido"
+                                'rgba(70, 72, 45, 0.5)',
                                 'rgba(72, 83, 240, 0.5)', // Cor para "Quantidade de Rejeitos"
-                                
+
                             ],
                             borderWidth: 1
                         }]
@@ -97,6 +100,8 @@ const PageHome: React.FC = () => {
             [e.target.name]: e.target.value
         })
     }
+
+
 
     const columnsAwaitingRelease: Array<Object> = [
 
@@ -250,6 +255,7 @@ const PageHome: React.FC = () => {
 
 
 
+
     return (
         <div className="container-page-home">
 
@@ -293,11 +299,12 @@ const PageHome: React.FC = () => {
                 titleTable="Expedidos"
                 typeMessage={typeMessageDispatched} />
 
-            <div>
-             
+            <div className="graph">
+                <PercentageTable />
                 <div className="chart-container">
                     <canvas id="wasteChart" width="600" height="400"></canvas>
                 </div>
+
             </div>
 
 

@@ -1,5 +1,4 @@
 <?php
-
 use function src\jwtAuth;
 use function src\slimConfiguration;
 use App\Controllers\AdminUsers\AdminUsersController;
@@ -12,7 +11,6 @@ use App\Controllers\Dispatched\DispatchedController;
 use App\Controllers\Graph\GraphController;
 use App\Controllers\Inactive\InactiveProductsController;
 use App\Controllers\ProductionReport\ProductionReportController;
-
 use App\Controllers\Stock\StockController;
 use App\Controllers\Waste\WasteProductsController;
 use App\Controllers\Ruptures\RupturesProductsController;
@@ -22,6 +20,20 @@ use App\Middlewares\jwtDateTime;
 
 
 $app = new \Slim\App(slimConfiguration()); 
+
+
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
+
+$app->add(function ($req, $res, $next) {
+    $response = $next($req, $res);
+    return $response
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+});
+
 
 // ================= Login ========================
 
@@ -138,6 +150,11 @@ $app -> post('/searchUser' , AdminUsersController::class . ':UserSearchEmail')
 -> add(new adminConference()) 
 -> add(new jwtDateTime())
 -> add(jwtAuth());
+
+$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
+    $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
+    return $handler($req, $res);
+});
 
 // ==================================================
 

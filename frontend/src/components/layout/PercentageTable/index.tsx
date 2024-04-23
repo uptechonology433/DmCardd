@@ -32,7 +32,7 @@ const PercentageTable: React.FC = () => {
     const percentageProduced = (totalCartoes / total) * 100;
     const percentageWaste = (totalWaste / total) * 100;
     
-    const percentageRestantes = 100 - percentageProduced - percentageWaste;
+    const percentageRestantes = 100 - percentageProduced ;
     
 
    
@@ -42,7 +42,7 @@ const PercentageTable: React.FC = () => {
             <table>
                 <thead>
                     <tr>
-                        <th>Tipo</th>
+                        <th>Referência</th>
                         <th>Porcentagem</th>
                     </tr>
                 </thead>
@@ -52,16 +52,16 @@ const PercentageTable: React.FC = () => {
                         <td> 100%</td>
                     </tr>
                     <tr>
-                        <td>QTD Produzidos: {totalCartoes}</td>
+                        <td>QTD Cartões Produzidos: {totalCartoes}</td>
                         <td>{percentageProduced.toFixed(2)}%</td>
                     </tr>
                  
                     <tr>
-                        <td>QTD Em Produção: {restantes}</td>
+                        <td>QTD Cartões em Produção: {restantes}</td>
                         <td>{percentageRestantes.toFixed(2)}%</td>
                     </tr>
                     <tr>
-                        <td>QTD Rejeitos: {totalWaste}</td>
+                        <td>QTD de Rejeitos: {totalWaste}</td>
                         <td>{percentageWaste.toFixed(2)}%</td>
                     </tr>
                 </tbody>

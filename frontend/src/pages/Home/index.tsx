@@ -51,7 +51,7 @@ const PageHome: React.FC = () => {
                 const chart = new Chart(ctx, {
                     type: 'doughnut',
                     data: {
-                        labels: ['Total Expedidos', 'Quantidade de Rejeitos', 'Em Produção',],
+                        labels: ['Expedidos', 'Rejeitos', 'Em Produção',],
                         datasets: [{
                             label: 'Quantidade',
                             data: [total_cartoes, qtd_rejeitos, restantes],

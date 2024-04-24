@@ -38,7 +38,7 @@ const PercentageTable: React.FC = () => {
    
     return (
         <div className="percentage-table">
-            
+           
             <table>
                 <thead>
                     <tr>
@@ -48,21 +48,24 @@ const PercentageTable: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
+              
                     <tr>
-                        <td>Cartões do Mês</td>
+                        <td>Cartões Processados</td>
                         <td>{total}</td>
                         <td> 100%</td>
                     </tr>
-                    <tr>
-                        <td>Cartões Produzidos</td>
-                        <td>{totalCartoes}</td>
-                        <td>{percentageProduced.toFixed(2)}%</td>
-                    </tr>
+                 
                  
                     <tr>
                         <td>Cartões em Produção</td>
                         <td>{restantes}</td>
                         <td>{percentageRestantes.toFixed(2)}%</td>
+                    </tr>
+
+                    <tr>
+                        <td>Cartões Expedidos</td>
+                        <td>{totalCartoes}</td>
+                        <td>{percentageProduced.toFixed(2)}%</td>
                     </tr>
                     <tr>
                         <td>Rejeitos</td>

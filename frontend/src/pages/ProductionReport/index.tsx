@@ -35,15 +35,15 @@ const PageProductionReport: React.FC = () => {
 
     const columnsProductionReport: Array<Object> = [
         {
-            name: 'Nome do arquivo',
+            name: 'Nome arquivo',
             selector: (row: any) => row.nome_arquivo_proc
         },
         {
-            name: 'Data de processamento',
+            name: 'Data Processamento',
             selector: (row: any) => row.dt_processamento
         },
         {
-            name: 'Data de expedição',
+            name: 'Data Expedido',
             selector: (row: any) => row.dt_expedicao
         },
         {
@@ -105,6 +105,8 @@ const PageProductionReport: React.FC = () => {
         filename: "Relatório de produção",
         sheet: "Relatório de produção"
     })
+  
+
     const csvData = [
         ["firstname", "lastname", "email"],
         ["Ahmed", "Tomi", "ah@smthing.co.com"],
@@ -145,8 +147,8 @@ const PageProductionReport: React.FC = () => {
                         refExcel={refExcel}
                     />
 
-                }
 
+                }
                 <div className="table-container-dowload">
 
                     <div className="scroll-table-dowload">
@@ -155,9 +157,9 @@ const PageProductionReport: React.FC = () => {
                             <tbody>
 
                                 <tr>
-                                    <td>Nome do Arquivo</td>
-                                    <td>Data de processamento</td>
-                                    <td>Data de expedição</td>
+                                    <td>Nome Arquivo</td>
+                                    <td>Data Processamento</td>
+                                    <td>Data Expedido</td>
                                     <td>Qtd Cartões</td>
                                     <td>Status</td>
                                     <td>Qtd Rastreio</td>

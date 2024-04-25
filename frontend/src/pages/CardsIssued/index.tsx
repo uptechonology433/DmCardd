@@ -225,12 +225,17 @@ const PageCardsIssued: React.FC = () => {
                   <td>Nome do aqrquivo</td>
                   <td>Titular</td>
                   <td>N° Cartão</td>
-                  <td>Cod Cartão</td>
+                  <td>Rastreio</td>
                   <td>Cod Conta</td>
                   <td>Status</td>
+                  <td>Tipo Envio</td>
+
                   <td>Data Pross</td>
                   <td>Data Expedido</td>
-                  <td>Rastreio</td>
+                  <td>Cod Cartão</td>
+
+
+
                 </tr>
 
               </tbody>
@@ -240,12 +245,17 @@ const PageCardsIssued: React.FC = () => {
                     <td>{data.nome_arquivo_proc}</td>
                     <td>{data.titular}</td>
                     <td>{data.nr_cartao}</td>
-                    <td>{data.codigo_cartao}</td>
-                    <td>{data.codigo_conta}</td>
-                    <td>{data.desc_status}</td>
-                    <td>{data.dt_op}</td>
-                    <td>{data.dt_expedicao}</td>
                     <td>{data.rastreio}</td>
+                    <td>{data.codigo_conta}</td>
+
+                    <td>{data.desc_status}</td>
+                    <td>CLIENTE - FLASH COURIER</td>
+                    <td>{data.dt_op}</td>
+
+                    <td>{data.dt_expedicao}</td>
+                    <td>{data.codigo_cartao}</td>
+
+
                   </tr>
 
                 )

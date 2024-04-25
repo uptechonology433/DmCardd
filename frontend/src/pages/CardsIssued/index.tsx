@@ -59,8 +59,8 @@ const PageCardsIssued: React.FC = () => {
       selector: (row: any) => row.nr_cartao
     },
     {
-      name: 'Cod Cartão',
-      selector: (row: any) => row.codigo_cartao
+      name: 'Rastreio',
+      selector: (row: any) => row.rastreio
     },
     {
       name: 'Cod Conta',
@@ -70,6 +70,7 @@ const PageCardsIssued: React.FC = () => {
       name: 'Status',
       selector: (row: any) => row.desc_status
     },
+
     {
       name: 'Data Pross',
       selector: (row: any) => row.dt_op
@@ -79,9 +80,11 @@ const PageCardsIssued: React.FC = () => {
       selector: (row: any) => row.dt_expedicao
     },
     {
-      name: 'Rastreio',
-      selector: (row: any) => row.rastreio
+      name: 'Cod Cartão',
+      selector: (row: any) => row.codigo_cartao
     },
+
+
   ];
 
   const CardsIssuedReportRequests = async () => {
@@ -131,12 +134,7 @@ const PageCardsIssued: React.FC = () => {
     filename: "Cartões Emitidos",
     sheet: "Cartões Emitidos"
   })
-  const csvData = [
-    ["firstname", "lastname", "email"],
-    ["Ahmed", "Tomi", "ah@smthing.co.com"],
-    ["Raed", "Labes", "rl@smthing.co.com"],
-    ["Yezzi", "Min l3b", "ymin@cocococo.com"]
-  ];
+
 
 
   return (
@@ -268,7 +266,7 @@ const PageCardsIssued: React.FC = () => {
         </div>
 
 
-        <DownloadFacilitators excelClick={() => onDownload()} textButton="Pesquisar" onClickButton={() => CardsIssuedReportRequests()} csvData={cardsIssuedReportData} />
+        <DownloadFacilitators excelClick={() => onDownload()} textButton="Pesquisar" onClickButton={() => CardsIssuedReportRequests()} />
       </div>
     </>
   );

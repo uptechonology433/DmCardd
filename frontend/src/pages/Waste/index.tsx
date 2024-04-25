@@ -93,6 +93,7 @@ const PageWaste: React.FC = () => {
                         placeholder="Produto..."
                         value={searchTerm}
                         onChange={handleChange}
+                        //onchenge= {searchrTerm}
                     />
                     <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={handleSearch} />
                 </div>
@@ -106,7 +107,7 @@ const PageWaste: React.FC = () => {
                 />
 
                 <div className="table-container-dowload">
-
+                    
                     <div className="scroll-table-dowload">
                         <table ref={refExcel}>
 

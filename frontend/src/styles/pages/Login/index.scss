@@ -19,6 +19,7 @@
         background-color: #B8D2EA;
         border-radius: 16px;
         display: flex;
+     
 
         .container-style-uptechnology {
             width: clamp(25rem, 35vw, 33.75rem);
@@ -118,6 +119,7 @@
                 align-items: center;
                 margin-top: 20px;
                 gap: 32px;
+                   margin-left: 60px;
 
                 .input-name-user,
                 .input-password-user {

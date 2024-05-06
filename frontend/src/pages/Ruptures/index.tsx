@@ -98,6 +98,11 @@ const PageRuptures: React.FC = () => {
             <DefaultHeader sessionTheme="Rupturas" />
             <div className="container-ruptures">
                 <div className="inputs-info-products">
+                    <Select info={"Selecione um Tipo:"} name="cardType" onChange={handleChange}>
+                        <option selected>Selecione um Tipo...</option>
+                        <option value="DmCard">Dm Card</option>
+                        <option value="RedeUze">Rede Uze</option>
+                    </Select>
                     <Input
                         name="searchTerm"
                         info="Código ou Nome do Produto:"
@@ -106,9 +111,9 @@ const PageRuptures: React.FC = () => {
                         onChange={handleChange}
 
                     />
-                    <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={handleSearch} />
+                   
                 </div>
-
+                <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={handleSearch} />
                 <Table
                     data={rupturesData}
                     column={columnsRuptures}

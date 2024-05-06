@@ -102,6 +102,8 @@ $app->post('/graph', GraphController::class . ':getGraph')
     ->add(new jwtDateTime())
     ->add(jwtAuth());
 
+    
+
 $app->post('/monthReport', MonthReportController::class . ':getMontReport')
     ->add(new jwtDateTime())
     ->add(jwtAuth());

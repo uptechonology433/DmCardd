@@ -11,10 +11,20 @@ class GraphDAO extends Connection
         parent::__construct();
     }
 
-    public function getAllGraph(): array
+    public function getAllGraphDmcard(): array
     {
         $graph = $this->pdo
-            ->query("SELECT * FROM view_combined_data")
+            ->query("SELECT * FROM view_dmcard_grafico_site")
+            ->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $graph;
+    }
+
+    
+    public function getAllGraphRedeUze(): array
+    {
+        $graph = $this->pdo
+            ->query("SELECT * FROM view_redeuze_grafico_site")
             ->fetchAll(\PDO::FETCH_ASSOC);
 
         return $graph;

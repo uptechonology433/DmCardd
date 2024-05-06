@@ -144,7 +144,7 @@ const PageProductionReport: React.FC = () => {
                         column={columnsProductionReport}
                         data={ProductionReportData}
                         typeMessage={ProductionReportMessage}
-                        refExcel={refExcel}
+                   
                     />
 
 

@@ -207,7 +207,7 @@ const PageCardsIssued: React.FC = () => {
             column={columnsCardsIssuedReport}
             data={cardsIssuedReportData}
             typeMessage={cardsIssuedReportMessage}
-            refExcel={refExcel}
+      
           />
 
         }

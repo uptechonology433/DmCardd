@@ -4,111 +4,60 @@ import Table from "../../components/shared/Table";
 import DefaultHeader from "../../components/layout/DefaultHeader";
 import Select from "../../components/shared/Select";
 import Chart from "chart.js/auto";
-import PercentageTable from "../../components/layout/PercentageTable";
 
-
+interface GraphDataItem {
+    label: string;
+    value: number;
+}
 
 const PageHome: React.FC = () => {
-    const [inProductionData, setInProductionData] = useState([]);
-    const [awaitingReleaseData, setAwaitingRelease] = useState([]);
-    const [awaitingShipmentData, setAwaitingShipment] = useState([]);
-    const [dispatchedData, setDispatched] = useState([]);
+    const [inProductionData, setInProductionData] = useState<any[]>([]);
+    const [awaitingReleaseData, setAwaitingRelease] = useState<any[]>([]);
+    const [awaitingShipmentData, setAwaitingShipment] = useState<any[]>([]);
+    const [dispatchedData, setDispatched] = useState<any[]>([]);
+    const [graphData, setGraph] = useState<GraphDataItem[]>([]);
     const [typeMessageInProduction, setTypeMessageInProduction] = useState(false);
     const [typeMessageAwaitingRelease, setTypeMessageAwaitingRelease] = useState(false);
     const [typeMessageAwaitingShipment, setTypeMessageAwaitingShipment] = useState(false);
     const [typeMessageDispatched, setTypeMessageDispatched] = useState(false);
     const [formValues, setFormValues] = useState({ Type: "dmcard" });
-    const [searchTerm, setSearchTerm] = useState("");
-    const [totalProduced, setTotalProduced] = useState<number>(0);
-    const [totalWaste, setTotalWaste] = useState<number>(0);
-    const [restantes, setRestantes] = useState<number>(0);
-    const [wasteData, setWasteData] = useState<{ desc_produto: string; cod_produto: string; qtd: number; desc_perda: string; }[]>([]);
-
-
-    const [producedTotal, setProducedTotal] = useState<number>(0);
-
-    const [pieChart, setPieChart] = useState<Chart<'pie' | 'doughnut', any[], string> | null>(null);
 
     useEffect(() => {
-        fetchWasteProducts();
-    }, []);
+        const HomePageRequests = async () => {
+            try {
+                const awaitingReleaseResponse = await api.get('/awaiting-release');
+                setAwaitingRelease(awaitingReleaseResponse.data[formValues.Type === "dmcard" ? 0 : 1]);
 
+                const inProductionResponse = await api.post('/production', { tipo: formValues.Type });
+                setInProductionData(inProductionResponse.data);
 
-    const fetchWasteProducts = async () => {
-        try {
-            const response = await api.post("/graph");
-            const data = response.data[0];
-            const { restantes, qtd_rejeitos, total_cartoes } = data;
+                const awaitingShipmentResponse = await api.get('/awaiting-shipment');
+                setAwaitingShipment(awaitingShipmentResponse.data[formValues.Type === "dmcard" ? 0 : 1]);
 
+                const dispatchedResponse = await api.get('/dispatched');
+                setDispatched(dispatchedResponse.data[formValues.Type === "dmcard" ? 0 : 1]);
 
-            const ctx = document.getElementById("wasteChart") as HTMLCanvasElement;
-
-            if (ctx) {
-                if (pieChart) {
-                    pieChart.destroy();
-                }
-
-                const chart = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Expedidos', 'Rejeitos', 'Em Produção',],
-                        datasets: [{
-                            label: 'Quantidade',
-                            data: [total_cartoes, qtd_rejeitos, restantes],
-                            backgroundColor: [
-
-                                'rgba(233, 101, 206, 0.5)', // Cor para "Total Produzido"
-                                'rgba(70, 72, 45, 0.5)',
-                                'rgba(72, 83, 240, 0.5)', // Cor para "Quantidade de Rejeitos"
-
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: 'Performance Mensal',
-                                font: {
-                                    size: 18
-                                }
-                            },
-                            legend: {
-                                labels: {
-                                    font: {
-                                        size: 12
-                                    }
-                                }
-                            },
-                        }
-                    }
-                });
-                setPieChart(chart);
+                const graphResponse = await api.post('/graph');
+                setGraph(graphResponse.data[formValues.Type === "dmcard" ? 0 : 1]);
+                console.log(graphResponse.data[formValues.Type === "dmcard" ? 0 : 1]);
+            } catch (error) {
+                console.error(error);
             }
-        } catch (error) {
-            console.log(error);
-        }
-    };
+        };
+        HomePageRequests();
+    }, [formValues]);
 
-
-    const handleChange = (e: any) => {
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFormValues({
             ...formValues,
             [e.target.name]: e.target.value
-        })
-    }
-
-
+        });
+    };
 
     const columnsAwaitingRelease: Array<Object> = [
-
         {
             name: 'Nome do arquivo',
             selector: (row: any) => row.nome_arquivo_proc
-
         },
         {
             name: 'Data de entrada',
@@ -120,19 +69,14 @@ const PageHome: React.FC = () => {
         }
     ];
 
-
     const columnsInProduction: Array<Object> = [
-
         {
             name: 'Nome do arquivo',
             selector: (row: any) => row.nome_arquivo_proc,
-
         },
-
         {
             name: 'Data Pros',
             selector: (row: any) => row.dt_processamento
-
         },
         {
             name: 'Quantidade de cartões',
@@ -144,22 +88,13 @@ const PageHome: React.FC = () => {
             selector: (row: any) => row.status,
             sortable: true
         },
-
     ];
 
-
-
-
-
-
     const columnsAwaitingShipment: Array<Object> = [
-
         {
             name: 'Nome do arquivo',
             selector: (row: any) => row.nome_arquivo_proc
-
         },
-
         {
             name: 'Data de entrada',
             selector: (row: any) => row.dt_processamento
@@ -168,11 +103,9 @@ const PageHome: React.FC = () => {
             name: 'Qtd cartões',
             selector: (row: any) => row.total_cartoes
         },
-
     ];
 
     const columnsDispatched: Array<Object> = [
-
         {
             name: 'Nome do arquivo',
             selector: (row: any) => row.nome_arquivo_proc
@@ -189,65 +122,7 @@ const PageHome: React.FC = () => {
             name: 'Qtd cartões',
             selector: (row: any) => row.total_cartoes
         },
-
     ];
-
-    useEffect(() => {
-
-        const HomePageRequests = async () => {
-
-
-            await api.get('/awaiting-release')
-                .then((data) => {
-                    if (formValues.Type === "redeuze") {
-                        setAwaitingRelease(data.data[1]);
-                    } else {
-                        setAwaitingRelease(data.data[0]);
-                    }
-                })
-                .catch(() => {
-                    setTypeMessageAwaitingRelease(true);
-                });
-
-            await api.post('/production', { tipo: formValues.Type })
-                .then((data) => {
-                    setInProductionData(data.data)
-                }).catch(() => {
-                    setTypeMessageInProduction(true)
-                });
-
-            await api.get('/awaiting-shipment')
-                .then((data) => {
-
-                    if (formValues.Type === "redeuze") {
-                        setAwaitingShipment(data.data[1]);
-                    } else {
-                        setAwaitingShipment(data.data[0]);
-                    }
-                })
-                .catch(() => {
-                    setTypeMessageAwaitingShipment(true);
-                });
-
-            await api.get('/dispatched')
-                .then((data) => {
-                    if (formValues.Type === "redeuze") {
-                        setDispatched(data.data[1]);
-                    } else {
-                        setDispatched(data.data[0]);
-                    }
-                })
-                .catch(() => {
-                    setTypeMessageDispatched(true);
-                });
-        }
-
-        HomePageRequests()
-
-    }, [formValues]);
-
-
-
 
 
 
@@ -258,17 +133,11 @@ const PageHome: React.FC = () => {
 
     return (
         <div className="container-page-home">
-
             <DefaultHeader />
-
-            <Select info={"Selecione o tipo de cartão:"} name="Type" onChange={handleChange}>
+            <Select info={"Selecione o tipo de cartão:"} name="Type" onChange={handleChange} value={formValues.Type}>
                 <option value="dmcard">Dm Card</option>
                 <option value="redeuze">Rede Uze</option>
-
-
-
             </Select>
-
 
             <Table
                 data={Array.isArray(awaitingReleaseData) ? awaitingReleaseData : []}
@@ -277,39 +146,72 @@ const PageHome: React.FC = () => {
                 typeMessage={typeMessageAwaitingRelease}
             />
 
-
             <Table
                 data={Array.isArray(inProductionData) ? inProductionData : []}
                 column={columnsInProduction}
                 titleTable="Em produção"
                 typeMessage={typeMessageInProduction}
-
-
             />
 
             <Table
                 data={Array.isArray(awaitingShipmentData) ? awaitingShipmentData : []}
                 column={columnsAwaitingShipment}
                 titleTable="Aguardando Expedição"
-                typeMessage={typeMessageAwaitingShipment} />
+                typeMessage={typeMessageAwaitingShipment}
+            />
 
             <Table
                 data={Array.isArray(dispatchedData) ? dispatchedData : []}
                 column={columnsDispatched}
                 titleTable="Expedidos"
-                typeMessage={typeMessageDispatched} />
+                typeMessage={typeMessageDispatched}
+            />
 
             <div className="graph">
-                <PercentageTable />
-                <div className="chart-container">
-                    <canvas id="wasteChart" width="600" height="400"></canvas>
+                <div className="percentage-table">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Referência</th>
+                                <th>QTD</th>
+                                <th>Porcentagem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            <tr>
+                                <td>Cartões Processados</td>
+                                <td>{"totalProcessado"}</td>
+                                <td> {"percentageProcessed.toFixed(2)"}%</td>
+                            </tr>
+
+
+                            <tr>
+                                <td>Cartões em Produção</td>
+                                <td>{"totalProduced"}</td>
+                                <td>{"percentageProduced.toFixed(2)"}%</td>
+                            </tr>
+
+
+                            <tr>
+                                <td>Rejeitos</td>
+                                <td>{"totalWaste"}</td>
+                                <td>{"percentageWaste.toFixed(2)"}%</td>
+                            </tr>
+
+                            <tr>
+                                <td>Cartões Expedidos</td>
+                                <td>{"dispatched"}</td>
+                                <td>{"percentageDispatched.toFixed(2)"}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
             </div>
-
-
-        </div >
-    )
-}
+        </div>
+    );
+};
 
 export default PageHome;

@@ -13,11 +13,14 @@ final class GraphController
 
         $graphDAO = new GraphDAO();
 
+        $production = [
+            $graphDAO -> getAllGraphDmcard(),
+            $graphDAO -> getAllGraphRedeUze(),
+        ];
       
-            $graph = $graphDAO->getAllGraph();
-        
+          
 
-        $response = $response->withJson($graph);
+        $response = $response->withJson($production);
         return $response;
     }
 }

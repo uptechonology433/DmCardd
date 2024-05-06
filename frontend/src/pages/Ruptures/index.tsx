@@ -93,6 +93,7 @@ const PageRuptures: React.FC = () => {
 
     return (
 
+        
         <>
 
             <DefaultHeader sessionTheme="Rupturas" />

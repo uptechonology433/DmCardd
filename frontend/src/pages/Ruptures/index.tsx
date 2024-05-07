@@ -16,8 +16,50 @@ import Select from "../../components/shared/Select";
 const PageRuptures: React.FC = () => {
 
     const [rupturesData, setRupturesData] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [ProductionReportMessage, setProductionReportMessage] = useState(false);
+    const [rupturesMessage, setRupturesMessage] = useState(false);
+
+    const [formValues, setFormValues] = useState({
+        cardType: "All",
+        search: ""
+
+    });
+
+    
+    const handleChange = (e: any) => {
+        setFormValues({
+            ...formValues,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const RupturesPageRequests = async () => {
+
+        if (formValues.cardType === 'All' || formValues.cardType === 'DmCard' || formValues.cardType === 'RedeUze') {
+            await api.post('/ruptures-products', {
+                tipo: formValues.cardType,
+                search: formValues.search
+            }).then((data) => {
+                setRupturesData(data.data)
+                console.log("Response from API:", data);
+
+            }).catch(() => {
+                setRupturesMessage(true)
+            });
+
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Selecione um tipo de cartão...',
+                text: 'Selecione DmCard ou Rede Uze antes de fazer a filtragem dos dados.',
+            });
+        }
+
+    }
+
+    useEffect(() => {
+        // Chamada à função quando o componente é montado
+        RupturesPageRequests();
+    }, []);
 
 
     const columnsRuptures: Array<Object> = [
@@ -58,28 +100,7 @@ const PageRuptures: React.FC = () => {
         }
     ];
 
-    useEffect(() => {
-        fetchRupturesProducts();
-    }, []);
-
-    const fetchRupturesProducts = async () => {
-        try {
-            const response = await api.post("/ruptures-products", { searchTerm });
-            setRupturesData(response.data);
-        } catch (error) {
-            console.log(error);
-
-        }
-    };
-
-    const handleSearch = () => {
-        fetchRupturesProducts();
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(e.target.value);
-    };
-
+ 
     const refExcel: any = useRef();
 
     const { onDownload } = useDownloadExcel({
@@ -100,7 +121,7 @@ const PageRuptures: React.FC = () => {
             <div className="container-ruptures">
                 <div className="inputs-info-products">
                     <Select info={"Selecione um Tipo:"} name="cardType" onChange={handleChange}>
-                        <option selected>Selecione um Tipo...</option>
+                        <option selected value="All">Tudo</option>
                         <option value="DmCard">Dm Card</option>
                         <option value="RedeUze">Rede Uze</option>
                     </Select>
@@ -108,18 +129,17 @@ const PageRuptures: React.FC = () => {
                         name="searchTerm"
                         info="Código ou Nome do Produto:"
                         placeholder="Produto..."
-                        value={searchTerm}
                         onChange={handleChange}
 
                     />
                    
                 </div>
-                <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={handleSearch} />
+                <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'}  onClickButton={() => RupturesPageRequests()}  />
                 <Table
-                    data={rupturesData}
+                    data={Array.isArray(rupturesData) ? rupturesData : []}
                     column={columnsRuptures}
-                    typeMessage={ProductionReportMessage}
-                    refExcel={refExcel}
+                    typeMessage={rupturesMessage}
+            
                 />
 
                 <div className="table-container-dowload">

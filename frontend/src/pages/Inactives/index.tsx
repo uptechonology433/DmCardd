@@ -6,13 +6,55 @@ import DownloadFacilitators from "../../components/layout/DownloadFacilitators";
 import api from "../../connectionAPI";
 import { useDownloadExcel } from "react-export-table-to-excel";
 import Select from "../../components/shared/Select";
+import Swal from "sweetalert2";
 
 
 const PageInactive: React.FC = () => {
     const [inactiveData, setInactiveData] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [ProductionReportMessage, setProductionReportMessage] = useState(false);
+    const [inactiveMessage, setInactiveMessage] = useState(false);
 
+    
+    const [formValues, setFormValues] = useState({
+        cardType: "All",
+        search: ""
+
+    });
+
+    const handleChange = (e: any) => {
+        setFormValues({
+            ...formValues,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const InactivePageRequests = async () => {
+
+        if (formValues.cardType === 'All' || formValues.cardType === 'DmCard' || formValues.cardType === 'RedeUze') {
+            await api.post('/inactive-products', {
+                tipo: formValues.cardType,
+                search: formValues.search
+            }).then((data) => {
+                setInactiveData(data.data)
+                console.log("Response from API:", data);
+
+            }).catch(() => {
+                setInactiveMessage(true)
+            });
+
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Selecione um tipo de cartão...',
+                text: 'Selecione DmCard ou Rede Uze antes de fazer a filtragem dos dados.',
+            });
+        }
+
+    }
+
+    useEffect(() => {
+        // Chamada à função quando o componente é montado
+        InactivePageRequests();
+    }, []);
 
     const columnsInactives: Array<Object> = [
         {
@@ -26,28 +68,6 @@ const PageInactive: React.FC = () => {
             sortable: true
         }
     ];
-
-    useEffect(() => {
-        fetchInactiveProducts();
-    }, []);
-
-    const fetchInactiveProducts = async () => {
-        try {
-            const response = await api.post("/inactive-products", { searchTerm });
-            setInactiveData(response.data);
-        } catch (error) {
-            console.log(error);
-
-        }
-    };
-
-    const handleSearch = () => {
-        fetchInactiveProducts();
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(e.target.value);
-    };
 
 
     const refExcel: any = useRef();
@@ -64,7 +84,7 @@ const PageInactive: React.FC = () => {
             <div className="container-inactives">
                 <div className="inputs-info-products">
                 <Select info={"Selecione um Tipo:"} name="cardType" onChange={handleChange}>
-                        <option selected>Selecione um Tipo...</option>
+                        <option selected value="All">Tudo</option>
                         <option value="DmCard">Dm Card</option>
                         <option value="RedeUze">Rede Uze</option>
                     </Select>
@@ -73,19 +93,18 @@ const PageInactive: React.FC = () => {
                         name="searchTerm"
                         info="Código ou Descrição do Produto:"
                         placeholder="Produto..."
-                        value={searchTerm}
                         onChange={handleChange}
                     />
                   
                 </div>
-                <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={handleSearch} />
+                <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'}  onClickButton={() => InactivePageRequests()} />
 
 
                 <Table
-                    data={inactiveData}
+                      data={Array.isArray(inactiveData) ? inactiveData : []}
                     column={columnsInactives}
-                    typeMessage={ProductionReportMessage}
-                    refExcel={refExcel}
+                    typeMessage={inactiveMessage}
+                
                 />
 
                 <div className="table-container-dowload">

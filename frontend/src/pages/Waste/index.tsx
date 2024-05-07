@@ -17,7 +17,6 @@ const PageWaste: React.FC = () => {
 
 
     const [wasteData, setWasteData] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
     const [wasteMessage, setWasteMessage] = useState(false);
 
 

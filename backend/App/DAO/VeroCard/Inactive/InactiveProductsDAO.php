@@ -3,6 +3,7 @@
 namespace App\DAO\VeroCard\Inactive;
 
 use App\DAO\VeroCard\Connection;
+use App\Models\InactiveModel;
 
 class InactiveProductsDAO extends Connection
 {
@@ -11,29 +12,90 @@ class InactiveProductsDAO extends Connection
         parent::__construct();
     }
 
-    public function getAllInactiveProducts(): array
+    public function getAllInactive_DmCard_RedeUze(): array
     {
-        $inactiveProducts = $this->pdo
-            ->query("SELECT * FROM view_dmcard_relatorio_produtos_inativos;")
+        $productsInactive = $this->pdo
+            ->query("SELECT * from view_dmcard_redeuze_relatorio_inativos;")
             ->fetchAll(\PDO::FETCH_ASSOC);
 
-        return $inactiveProducts;
+
+      
+
+        return $productsInactive;
     }
 
-    public function searchInactiveProducts($searchTerm): array
+    public function getAllInactive_DmCard_RedeUze_Search(InactiveModel $inactiveModel): array
     {
-        $searchTerm = '%' . $searchTerm . '%';
+        $searchTerm = $inactiveModel->getSearch();
+    
+        $statement = $this->pdo->prepare("SELECT * FROM view_dmcard_redeuze_relatorio_inativos 
+                      WHERE cod_produto = :search
+                      OR desc_produto = :search
+        ");
+    
+        $statement->execute(['search' => $searchTerm]);
+        $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
+    
+    
+    
+        return $response;
+    }
+    
 
-        $query = "SELECT * FROM view_dmcard_relatorio_produtos_inativos 
-                  WHERE cod_produto LIKE :searchTerm 
-                  OR desc_produto LIKE :searchTerm";
+    public function getAllInactiveDmCard(): array
+    {
 
-        $statement = $this->pdo->prepare($query);
-        $statement->bindParam(':searchTerm', $searchTerm, \PDO::PARAM_STR);
-        $statement->execute();
+        $productsInactive = $this->pdo
+            ->query("SELECT  * FROM view_dmcard_relatorio_inativos")
+            ->fetchAll(\PDO::FETCH_ASSOC);
 
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
-        return $results;
+      
+        return $productsInactive;
+    }
+    public function getAllInactiveDmCard_Search(InactiveModel $inactiveModel): array
+    {
+        $searchTerm = $inactiveModel->getSearch();
+    
+        $statement = $this->pdo->prepare("SELECT * FROM view_dmcard_relatorio_inativos
+            WHERE cod_produto = :search
+            OR desc_produto = :search
+        ");
+    
+        $statement->execute(['search' =>$searchTerm]);
+        $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
+    
+      
+    
+        return $response;
+    }
+    
+
+    public function getAllInactiveRedeUze(): array
+    {
+
+        $productsInactive = $this->pdo
+            ->query("SELECT * from view_redeuze_relatorio_inativos;")
+            ->fetchAll(\PDO::FETCH_ASSOC);
+
+
+
+        return $productsInactive;
+    }
+    public function getAllInactiveRedeUze_Search(InactiveModel $inactiveModel): array
+    {
+        $searchTerm = $inactiveModel->getSearch();
+    
+        $statement = $this->pdo->prepare("SELECT * FROM view_redeuze_relatorio_inativos 
+            WHERE cod_produto LIKE :search
+            OR desc_produto LIKE :search
+        ");
+    
+        $statement->execute(['search' => $searchTerm]);
+        $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
+    
+    
+    
+        return $response;
     }
 }

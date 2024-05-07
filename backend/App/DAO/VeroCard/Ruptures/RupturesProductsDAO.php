@@ -3,6 +3,7 @@
 namespace App\DAO\VeroCard\Ruptures;
 
 use App\DAO\VeroCard\Connection;
+use App\Models\RupturesModel;
 
 class RupturesProductsDAO extends Connection
 {
@@ -11,29 +12,104 @@ class RupturesProductsDAO extends Connection
         parent::__construct();
     }
 
-    public function getAllRupturesProducts(): array
+    public function getAllRuptures_DmCard_RedeUze(): array
     {
-        $rupturesProducts = $this->pdo
-            ->query("SELECT * FROM view_combined_ruptura_dmcard;")
+        $productsRuptures = $this->pdo
+            ->query("SELECT * from view_dmcard_redeuze_relatorio_rupturas;")
             ->fetchAll(\PDO::FETCH_ASSOC);
 
-        return $rupturesProducts;
+
+        foreach ($productsRuptures as &$product) {
+            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
+        }
+
+        return $productsRuptures;
     }
 
-    public function searchRuptureProducts($searchTerm): array
+    public function getAllRuptures_DmCard_RedeUze_Search(RupturesModel $rupturesModel): array
     {
-        $searchTerm = '%' . $searchTerm . '%';
-
-        $query = "SELECT * FROM view_combined_ruptura_dmcard 
-        WHERE \"COD PROD\" LIKE :searchTerm
-        OR \"PRODUTO\" LIKE :searchTerm";
-
-        $statement = $this->pdo->prepare($query);
-        $statement->bindParam(':searchTerm', $searchTerm, \PDO::PARAM_STR);
-        $statement->execute();
-
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
-
-        return $results;
+        $searchTerm = $rupturesModel->getSearch();
+    
+        $statement = $this->pdo->prepare("SELECT * FROM view_dmcard_redeuze_relatorio_rupturas 
+                      WHERE cod_produto = :search
+                      OR desc_produto = :search
+        ");
+    
+        $statement->execute(['search' => $searchTerm]);
+        $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
+    
+        foreach ($response as &$product) {
+            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
+        }
+    
+        return $response;
     }
+    
+
+    public function getAllRupturesDmCard(): array
+    {
+
+        $productsRuptures = $this->pdo
+            ->query("SELECT  * FROM view_dmcard_relatorio_rupturas")
+            ->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        foreach ($productsRuptures as &$product) {
+            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
+        }
+        return $productsRuptures;
+    }
+    public function getAllRupturesDmCard_Search(RupturesModel $rupturesModel): array
+    {
+        $searchTerm = $rupturesModel->getSearch();
+    
+        $statement = $this->pdo->prepare("SELECT * FROM view_dmcard_relatorio_rupturas 
+            WHERE cod_produto = :search
+            OR desc_produto = :search
+        ");
+    
+        $statement->execute(['search' =>$searchTerm]);
+        $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
+    
+        foreach ($response as &$product) {
+            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
+        }
+    
+        return $response;
+    }
+    
+
+    public function getAllRupturesRedeUze(): array
+    {
+
+        $productsRuptures = $this->pdo
+            ->query("SELECT * from view_redeuze_relatorio_rupturas;")
+            ->fetchAll(\PDO::FETCH_ASSOC);
+
+
+
+        foreach ($productsRuptures as &$product) {
+            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
+        }
+        return $productsRuptures;
+    }
+    public function getAllRupturesRedeUze_Search(RupturesModel $rupturesModel): array
+    {
+        $searchTerm = $rupturesModel->getSearch();
+    
+        $statement = $this->pdo->prepare("SELECT * FROM view_redeuze_relatorio_rupturas 
+            WHERE cod_produto LIKE :search
+            OR desc_produto LIKE :search
+        ");
+    
+        $statement->execute(['search' => $searchTerm]);
+        $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
+    
+        foreach ($response as &$product) {
+            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
+        }
+    
+        return $response;
+    }
+    
 }

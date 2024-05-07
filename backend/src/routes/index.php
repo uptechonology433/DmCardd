@@ -87,7 +87,7 @@ $app->get('/dispatched', DispatchedController::class . ':Dispatched')
 
 
 // ================== Produtos Inativos =============
-$app->post('/inactive-products', InactiveProductsController::class . ':getInactiveProducts')
+$app->post('/inactive-products', InactiveProductsController::class . ':InactiveProducts')
     ->add(new jwtDateTime())
     ->add(jwtAuth());
 // =================================================
@@ -106,7 +106,7 @@ $app->post('/graph', GraphController::class . ':getGraph')
 
 
 
-$app->post('/ruptures-products', RupturesProductsController::class . ':getRupturesProducts')
+$app->post('/ruptures-products', RupturesProductsController::class . ':RupturesProducts')
     ->add(new jwtDateTime())
     ->add(jwtAuth());
 // =================

@@ -24,7 +24,7 @@ const PageRuptures: React.FC = () => {
 
     });
 
-    
+
     const handleChange = (e: any) => {
         setFormValues({
             ...formValues,
@@ -57,7 +57,7 @@ const PageRuptures: React.FC = () => {
     }
 
     useEffect(() => {
-        // Chamada à função quando o componente é montado
+   
         RupturesPageRequests();
     }, []);
 
@@ -99,8 +99,9 @@ const PageRuptures: React.FC = () => {
             sortable: true
         }
     ];
+    
 
- 
+
     const refExcel: any = useRef();
 
     const { onDownload } = useDownloadExcel({
@@ -114,7 +115,7 @@ const PageRuptures: React.FC = () => {
 
     return (
 
-        
+
         <>
 
             <DefaultHeader sessionTheme="Rupturas" />
@@ -132,14 +133,14 @@ const PageRuptures: React.FC = () => {
                         onChange={handleChange}
 
                     />
-                   
+
                 </div>
-                <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'}  onClickButton={() => RupturesPageRequests()}  />
+                <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={() => RupturesPageRequests()} />
                 <Table
                     data={Array.isArray(rupturesData) ? rupturesData : []}
                     column={columnsRuptures}
                     typeMessage={rupturesMessage}
-            
+
                 />
 
                 <div className="table-container-dowload">
@@ -161,6 +162,7 @@ const PageRuptures: React.FC = () => {
 
 
                                 {
+                                    Array.isArray(rupturesData) &&
                                     rupturesData.map((data: any) =>
                                         <tr key={data.id}>
                                             <td>{data['COD PROD']}</td>
@@ -170,7 +172,6 @@ const PageRuptures: React.FC = () => {
                                             <td>{data['QTD ARQ']}</td>
                                             <td>{data.DIFERENÇA}</td>
                                             <td>{data.observacao}</td>
-
                                         </tr>
                                     )
                                 }

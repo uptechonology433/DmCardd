@@ -19,9 +19,6 @@ class RupturesProductsDAO extends Connection
             ->fetchAll(\PDO::FETCH_ASSOC);
 
 
-        foreach ($productsRuptures as &$product) {
-            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
-        }
 
         return $productsRuptures;
     }
@@ -31,16 +28,13 @@ class RupturesProductsDAO extends Connection
         $searchTerm = $rupturesModel->getSearch();
     
         $statement = $this->pdo->prepare("SELECT * FROM view_dmcard_redeuze_relatorio_rupturas 
-                      WHERE cod_produto = :search
-                      OR desc_produto = :search
-        ");
+                    WHERE \"COD PROD\" LIKE :search
+        OR \"PRODUTO\" LIKE :search");
     
         $statement->execute(['search' => $searchTerm]);
         $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
     
-        foreach ($response as &$product) {
-            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
-        }
+      
     
         return $response;
     }
@@ -54,9 +48,7 @@ class RupturesProductsDAO extends Connection
             ->fetchAll(\PDO::FETCH_ASSOC);
 
 
-        foreach ($productsRuptures as &$product) {
-            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
-        }
+  
         return $productsRuptures;
     }
     public function getAllRupturesDmCard_Search(RupturesModel $rupturesModel): array
@@ -64,16 +56,13 @@ class RupturesProductsDAO extends Connection
         $searchTerm = $rupturesModel->getSearch();
     
         $statement = $this->pdo->prepare("SELECT * FROM view_dmcard_relatorio_rupturas 
-            WHERE cod_produto = :search
-            OR desc_produto = :search
+            WHERE \"COD PROD\" LIKE :search
+        OR \"PRODUTO\" LIKE :search
         ");
     
         $statement->execute(['search' =>$searchTerm]);
         $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
-    
-        foreach ($response as &$product) {
-            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
-        }
+   
     
         return $response;
     }
@@ -87,10 +76,6 @@ class RupturesProductsDAO extends Connection
             ->fetchAll(\PDO::FETCH_ASSOC);
 
 
-
-        foreach ($productsRuptures as &$product) {
-            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
-        }
         return $productsRuptures;
     }
     public function getAllRupturesRedeUze_Search(RupturesModel $rupturesModel): array
@@ -98,16 +83,13 @@ class RupturesProductsDAO extends Connection
         $searchTerm = $rupturesModel->getSearch();
     
         $statement = $this->pdo->prepare("SELECT * FROM view_redeuze_relatorio_rupturas 
-            WHERE cod_produto LIKE :search
-            OR desc_produto LIKE :search
+              WHERE \"COD PROD\" LIKE :search
+        OR \"PRODUTO\" LIKE :search
         ");
     
         $statement->execute(['search' => $searchTerm]);
         $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
-    
-        foreach ($response as &$product) {
-            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
-        }
+  
     
         return $response;
     }

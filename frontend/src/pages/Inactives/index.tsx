@@ -122,6 +122,7 @@ const PageInactive: React.FC = () => {
 
 
                                 {
+                                    Array.isArray(inactiveData) &&
                                     inactiveData.map((data: any) =>
                                         <tr key={data.id}>
                                             <td>{data.cod_produto}</td>

@@ -160,6 +160,7 @@ const PageWaste: React.FC = () => {
 
 
                                 {
+                                    Array.isArray(wasteData) &&
                                     wasteData.map((data: any) =>
                                         <tr key={data.id}>
                                             <td>{data.cod_produto}</td>

@@ -15,9 +15,57 @@ import Select from "../../components/shared/Select";
 
 const PageWaste: React.FC = () => {
 
+
     const [wasteData, setWasteData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [ProductionReportMessage, setProductionReportMessage] = useState(false);
+    const [wasteMessage, setWasteMessage] = useState(false);
+
+
+    const [formValues, setFormValues] = useState({
+        cardType: "All",
+        search: ""
+
+    });
+
+    const handleChange = (e: any) => {
+        setFormValues({
+            ...formValues,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const WastePageRequests = async () => {
+
+        if (formValues.cardType === 'All' || formValues.cardType === 'DmCard' || formValues.cardType === 'RedeUze') {
+            await api.post('/waste-products', {
+                tipo: formValues.cardType,
+                search: formValues.search
+            }).then((data) => {
+                setWasteData(data.data)
+                console.log("Response from API:", data);
+
+            }).catch(() => {
+                setWasteMessage(true)
+            });
+
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Selecione um tipo de cartão...',
+                text: 'Selecione DmCard ou Rede Uze antes de fazer a filtragem dos dados.',
+            });
+        }
+
+    }
+
+    useEffect(() => {
+        // Chamada à função quando o componente é montado
+        WastePageRequests();
+    }, []);
+
+
+
+
 
     const columnsWaste: Array<Object> = [
         {
@@ -47,27 +95,11 @@ const PageWaste: React.FC = () => {
         }
     ];
 
-    useEffect(() => {
-        fetchWasteProducts();
-    }, []);
 
-    const fetchWasteProducts = async () => {
-        try {
-            const response = await api.post("/waste-products", { searchTerm });
-            setWasteData(response.data);
-        } catch (error) {
-            console.log(error);
 
-        }
-    };
 
-    const handleSearch = () => {
-        fetchWasteProducts();
-    };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(e.target.value);
-    };
+
 
     const refExcel: any = useRef();
 
@@ -83,31 +115,37 @@ const PageWaste: React.FC = () => {
 
         <>
 
-            <DefaultHeader sessionTheme="Rejeitos" />
+
             <div className="container-weste">
+                <DefaultHeader sessionTheme="Rejeitos" />
                 <div className="inputs-info-products">
+                    <Select info={"Selecione um Tipo:"} name="cardType" onChange={handleChange}>
+                        <option selected value="All">Tudo</option>
+                        <option value="DmCard">Dm Card</option>
+                        <option value="RedeUze">Rede Uze</option>
+                    </Select>
 
                     <Input
-                        name="searchTerm"
+                        name="search"
                         info="Código ou Descrição do Produto:"
                         placeholder="Produto..."
-                        value={searchTerm}
                         onChange={handleChange}
-                        //onchenge= {searchrTerm}
-                    />
-                    <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={handleSearch} />
-                </div>
 
+
+                    />
+
+                </div>
+                <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={() => WastePageRequests()} />
                 <Table
-                    data={wasteData}
+                    data={Array.isArray(wasteData) ? wasteData : []}
                     column={columnsWaste}
-                    typeMessage={ProductionReportMessage}
-                    refExcel={refExcel}
+                    typeMessage={wasteMessage}
+
 
                 />
 
                 <div className="table-container-dowload">
-                    
+
                     <div className="scroll-table-dowload">
                         <table ref={refExcel}>
 

@@ -3,6 +3,7 @@
 namespace App\DAO\VeroCard\Waste;
 
 use App\DAO\VeroCard\Connection;
+use App\Models\WasteModel;
 
 class WasteProductsDAO extends Connection
 {
@@ -10,36 +11,104 @@ class WasteProductsDAO extends Connection
     {
         parent::__construct();
     }
-
-    public function getAllWasteProducts(): array
+    public function getAllWaste_DmCard_RedeUze(): array
     {
-        $wasteProducts = $this->pdo
-            ->query("SELECT * FROM view_dmcard_relatorio_rejeitoss;")
+        $productsWaste = $this->pdo
+            ->query("SELECT * from view_dmcard_redeuze_relatorio_waste;")
             ->fetchAll(\PDO::FETCH_ASSOC);
 
-            foreach($wasteProducts as &$product){
-                $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
 
-            }
+        foreach ($productsWaste as &$product) {
+            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
+        }
 
-        return $wasteProducts;
+        return $productsWaste;
     }
 
-    public function searchWasteProducts($searchTerm): array
+    public function getAllWaste_DmCard_RedeUze_Search(WasteModel $wasteModel): array
     {
-        $searchTerm = '%' . $searchTerm . '%';
-
-        $query = "SELECT * FROM view_dmcard_relatorio_rejeitoss 
-                  WHERE cod_produto LIKE :searchTerm 
-                  OR desc_produto LIKE :searchTerm";
-
-        $statement = $this->pdo->prepare($query);
-        $statement->bindParam(':searchTerm', $searchTerm, \PDO::PARAM_STR);
-        $statement->execute();
-
-        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
-       
-
-        return $results;
+        $searchTerm = $wasteModel->getSearch();
+    
+        $statement = $this->pdo->prepare("SELECT * FROM view_dmcard_redeuze_relatorio_waste 
+                      WHERE cod_produto = :search
+                      OR desc_produto = :search
+        ");
+    
+        $statement->execute(['search' => $searchTerm]);
+        $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
+    
+        foreach ($response as &$product) {
+            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
+        }
+    
+        return $response;
     }
+    
+
+    public function getAllWasteDmCard(): array
+    {
+
+        $productsWaste = $this->pdo
+            ->query("SELECT  * FROM view_dmcard_relatorio_waste")
+            ->fetchAll(\PDO::FETCH_ASSOC);
+
+
+        foreach ($productsWaste as &$product) {
+            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
+        }
+        return $productsWaste;
+    }
+    public function getAllWasteDmCard_Search(WasteModel $wasteModel): array
+    {
+        $searchTerm = $wasteModel->getSearch();
+    
+        $statement = $this->pdo->prepare("SELECT * FROM view_dmcard_relatorio_waste 
+            WHERE cod_produto = :search
+            OR desc_produto = :search
+        ");
+    
+        $statement->execute(['search' =>$searchTerm]);
+        $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
+    
+        foreach ($response as &$product) {
+            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
+        }
+    
+        return $response;
+    }
+    
+
+    public function getAllWasteRedeUze(): array
+    {
+
+        $productsWaste = $this->pdo
+            ->query("SELECT * from view_redeuze_relatorio_waste;")
+            ->fetchAll(\PDO::FETCH_ASSOC);
+
+
+
+        foreach ($productsWaste as &$product) {
+            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
+        }
+        return $productsWaste;
+    }
+    public function getAllWasteRedeUze_Search(WasteModel $wasteModel): array
+    {
+        $searchTerm = $wasteModel->getSearch();
+    
+        $statement = $this->pdo->prepare("SELECT * FROM view_redeuze_relatorio_waste 
+            WHERE cod_produto LIKE :search
+            OR desc_produto LIKE :search
+        ");
+    
+        $statement->execute(['search' => $searchTerm]);
+        $response = $statement->fetchAll(\PDO::FETCH_ASSOC);
+    
+        foreach ($response as &$product) {
+            $product['dt_perda'] = date('d/m/Y', strtotime($product['dt_perda']));
+        }
+    
+        return $response;
+    }
+    
 }

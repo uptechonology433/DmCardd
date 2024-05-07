@@ -10,13 +10,13 @@ use App\Controllers\CardsIssuedReport\CardsIssuedReportController;
 use App\Controllers\Dispatched\DispatchedController;
 use App\Controllers\Graph\GraphController;
 use App\Controllers\Inactive\InactiveProductsController;
-use App\Controllers\MonthReport\MonthReportController;
+
 use App\Controllers\ProductionReport\ProductionReportController;
 use App\Controllers\Stock\StockController;
 use App\Controllers\Waste\WasteProductsController;
 use App\Controllers\Ruptures\RupturesProductsController;
 use App\DAO\VeroCard\CardsIssuedReport\CardsIssuedReportDAO;
-use App\DAO\VeroCard\MonthReport\MonthReportDAO;
+
 use App\Middlewares\adminConference;
 use App\Middlewares\jwtDateTime;
 
@@ -28,13 +28,13 @@ $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
 });
 
-$app->add(function ($req, $res, $next) {
-    $response = $next($req, $res);
-    return $response
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-});
+// $app->add(function ($req, $res, $next) {
+//     $response = $next($req, $res);
+//     return $response
+//             ->withHeader('Access-Control-Allow-Origin', '*')
+//             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+//             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+// });
 
 
 // ================= Login ========================
@@ -93,7 +93,7 @@ $app->post('/inactive-products', InactiveProductsController::class . ':getInacti
 // =================================================
 
 // ================== Produtos Rejeitados =============
-$app->post('/waste-products', WasteProductsController::class . ':getWasteProducts')
+$app->post('/waste-products', WasteProductsController::class . ':WasteProducts')
     ->add(new jwtDateTime())
     ->add(jwtAuth());
 // ==================================================
@@ -104,9 +104,7 @@ $app->post('/graph', GraphController::class . ':getGraph')
 
     
 
-$app->post('/monthReport', MonthReportController::class . ':getMontReport')
-    ->add(new jwtDateTime())
-    ->add(jwtAuth());
+
 
 $app->post('/ruptures-products', RupturesProductsController::class . ':getRupturesProducts')
     ->add(new jwtDateTime())
@@ -163,10 +161,10 @@ $app->post('/searchUser', AdminUsersController::class . ':UserSearchEmail')
     ->add(new jwtDateTime())
     ->add(jwtAuth());
 
-$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
-    $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
-    return $handler($req, $res);
-});
+// $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
+//     $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
+//     return $handler($req, $res);
+// });
 
 // ==================================================
 

@@ -5,6 +5,7 @@ import Table from "../../components/shared/Table";
 import DownloadFacilitators from "../../components/layout/DownloadFacilitators";
 import api from "../../connectionAPI";
 import { useDownloadExcel } from "react-export-table-to-excel";
+import Select from "../../components/shared/Select";
 
 
 const PageInactive: React.FC = () => {
@@ -62,6 +63,11 @@ const PageInactive: React.FC = () => {
             <DefaultHeader sessionTheme="Inativos" />
             <div className="container-inactives">
                 <div className="inputs-info-products">
+                <Select info={"Selecione um Tipo:"} name="cardType" onChange={handleChange}>
+                        <option selected>Selecione um Tipo...</option>
+                        <option value="DmCard">Dm Card</option>
+                        <option value="RedeUze">Rede Uze</option>
+                    </Select>
 
                     <Input
                         name="searchTerm"
@@ -70,8 +76,9 @@ const PageInactive: React.FC = () => {
                         value={searchTerm}
                         onChange={handleChange}
                     />
-                    <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={handleSearch} />
+                  
                 </div>
+                <DownloadFacilitators excelClick={() => onDownload()} printClick={() => window.print()} textButton={'Pesquisar'} onClickButton={handleSearch} />
 
 
                 <Table

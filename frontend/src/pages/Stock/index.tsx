@@ -34,7 +34,7 @@ const PageStock: React.FC = () => {
 
     const ProductionReportRequests = async () => {
 
-        if (formValues.activeType === 'Sim' || formValues.activeType === 'Não') {
+        if (formValues.activeType === 'SIM' || formValues.activeType === 'NÃO') {
 
             await api.post('/stock', {
                 ativo: formValues.activeType,
@@ -124,8 +124,8 @@ const PageStock: React.FC = () => {
                  
                     <Select info={"Selecione um um ativo:"} name="activeType" onChange={handleChange}>
                     <option selected>Selecione um ativo...</option>
-                    <option value="Sim">Sim</option>
-                    <option value="Não">Não</option>
+                    <option value="SIM">Sim</option>
+                    <option value="NÃO">Não</option>
                 </Select>
             
              

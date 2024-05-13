@@ -38,8 +38,14 @@ const PageHome: React.FC = () => {
                 setDispatched(dispatchedResponse.data[formValues.Type === "dmcard" ? 0 : 1]);
 
                 const graphResponse = await api.post('/graph');
-                setGraph(graphResponse.data[formValues.Type === "dmcard" ? 0 : 1]);
-                console.log(graphResponse.data[formValues.Type === "dmcard" ? 0 : 1]);
+                const graphData = graphResponse.data[formValues.Type === "dmcard" ? 0 : 1][0];
+                setGraph([
+                    { label: 'Cartões Processados', value: graphData.processados },
+                    { label: 'Cartões em Produção', value: graphData.em_producao },
+                    { label: 'Rejeitos', value: graphData.rejeitos },
+                    { label: 'Cartões Expedidos', value: graphData.expedidos }
+                ]);
+
             } catch (error) {
                 console.error(error);
             }
@@ -130,9 +136,11 @@ const PageHome: React.FC = () => {
 
 
 
+    const totalProduced = graphData.reduce((total, item) => total + item.value, 0);
 
     return (
         <div className="container-page-home">
+
             <DefaultHeader />
             <Select info={"Selecione o tipo de cartão:"} name="Type" onChange={handleChange} value={formValues.Type}>
                 <option value="dmcard">Dm Card</option>
@@ -168,47 +176,39 @@ const PageHome: React.FC = () => {
             />
 
             <div className="graph">
-                <div className="percentage-table">
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Referência</th>
-                                <th>QTD</th>
-                                <th>Porcentagem</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-                            <tr>
-                                <td>Cartões Processados</td>
-                                <td>{"totalProcessado"}</td>
-                                <td> {"percentageProcessed.toFixed(2)"}%</td>
-                            </tr>
-
-
-                            <tr>
-                                <td>Cartões em Produção</td>
-                                <td>{"totalProduced"}</td>
-                                <td>{"percentageProduced.toFixed(2)"}%</td>
-                            </tr>
-
-
-                            <tr>
-                                <td>Rejeitos</td>
-                                <td>{"totalWaste"}</td>
-                                <td>{"percentageWaste.toFixed(2)"}%</td>
-                            </tr>
-
-                            <tr>
-                                <td>Cartões Expedidos</td>
-                                <td>{"dispatched"}</td>
-                                <td>{"percentageDispatched.toFixed(2)"}%</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div className="percentage-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Referência</th>
+                        <th>QTD</th>
+                        <th>Porcentagem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cartões Processados</td>
+                        <td>{graphData[0].value}</td>
+                        <td>{Math.round((graphData[0].value / totalProduced) * 100)}%</td>
+                    </tr>
+                    <tr>
+                        <td>Cartões em Produção</td>
+                        <td>{graphData[1].value}</td>
+                        <td>{Math.round((graphData[1].value / totalProduced) * 100)}%</td>
+                    </tr>
+                    <tr>
+                        <td>Rejeitos</td>
+                        <td>{graphData[2].value}</td>
+                        <td>{Math.round((graphData[2].value / totalProduced) * 100)}%</td>
+                    </tr>
+                    <tr>
+                        <td>Cartões Expedidos</td>
+                        <td>{graphData[3].value}</td>
+                        <td>{Math.round((graphData[3].value / totalProduced) * 100)}%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
             </div>
         </div>
     );

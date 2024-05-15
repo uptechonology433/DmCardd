@@ -52,7 +52,7 @@ final class RupturesProductsController
                     $productionRuptures = $rupturesProductsDAO->getAllRuptures_DmCard_RedeUze($rupturesProductsModel);
                 }  
 
-            } else if (!empty(trim($data['tipo'])) &&  $data['tipo']  === 'DmCard') {
+            } else if (!empty(trim($data['tipo'])) &&  $data['tipo']  === 'dmcard') {
 
                 if (!empty(trim($data['search']))){
                     $productionRuptures = $rupturesProductsDAO-> getAllRupturesDmCard_Search($rupturesProductsModel);
@@ -60,7 +60,7 @@ final class RupturesProductsController
                     $productionRuptures = $rupturesProductsDAO->getAllRupturesDmCard($rupturesProductsModel);
                 }  
                
-            } else if (!empty(trim($data['tipo'])) &&  $data['tipo']  === 'RedeUze') {
+            } else if (!empty(trim($data['tipo'])) &&  $data['tipo']  === 'redeuze') {
 
                 if (!empty(trim($data['search']))){
                     $productionRuptures = $rupturesProductsDAO-> getAllRupturesRedeUze_Search($rupturesProductsModel);

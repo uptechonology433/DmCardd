@@ -4,6 +4,7 @@ import Table from "../../components/shared/Table";
 import DefaultHeader from "../../components/layout/DefaultHeader";
 import Select from "../../components/shared/Select";
 import Chart from "chart.js/auto";
+import Swal from "sweetalert2";
 
 interface GraphDataItem {
     label: string;
@@ -21,6 +22,10 @@ const PageHome: React.FC = () => {
     const [typeMessageAwaitingShipment, setTypeMessageAwaitingShipment] = useState(false);
     const [typeMessageDispatched, setTypeMessageDispatched] = useState(false);
     const [formValues, setFormValues] = useState({ Type: "dmcard" });
+    const [pieChart, setPieChart] = useState<Chart<'pie' | 'doughnut', any[], string> | null>(null);
+
+    const [rupturesData, setRupturesData] = useState([]);
+    const [rupturesMessage, setRupturesMessage] = useState(false);
 
     useEffect(() => {
         const HomePageRequests = async () => {
@@ -50,8 +55,34 @@ const PageHome: React.FC = () => {
                 console.error(error);
             }
         };
+
+        const RupturesPageRequests = async () => {
+            if (formValues.Type === 'dmcard' || formValues.Type === 'redeuze') {
+                try {
+                    const data = await api.post('/ruptures-products', {
+                        tipo: formValues.Type,
+                        search: ""
+                    });
+                    setRupturesData(data.data[1]);
+                    console.log("Response from API:", rupturesData);
+                } catch {
+                    setRupturesMessage(true);
+                }
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Selecione um tipo de cartão...',
+                    text: 'Selecione DmCard ou Rede Uze antes de fazer a filtragem dos dados.',
+                });
+            }
+        };
+    
         HomePageRequests();
     }, [formValues]);
+
+    
+
+
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFormValues({
@@ -131,84 +162,87 @@ const PageHome: React.FC = () => {
     ];
 
 
-
-
-
-
-
     const totalProduced = graphData.reduce((total, item) => total + item.value, 0);
 
     return (
         <div className="container-page-home">
-
             <DefaultHeader />
-            <Select info={"Selecione o tipo de cartão:"} name="Type" onChange={handleChange} value={formValues.Type}>
-                <option value="dmcard">Dm Card</option>
+            <Select
+                info="Some info text"
+                label="Selecione o Tipo de Cartão"
+                name="Type"
+                value={formValues.Type}
+                onChange={handleChange}
+            >
+                <option value="dmcard">DmCard</option>
                 <option value="redeuze">Rede Uze</option>
             </Select>
-
             <Table
                 data={Array.isArray(awaitingReleaseData) ? awaitingReleaseData : []}
                 column={columnsAwaitingRelease}
-                titleTable="Aguardando liberação"
+                titleTable="Aguardando Liberacao"
                 typeMessage={typeMessageAwaitingRelease}
             />
-
             <Table
                 data={Array.isArray(inProductionData) ? inProductionData : []}
                 column={columnsInProduction}
-                titleTable="Em produção"
+                titleTable="Em Producao"
                 typeMessage={typeMessageInProduction}
             />
-
             <Table
                 data={Array.isArray(awaitingShipmentData) ? awaitingShipmentData : []}
                 column={columnsAwaitingShipment}
-                titleTable="Aguardando Expedição"
+                titleTable="Aguardando Expedicao"
                 typeMessage={typeMessageAwaitingShipment}
             />
-
             <Table
                 data={Array.isArray(dispatchedData) ? dispatchedData : []}
                 column={columnsDispatched}
                 titleTable="Expedidos"
                 typeMessage={typeMessageDispatched}
             />
+       
 
             <div className="graph">
-            <div className="percentage-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Referência</th>
-                        <th>QTD</th>
-                        <th>Porcentagem</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Cartões Processados</td>
-                        <td>{graphData[0].value}</td>
-                        <td>{Math.round((graphData[0].value / totalProduced) * 100)}%</td>
-                    </tr>
-                    <tr>
-                        <td>Cartões em Produção</td>
-                        <td>{graphData[1].value}</td>
-                        <td>{Math.round((graphData[1].value / totalProduced) * 100)}%</td>
-                    </tr>
-                    <tr>
-                        <td>Rejeitos</td>
-                        <td>{graphData[2].value}</td>
-                        <td>{Math.round((graphData[2].value / totalProduced) * 100)}%</td>
-                    </tr>
-                    <tr>
-                        <td>Cartões Expedidos</td>
-                        <td>{graphData[3].value}</td>
-                        <td>{Math.round((graphData[3].value / totalProduced) * 100)}%</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                <div className="percentage-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Referência</th>
+                                <th>QTD</th>
+                                <th>Porcentagem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {graphData.length > 0 && (
+                                <>
+                                    <tr>
+                                        <td>Cartões Processados</td>
+                                        <td>{graphData[0].value}</td>
+                                        <td>{""}%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cartões em Produção</td>
+                                        <td>{graphData[1].value}</td>
+                                        <td>{""}%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Rejeitos</td>
+                                        <td>{graphData[2].value}</td>
+                                        <td>{""}%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cartões Expedidos</td>
+                                        <td>{graphData[3].value}</td>
+                                        <td>{""}%</td>
+                                    </tr>
+                                </>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+
+
             </div>
         </div>
     );

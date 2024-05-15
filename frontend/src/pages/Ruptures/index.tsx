@@ -34,7 +34,7 @@ const PageRuptures: React.FC = () => {
 
     const RupturesPageRequests = async () => {
 
-        if (formValues.cardType === 'All' || formValues.cardType === 'DmCard' || formValues.cardType === 'RedeUze') {
+        if (formValues.cardType === 'All' || formValues.cardType === 'dmcard' || formValues.cardType === 'redeuze') {
             await api.post('/ruptures-products', {
                 tipo: formValues.cardType,
                 search: formValues.search
@@ -123,8 +123,8 @@ const PageRuptures: React.FC = () => {
                 <div className="inputs-info-products">
                     <Select info={"Selecione um Tipo:"} name="cardType" onChange={handleChange}>
                         <option selected value="All">Tudo</option>
-                        <option value="DmCard">Dm Card</option>
-                        <option value="RedeUze">Rede Uze</option>
+                        <option value="dmcard">Dm Card</option>
+                        <option value="redeuze">Rede Uze</option>
                     </Select>
                     <Input
                         name="searchTerm"

@@ -62,14 +62,14 @@ const PageHome: React.FC = () => {
                 const chartData = graphData.filter(item => item.label !== "Cartões Processados");
                 const labels = chartData.map(item => item.label);
                 const values = chartData.map(item => item.value);
-        
+
                 const ctx = document.getElementById("donutChart") as HTMLCanvasElement;
-                
+
                 // Destruir o gráfico anterior, se existir
                 if (pieChart) {
                     (pieChart as Chart<'pie' | 'doughnut', any[], string>).destroy();
                 }
-        
+
                 const chart = new Chart(ctx, {
                     type: "doughnut",
                     data: {
@@ -85,12 +85,12 @@ const PageHome: React.FC = () => {
                         maintainAspectRatio: false
                     }
                 });
-        
+
                 setPieChart(chart);
             }
         };
-        
-    
+
+
 
         const RupturesPageRequests = async () => {
             if (formValues.Type === 'dmcard' || formValues.Type === 'redeuze') {
@@ -99,7 +99,7 @@ const PageHome: React.FC = () => {
                         tipo: formValues.Type,
                         search: ""
                     });
-                    setRupturesData(data.data[1]);
+                    setRupturesData(data.data);
                     console.log("Response from API:", rupturesData);
                 } catch {
                     setRupturesMessage(true);
@@ -113,8 +113,9 @@ const PageHome: React.FC = () => {
             }
         };
 
-        
+
         HomePageRequests();
+        RupturesPageRequests();
     }, [formValues, graphData]);
 
 
@@ -130,30 +131,34 @@ const PageHome: React.FC = () => {
 
     const columnsAwaitingRelease: Array<Object> = [
         {
-            name: 'Nome do arquivo',
+            name: 'Arquivo',
             selector: (row: any) => row.nome_arquivo_proc
         },
         {
-            name: 'Data de entrada',
+            name: 'Entrada',
             selector: (row: any) => row.dt_processamento
         },
         {
             name: 'Qtd cartões',
             selector: (row: any) => row.total_cartoes
-        }
+        },
+        {
+            name: 'Obs',
+            selector: (row: any) => row.nome_arquivo_proc
+        },
     ];
 
     const columnsInProduction: Array<Object> = [
         {
-            name: 'Nome do arquivo',
+            name: 'Arquivo',
             selector: (row: any) => row.nome_arquivo_proc,
         },
         {
-            name: 'Data Pros',
+            name: 'Processado',
             selector: (row: any) => row.dt_processamento
         },
         {
-            name: 'Quantidade de cartões',
+            name: 'Qtd cartões',
             selector: (row: any) => row.total_cartoes,
             sortable: true
         },
@@ -166,11 +171,11 @@ const PageHome: React.FC = () => {
 
     const columnsAwaitingShipment: Array<Object> = [
         {
-            name: 'Nome do arquivo',
+            name: 'Arquivo',
             selector: (row: any) => row.nome_arquivo_proc
         },
         {
-            name: 'Data de entrada',
+            name: 'Entrada',
             selector: (row: any) => row.dt_processamento
         },
         {
@@ -181,15 +186,15 @@ const PageHome: React.FC = () => {
 
     const columnsDispatched: Array<Object> = [
         {
-            name: 'Nome do arquivo',
+            name: 'Arquivo',
             selector: (row: any) => row.nome_arquivo_proc
         },
         {
-            name: 'Data de entrada',
+            name: 'Entrada',
             selector: (row: any) => row.dt_processamento
         },
         {
-            name: 'Data de saida',
+            name: 'Saida',
             selector: (row: any) => row.dt_expedicao
         },
         {
@@ -198,8 +203,45 @@ const PageHome: React.FC = () => {
         },
     ];
 
+    const columnsRuptures: Array<Object> = [
+        {
+            name: 'Codigo',
+            selector: (row: any) => row["COD PROD"],
+            sortable: true
+        },
+        {
+            name: 'Produto',
+            selector: (row: any) => row.PRODUTO,
+            sortable: true
+        },
+        {
+            name: 'Data',
+            selector: (row: any) => row.dt_op,
+            sortable: true
+        },
+        {
+            name: 'Estoque',
+            selector: (row: any) => row["QTD ESTQ"],
+            sortable: true
+        },
+        {
+            name: 'Qtd cartões',
+            selector: (row: any) => row["QTD ARQ"],
+            sortable: true
+        },
+        {
+            name: 'Diferença',
+            selector: (row: any) => row.DIFERENÇA,
+            sortable: true
+        },
+        {
+            name: 'Descrição',
+            selector: (row: any) => row.observacao,
+            sortable: true
+        }
+    ];
 
-    const totalProduced = graphData.reduce((total, item) => total + item.value, 0);
+
 
     return (
         <div className="container-page-home">
@@ -214,30 +256,55 @@ const PageHome: React.FC = () => {
                 <option value="dmcard">DmCard</option>
                 <option value="redeuze">Rede Uze</option>
             </Select>
-            <Table
-                data={Array.isArray(awaitingReleaseData) ? awaitingReleaseData : []}
-                column={columnsAwaitingRelease}
-                titleTable="Aguardando Liberacao"
-                typeMessage={typeMessageAwaitingRelease}
-            />
-            <Table
-                data={Array.isArray(inProductionData) ? inProductionData : []}
-                column={columnsInProduction}
-                titleTable="Em Producao"
-                typeMessage={typeMessageInProduction}
-            />
-            <Table
-                data={Array.isArray(awaitingShipmentData) ? awaitingShipmentData : []}
-                column={columnsAwaitingShipment}
-                titleTable="Aguardando Expedicao"
-                typeMessage={typeMessageAwaitingShipment}
-            />
-            <Table
-                data={Array.isArray(dispatchedData) ? dispatchedData : []}
-                column={columnsDispatched}
-                titleTable="Expedidos"
-                typeMessage={typeMessageDispatched}
-            />
+
+            <div className="container-tablee">
+                <div className="container-table-one">
+                    <Table
+                        data={Array.isArray(awaitingReleaseData) ? awaitingReleaseData : []}
+                        column={columnsAwaitingRelease}
+                        titleTable="Aguardando Liberacao"
+                        typeMessage={typeMessageAwaitingRelease}
+                    />
+
+                    <Table
+                        data={Array.isArray(awaitingShipmentData) ? awaitingShipmentData : []}
+                        column={columnsAwaitingShipment}
+                        titleTable="Aguardando Expedicao"
+                        typeMessage={typeMessageAwaitingShipment}
+                    />
+
+                    <Table
+                        data={Array.isArray(dispatchedData) ? dispatchedData : []}
+                        column={columnsDispatched}
+                        titleTable="Expedidos"
+                        typeMessage={typeMessageDispatched}
+                    />
+
+
+
+                </div>
+                <div className="container-table-two">
+
+
+
+                    <Table
+                        data={Array.isArray(inProductionData) ? inProductionData : []}
+                        column={columnsInProduction}
+                        titleTable="Em Producao"
+                        typeMessage={typeMessageInProduction}
+                    />
+
+                    <Table
+                        data={Array.isArray(rupturesData) ? rupturesData : []}
+                        column={columnsRuptures}
+                        titleTable="Rupturas"
+                        typeMessage={rupturesMessage}
+
+                    />
+
+                </div>
+
+            </div>
 
 
             <div className="graph">

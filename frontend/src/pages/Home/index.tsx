@@ -50,11 +50,47 @@ const PageHome: React.FC = () => {
                     { label: 'Rejeitos', value: graphData.rejeitos },
                     { label: 'Cartões Expedidos', value: graphData.expedidos }
                 ]);
+                renderDonutChart();
 
             } catch (error) {
                 console.error(error);
             }
         };
+
+        const renderDonutChart = () => {
+            if (!pieChart && graphData.length > 0) {
+                const chartData = graphData.filter(item => item.label !== "Cartões Processados");
+                const labels = chartData.map(item => item.label);
+                const values = chartData.map(item => item.value);
+        
+                const ctx = document.getElementById("donutChart") as HTMLCanvasElement;
+                
+                // Destruir o gráfico anterior, se existir
+                if (pieChart) {
+                    (pieChart as Chart<'pie' | 'doughnut', any[], string>).destroy();
+                }
+        
+                const chart = new Chart(ctx, {
+                    type: "doughnut",
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: values,
+                            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"], // Cores para cada fatia
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+        
+                setPieChart(chart);
+            }
+        };
+        
+    
 
         const RupturesPageRequests = async () => {
             if (formValues.Type === 'dmcard' || formValues.Type === 'redeuze') {
@@ -76,11 +112,12 @@ const PageHome: React.FC = () => {
                 });
             }
         };
-    
-        HomePageRequests();
-    }, [formValues]);
 
-    
+        
+        HomePageRequests();
+    }, [formValues, graphData]);
+
+
 
 
 
@@ -201,7 +238,7 @@ const PageHome: React.FC = () => {
                 titleTable="Expedidos"
                 typeMessage={typeMessageDispatched}
             />
-       
+
 
             <div className="graph">
                 <div className="percentage-table">
@@ -219,27 +256,31 @@ const PageHome: React.FC = () => {
                                     <tr>
                                         <td>Cartões Processados</td>
                                         <td>{graphData[0].value}</td>
-                                        <td>{""}%</td>
+                                        <td>{(graphData[0].value / graphData[0].value) * 100}%</td>
                                     </tr>
                                     <tr>
                                         <td>Cartões em Produção</td>
                                         <td>{graphData[1].value}</td>
-                                        <td>{""}%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Rejeitos</td>
-                                        <td>{graphData[2].value}</td>
-                                        <td>{""}%</td>
+                                        <td>{(graphData[1].value / graphData[0].value * 100).toFixed(2)}%</td>
                                     </tr>
                                     <tr>
                                         <td>Cartões Expedidos</td>
                                         <td>{graphData[3].value}</td>
-                                        <td>{""}%</td>
+                                        <td>{(graphData[3].value / graphData[0].value * 100).toFixed(2)}%</td>
                                     </tr>
+                                    <tr>
+                                        <td>Rejeitos</td>
+                                        <td>{graphData[2].value}</td>
+                                        <td>{(graphData[2].value / graphData[0].value * 100).toFixed(2)}%</td>
+                                    </tr>
+
                                 </>
                             )}
                         </tbody>
                     </table>
+                </div>
+                <div className="donut-chart-container">
+                    <canvas id="donutChart" />
                 </div>
 
 

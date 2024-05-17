@@ -92,11 +92,6 @@ const PageRuptures: React.FC = () => {
             name: 'Diferença',
             selector: (row: any) => row.DIFERENÇA,
             sortable: true
-        },
-        {
-            name: 'Descrição',
-            selector: (row: any) => row.observacao,
-            sortable: true
         }
     ];
     

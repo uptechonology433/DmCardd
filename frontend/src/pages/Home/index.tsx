@@ -233,11 +233,6 @@ const PageHome: React.FC = () => {
             name: 'Diferença',
             selector: (row: any) => row.DIFERENÇA,
             sortable: true
-        },
-        {
-            name: 'Descrição',
-            selector: (row: any) => row.observacao,
-            sortable: true
         }
     ];
 
@@ -262,14 +257,14 @@ const PageHome: React.FC = () => {
                     <Table
                         data={Array.isArray(awaitingReleaseData) ? awaitingReleaseData : []}
                         column={columnsAwaitingRelease}
-                        titleTable="Aguardando Liberacao"
+                        titleTable="Aguardando Liberação"
                         typeMessage={typeMessageAwaitingRelease}
                     />
 
                     <Table
                         data={Array.isArray(awaitingShipmentData) ? awaitingShipmentData : []}
                         column={columnsAwaitingShipment}
-                        titleTable="Aguardando Expedicao"
+                        titleTable="Aguardando Expedição"
                         typeMessage={typeMessageAwaitingShipment}
                     />
 
@@ -290,7 +285,7 @@ const PageHome: React.FC = () => {
                     <Table
                         data={Array.isArray(inProductionData) ? inProductionData : []}
                         column={columnsInProduction}
-                        titleTable="Em Producao"
+                        titleTable="Em Produção"
                         typeMessage={typeMessageInProduction}
                     />
 
